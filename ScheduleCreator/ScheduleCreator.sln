@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScheduleCreator.Domain", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScheduleCreator.EntityFramework", "ScheduleCreator.EntityFramework\ScheduleCreator.EntityFramework.csproj", "{6AAB8663-656A-4975-8CE0-473B374C5A83}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{C30A83AB-11F8-4DC6-B0CC-8E322E7F1E51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{6AAB8663-656A-4975-8CE0-473B374C5A83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AAB8663-656A-4975-8CE0-473B374C5A83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AAB8663-656A-4975-8CE0-473B374C5A83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C30A83AB-11F8-4DC6-B0CC-8E322E7F1E51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C30A83AB-11F8-4DC6-B0CC-8E322E7F1E51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C30A83AB-11F8-4DC6-B0CC-8E322E7F1E51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C30A83AB-11F8-4DC6-B0CC-8E322E7F1E51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

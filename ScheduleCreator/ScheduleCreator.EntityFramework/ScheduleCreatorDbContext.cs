@@ -13,10 +13,10 @@ namespace ScheduleCreator.EntityFramework
 
         public ScheduleCreatorDbContext(DbContextOptions options) : base(options) { }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Schedule>().OwnsMany(e => e.Employees);
-            base.OnModelCreating(modelBuilder);
-        }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<Schedule>().OwnsMany(e => e.Employees);
+        //    base.OnModelCreating(modelBuilder);
+        //}
     }
 }

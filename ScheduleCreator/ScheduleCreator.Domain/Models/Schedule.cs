@@ -8,6 +8,5 @@ namespace ScheduleCreator.Domain.Models
     {
         public int Month { get; set; }
         public int WorkingDays { get; set; }
-        public IEnumerable<Employee> Employees { get; set; }
     }
 }

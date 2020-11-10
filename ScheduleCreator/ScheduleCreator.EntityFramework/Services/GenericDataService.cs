@@ -25,6 +25,7 @@ namespace ScheduleCreator.EntityFramework.Services
             {
                 EntityEntry<T> createdResults = await context.Set<T>().AddAsync(entity);
                 await context.SaveChangesAsync();
+
                 return createdResults.Entity;
             }
         }
@@ -55,7 +56,7 @@ namespace ScheduleCreator.EntityFramework.Services
         {
             using (ScheduleCreatorDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<T> entities= await context.Set<T>().ToListAsync();
+                IEnumerable<T> entities = await context.Set<T>().ToListAsync();
 
                 return entities;
             }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,9 @@ namespace ScheduleCreator.EntityFramework
     {
         public ScheduleCreatorDbContext CreateDbContext(string[] args = null)
         {
-            var options = new DbContextOptionsBuilder<ScheduleCreatorDbContext>();
-            options.UseSqlite("Data Source = ScheduleCreator.db");
+            DbContextOptionsBuilder<ScheduleCreatorDbContext> options = new DbContextOptionsBuilder<ScheduleCreatorDbContext>();
+            //options.UseSqlite($"Data Source = {_appHost.ContentRootPath}/ScheduleCreator.db");
+            options.UseSqlServer("Server=LAPTOP-9TI2U43D\\MSSQLSERVER01;Database=ScheduleCreator;Trusted_Connection=True;");
 
             return new ScheduleCreatorDbContext(options.Options);
         }

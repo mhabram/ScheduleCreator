@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScheduleCreator.EntityFramework;
 
 namespace ScheduleCreator.EntityFramework.Migrations
 {
     [DbContext(typeof(ScheduleCreatorDbContext))]
-    partial class ScheduleCreatorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201109104100_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

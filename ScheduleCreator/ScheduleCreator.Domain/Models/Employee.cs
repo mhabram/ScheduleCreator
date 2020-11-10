@@ -9,6 +9,6 @@ namespace ScheduleCreator.Domain.Models
         public string Name { get; set; }
         public string LastName { get; set; }
         public int Shift { get; set; }
-        public int WorkingDays { get; set; }
+        public int FreeWorkingDays { get; set; }
     }
 }
