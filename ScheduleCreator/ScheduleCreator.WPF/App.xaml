@@ -1,0 +1,33 @@
+﻿<Application x:Class="ScheduleCreator.WPF.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ScheduleCreator.WPF"
+             xmlns:views="clr-namespace:ScheduleCreator.WPF.Views"
+             xmlns:viewmodels="clr-namespace:ScheduleCreator.WPF.ViewModels">
+    <Application.Resources>
+        <ResourceDictionary>
+            
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/Common.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <DataTemplate DataType="{x:Type viewmodels:ConditionsViewModel}">
+                <views:ConditionsView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:CreateScheduleViewModel}">
+                <views:CreateScheduleView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:EmployeeViewModel}">
+                <views:EmployeeView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:HelpViewModel}">
+                <views:HelpView/>
+            </DataTemplate>
+        
+        </ResourceDictionary>
+    
+    </Application.Resources>
+</Application>
