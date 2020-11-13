@@ -16,9 +16,9 @@ namespace ScheduleCreator.WPF.Controls
     /// <summary>
     /// Interaction logic for Navigationbar.xaml
     /// </summary>
-    public partial class Navigationbar : UserControl
+    public partial class NavigationBar : UserControl
     {
-        public Navigationbar()
+        public NavigationBar()
         {
             InitializeComponent();
         }

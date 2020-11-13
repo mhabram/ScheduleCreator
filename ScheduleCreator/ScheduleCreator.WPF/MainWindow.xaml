@@ -8,13 +8,13 @@
         xmlns:controls="clr-namespace:ScheduleCreator.WPF.Controls"
         
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Schedule Creator" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <controls:Navigationbar Grid.Column="0" DataContext="{Binding Navigator}"/>
+        <controls:NavigationBar Grid.Column="0" DataContext="{Binding Navigator}"/>
         <ContentControl Grid.Column="1" Content="{Binding Navigator.CurrentViewModel}"/>
     </Grid>
 </Window>
