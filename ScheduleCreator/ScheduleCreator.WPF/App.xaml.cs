@@ -1,4 +1,7 @@
-﻿using ScheduleCreator.WPF.ViewModels;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ScheduleCreator.WPF.State.Navigators;
+using ScheduleCreator.WPF.ViewModels;
+using ScheduleCreator.WPF.ViewModels.Factories;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,10 +19,30 @@ namespace ScheduleCreator.WPF
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            Window window = new MainWindow();
-            window.DataContext = new MainViewModel();
+            IServiceProvider serviceProvider = CreateServiceProvider();
+
+            Window window = serviceProvider.GetRequiredService<MainWindow>();
             window.Show();
+            
             base.OnStartup(e);
+        }
+
+        private IServiceProvider CreateServiceProvider()
+        {
+             IServiceCollection services = new ServiceCollection();
+
+            services.AddSingleton<IScheduleCreatorViewModelAbstractFactory, ScheduleCreatorViewModelAbstractFactory>();
+            services.AddSingleton<IScheduleCreatorViewModelFactory<HelpViewModel>, HelpViewModelFactory>();
+            services.AddSingleton<IScheduleCreatorViewModelFactory<ConditionsViewModel>, ConditionsViewModelFacoty>();
+            services.AddSingleton<IScheduleCreatorViewModelFactory<CreateScheduleViewModel>, CreateScheduleViewModelFactory>();
+            services.AddSingleton<IScheduleCreatorViewModelFactory<EmployeeViewModel>, EmployeeViewModelFactory>();
+
+            services.AddScoped<INavigator, Navigator>();
+            services.AddScoped<MainViewModel>();
+
+            services.AddScoped<MainWindow>(s => new MainWindow(s.GetRequiredService<MainViewModel>()));
+
+            return services.BuildServiceProvider();
         }
     }
 }

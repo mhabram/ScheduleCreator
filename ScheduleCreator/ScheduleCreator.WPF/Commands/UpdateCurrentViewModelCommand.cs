@@ -1,5 +1,6 @@
 ﻿using ScheduleCreator.WPF.State.Navigators;
 using ScheduleCreator.WPF.ViewModels;
+using ScheduleCreator.WPF.ViewModels.Factories;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,11 +12,14 @@ namespace ScheduleCreator.WPF.Commands
     public class UpdateCurrentViewModelCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
-        private INavigator _navigator;
+        private readonly INavigator _navigator;
+        private readonly IScheduleCreatorViewModelAbstractFactory _viewModelFactory;
 
-        public UpdateCurrentViewModelCommand(INavigator navigator)
+        public UpdateCurrentViewModelCommand(INavigator navigator,
+            IScheduleCreatorViewModelAbstractFactory viewModelFactory)
         {
             _navigator = navigator;
+            _viewModelFactory = viewModelFactory;
         }
 
         public bool CanExecute(object parameter)
@@ -28,23 +32,8 @@ namespace ScheduleCreator.WPF.Commands
             if (parameter is ViewType)
             {
                 ViewType viewType = (ViewType)parameter;
-                switch(viewType)
-                {
-                    case ViewType.Conditions:
-                        _navigator.CurrentViewModel = new ConditionsViewModel();
-                        break;
-                    case ViewType.CreateSchedule:
-                        _navigator.CurrentViewModel = new CreateScheduleViewModel();
-                        break;
-                    case ViewType.Employee:
-                        _navigator.CurrentViewModel = new EmployeeViewModel();
-                        break;
-                    case ViewType.Help:
-                        _navigator.CurrentViewModel = new HelpViewModel();
-                        break;
-                    default:
-                        break;
-                }
+
+                _navigator.CurrentViewModel = _viewModelFactory.CreateViewModel(viewType);
             }
         }
     }
