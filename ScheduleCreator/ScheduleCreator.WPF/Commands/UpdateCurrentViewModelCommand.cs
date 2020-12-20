@@ -13,10 +13,10 @@ namespace ScheduleCreator.WPF.Commands
     {
         public event EventHandler CanExecuteChanged;
         private readonly INavigator _navigator;
-        private readonly IScheduleCreatorViewModelAbstractFactory _viewModelFactory;
+        private readonly IRootScheduleCreatorViewModelFactory _viewModelFactory;
 
         public UpdateCurrentViewModelCommand(INavigator navigator,
-            IScheduleCreatorViewModelAbstractFactory viewModelFactory)
+            IRootScheduleCreatorViewModelFactory viewModelFactory)
         {
             _navigator = navigator;
             _viewModelFactory = viewModelFactory;

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ScheduleCreator.WPF.ViewModels.Factories
 {
-    public interface IScheduleCreatorViewModelAbstractFactory
+    public interface IRootScheduleCreatorViewModelFactory
     {
         ViewModelBase CreateViewModel(ViewType viewType);
     }

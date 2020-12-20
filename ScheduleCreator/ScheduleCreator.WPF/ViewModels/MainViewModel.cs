@@ -8,7 +8,7 @@ namespace ScheduleCreator.WPF.ViewModels
     public class MainViewModel : ViewModelBase
     {
         public INavigator Navigator { get; set; }
-
+        //TODO #6
         public MainViewModel(INavigator navigator)
         {
             Navigator = navigator;

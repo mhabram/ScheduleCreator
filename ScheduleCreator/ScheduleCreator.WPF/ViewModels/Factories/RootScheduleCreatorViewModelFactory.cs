@@ -5,17 +5,17 @@ using System.Text;
 
 namespace ScheduleCreator.WPF.ViewModels.Factories
 {
-    class ScheduleCreatorViewModelAbstractFactory : IScheduleCreatorViewModelAbstractFactory
+    class RootScheduleCreatorViewModelFactory : IRootScheduleCreatorViewModelFactory
     {
         private readonly IScheduleCreatorViewModelFactory<HelpViewModel> _helpViewModelFactory;
-        private readonly IScheduleCreatorViewModelFactory<EmployeeViewModel> _employeeViewModel;
         private readonly IScheduleCreatorViewModelFactory<CreateScheduleViewModel> _createScheduleViewModel;
         private readonly IScheduleCreatorViewModelFactory<ConditionsViewModel> _conditionsViewModel;
+        private readonly IScheduleCreatorViewModelFactory<EmployeeViewModel> _employeeViewModel;
 
-        public ScheduleCreatorViewModelAbstractFactory(IScheduleCreatorViewModelFactory<HelpViewModel> helpViewModelFactory,
-            IScheduleCreatorViewModelFactory<EmployeeViewModel> employeeViewModel,
+        public RootScheduleCreatorViewModelFactory(IScheduleCreatorViewModelFactory<HelpViewModel> helpViewModelFactory,
             IScheduleCreatorViewModelFactory<CreateScheduleViewModel> createScheduleViewModel,
-            IScheduleCreatorViewModelFactory<ConditionsViewModel> conditionsViewModel)
+            IScheduleCreatorViewModelFactory<ConditionsViewModel> conditionsViewModel,
+            IScheduleCreatorViewModelFactory<EmployeeViewModel> employeeViewModel)
         {
             _helpViewModelFactory = helpViewModelFactory;
             _employeeViewModel = employeeViewModel;

@@ -1,4 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ScheduleCreator.Domain.Models;
+using ScheduleCreator.Domain.Services;
+using ScheduleCreator.EntityFramework;
+using ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories;
+using ScheduleCreator.EntityFramework.Services;
 using ScheduleCreator.WPF.State.Navigators;
 using ScheduleCreator.WPF.ViewModels;
 using ScheduleCreator.WPF.ViewModels.Factories;
@@ -31,7 +36,17 @@ namespace ScheduleCreator.WPF
         {
              IServiceCollection services = new ServiceCollection();
 
-            services.AddSingleton<IScheduleCreatorViewModelAbstractFactory, ScheduleCreatorViewModelAbstractFactory>();
+            //Database
+            services.AddSingleton<ScheduleCreatorDbContextFactory>();
+
+            //Services
+            services.AddSingleton<IEmployeeService, EmployeeService>();
+
+            //Repositories
+            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+
+            //Factories
+            services.AddSingleton<IRootScheduleCreatorViewModelFactory, RootScheduleCreatorViewModelFactory>();
             services.AddSingleton<IScheduleCreatorViewModelFactory<HelpViewModel>, HelpViewModelFactory>();
             services.AddSingleton<IScheduleCreatorViewModelFactory<ConditionsViewModel>, ConditionsViewModelFacoty>();
             services.AddSingleton<IScheduleCreatorViewModelFactory<CreateScheduleViewModel>, CreateScheduleViewModelFactory>();
