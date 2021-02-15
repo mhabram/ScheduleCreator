@@ -8,8 +8,10 @@ namespace ScheduleCreator.EntityFramework
 {
     public class ScheduleCreatorDbContext : DbContext
     {
-        public DbSet<Employee> Employees { get; set; }
-        public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<EmployeeModel> Employees { get; set; }
+        public DbSet<ScheduleModel> Schedules { get; set; }
+        public DbSet<DateModel> Dates { get; set; }
+        public DbSet<PreferencesModel> Preferences { get; set; }
 
         public ScheduleCreatorDbContext(DbContextOptions options) : base(options) { }
 
