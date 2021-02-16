@@ -17,9 +17,9 @@ namespace ScheduleCreator.EntityFramework.Services
             _employeRepository = employeRepository;
         }
 
-        public Task<EmployeeModel> AddEmployee(string name, string lastName)
+        public Task<Employee> AddEmployee(string name, string lastName)
         {
-            EmployeeModel employee = new EmployeeModel
+            Employee employee = new Employee
             {
                 Name = name,
                 LastName = lastName

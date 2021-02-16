@@ -8,6 +8,6 @@ namespace ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories
 {
     public interface IEmployeeRepository
     {
-        Task<EmployeeModel> AddEmployee(EmployeeModel employee);
+        Task<Employee> AddEmployee(Employee employee);
     }
 }

@@ -15,7 +15,7 @@ namespace ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories
             _contextFactory = contextFactory;
         }
 
-        public async Task<EmployeeModel> AddEmployee(EmployeeModel employee)
+        public async Task<Employee> AddEmployee(Employee employee)
         {
             using (ScheduleCreatorDbContext context = _contextFactory.CreateDbContext())
             {
