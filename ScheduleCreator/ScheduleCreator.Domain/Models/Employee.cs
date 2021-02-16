@@ -6,14 +6,10 @@ using System.Text;
 
 namespace ScheduleCreator.Domain.Models
 {
-    [Table("Employee")]
-    public class EmployeeModel : GenericModel
+    public class Employee
     {
-        public EmployeeModel()
-        {
-            Schedules = new HashSet<ScheduleModel>();
-        }
-
+        [Key]
+        public int EmployeeId { get; set; }
         [Required]
         [MaxLength(50)]
         [MinLength(2)]
@@ -23,9 +19,8 @@ namespace ScheduleCreator.Domain.Models
         [MinLength(2)]
         public string LastName { get; set; }
 
-        [ForeignKey("Id")]
-        public virtual PreferencesModel Preferences { get; set; }
-        [ForeignKey("Id")]
-        public virtual ICollection<ScheduleModel> Schedules { get; set; }
+        [ForeignKey("PreferencesId")]
+        public virtual Preferences Preferences { get; set; }
+        public virtual ICollection<EmployeeSchedule> EmployeeSchedules { get; set; }
     }
 }

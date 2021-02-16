@@ -8,6 +8,6 @@ namespace ScheduleCreator.Domain.Services
 {
     public interface IEmployeeService
     {
-        Task<EmployeeModel> AddEmployee(string name, string lastName);
+        Task<Employee> AddEmployee(string name, string lastName);
     }
 }

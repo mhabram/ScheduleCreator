@@ -6,13 +6,10 @@ using System.Text;
 
 namespace ScheduleCreator.Domain.Models
 {
-    [Table("Schedule")]
-    public class ScheduleModel : GenericModel
+    public class Schedule
     {
-        public ScheduleModel()
-        {
-            Employees = new HashSet<EmployeeModel>();
-        }
+        [Key]
+        public int ScheduleId { get; set; }
         [Required]
         public byte Year { get; set; } // record as yyyy
         [Required]
@@ -21,8 +18,7 @@ namespace ScheduleCreator.Domain.Models
         public sbyte WorkingDays { get; set; } //numbers of a working day
         [Required]
         public char Shift { get; set; } //Depends on the char. D = Day shift, S = Swing shift and N stands for Night shift
-
-        [ForeignKey("Id")]
-        public virtual ICollection<EmployeeModel> Employees { get; set; }
+        
+        public virtual ICollection<EmployeeSchedule> EmployeeSchedules{ get; set; }
     }
 }

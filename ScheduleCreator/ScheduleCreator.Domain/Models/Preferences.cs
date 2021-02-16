@@ -6,13 +6,14 @@ using System.Text;
 
 namespace ScheduleCreator.Domain.Models
 {
-    [Table("Preferences")]
-    public class PreferencesModel : GenericModel
+    public class Preferences
     {
+        [Key]
+        public int PreferencesId { get; set; }
         [Required]
         public sbyte FreeWorkingDays { get; set; }
 
-        public virtual EmployeeModel Employee { get; set; }
-        public ICollection<DateModel> Dates { get; set; }
+        public virtual Employee Employee { get; set; }
+        public ICollection<Date> Dates { get; set; }
     }
 }
