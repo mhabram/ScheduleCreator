@@ -48,7 +48,7 @@ namespace ScheduleCreator.WPF
             //Factories
             services.AddSingleton<IRootScheduleCreatorViewModelFactory, RootScheduleCreatorViewModelFactory>();
             services.AddSingleton<IScheduleCreatorViewModelFactory<HelpViewModel>, HelpViewModelFactory>();
-            services.AddSingleton<IScheduleCreatorViewModelFactory<ConditionsViewModel>, ConditionsViewModelFacoty>();
+            services.AddSingleton<IScheduleCreatorViewModelFactory<PreferenceViewModel>, PreferenceViewModelFactory>();
             services.AddSingleton<IScheduleCreatorViewModelFactory<CreateScheduleViewModel>, CreateScheduleViewModelFactory>();
             services.AddSingleton<IScheduleCreatorViewModelFactory<EmployeeViewModel>, EmployeeViewModelFactory>();
 

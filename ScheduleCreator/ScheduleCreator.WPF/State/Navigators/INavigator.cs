@@ -8,7 +8,7 @@ namespace ScheduleCreator.WPF.State.Navigators
 {
     public enum ViewType
     {
-        Conditions,
+        Preference,
         CreateSchedule,
         Employee,
         Help
@@ -16,8 +16,6 @@ namespace ScheduleCreator.WPF.State.Navigators
 
     public interface INavigator
     {
-        
-
         ViewModelBase CurrentViewModel { get; set; }
         ICommand UpdateCurrentViewModelCommand { get; }
     }

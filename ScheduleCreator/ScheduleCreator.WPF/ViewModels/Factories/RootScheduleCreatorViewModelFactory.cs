@@ -9,26 +9,26 @@ namespace ScheduleCreator.WPF.ViewModels.Factories
     {
         private readonly IScheduleCreatorViewModelFactory<HelpViewModel> _helpViewModelFactory;
         private readonly IScheduleCreatorViewModelFactory<CreateScheduleViewModel> _createScheduleViewModel;
-        private readonly IScheduleCreatorViewModelFactory<ConditionsViewModel> _conditionsViewModel;
+        private readonly IScheduleCreatorViewModelFactory<PreferenceViewModel> _preferenceViewModel;
         private readonly IScheduleCreatorViewModelFactory<EmployeeViewModel> _employeeViewModel;
 
         public RootScheduleCreatorViewModelFactory(IScheduleCreatorViewModelFactory<HelpViewModel> helpViewModelFactory,
             IScheduleCreatorViewModelFactory<CreateScheduleViewModel> createScheduleViewModel,
-            IScheduleCreatorViewModelFactory<ConditionsViewModel> conditionsViewModel,
+            IScheduleCreatorViewModelFactory<PreferenceViewModel> preferenceViewModel,
             IScheduleCreatorViewModelFactory<EmployeeViewModel> employeeViewModel)
         {
             _helpViewModelFactory = helpViewModelFactory;
             _employeeViewModel = employeeViewModel;
             _createScheduleViewModel = createScheduleViewModel;
-            _conditionsViewModel = conditionsViewModel;
+            _preferenceViewModel = preferenceViewModel;
         }
 
         public ViewModelBase CreateViewModel(ViewType viewType)
         {
             switch (viewType)
             {
-                case ViewType.Conditions:
-                    return _conditionsViewModel.CreateViewModel();
+                case ViewType.Preference:
+                    return _preferenceViewModel.CreateViewModel();
                 case ViewType.CreateSchedule:
                     return _createScheduleViewModel.CreateViewModel();
                 case ViewType.Employee:

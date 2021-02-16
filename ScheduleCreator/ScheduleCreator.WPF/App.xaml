@@ -11,11 +11,11 @@
                 <ResourceDictionary Source="/Styles/Common.xaml"/>
                 <ResourceDictionary Source="/Styles/NavigationBar.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
-            <DataTemplate DataType="{x:Type viewmodels:ConditionsViewModel}">
-                <views:ConditionsView/>
-            </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewmodels:PreferenceViewModel}">
+                <views:PreferenceView/>
+            </DataTemplate>
+            
             <DataTemplate DataType="{x:Type viewmodels:CreateScheduleViewModel}">
                 <views:CreateScheduleView/>
             </DataTemplate>

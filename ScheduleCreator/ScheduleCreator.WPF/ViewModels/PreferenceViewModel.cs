@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ScheduleCreator.WPF.ViewModels
 {
-    public class ConditionsViewModel : ViewModelBase
+    public class PreferenceViewModel : ViewModelBase
     {
     }
 }

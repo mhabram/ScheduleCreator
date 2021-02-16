@@ -14,6 +14,7 @@ namespace ScheduleCreator.WPF.State.Navigators
     public class Navigator : ObservableObject, INavigator
     {
         private ViewModelBase _currentViewModel;
+
         public ViewModelBase CurrentViewModel
         {
             get
@@ -28,7 +29,7 @@ namespace ScheduleCreator.WPF.State.Navigators
         }
 
         public ICommand UpdateCurrentViewModelCommand { get; set; }
-        // TODO need to change it. #6
+
         public Navigator(IRootScheduleCreatorViewModelFactory viewModelFactory)
         {
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(this, viewModelFactory);

@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace ScheduleCreator.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for ConditionsView.xaml
+    /// Interaction logic for PreferenceView.xaml
     /// </summary>
-    public partial class ConditionsView : UserControl
+    public partial class PreferenceView : UserControl
     {
-        public ConditionsView()
+        public PreferenceView()
         {
             InitializeComponent();
         }

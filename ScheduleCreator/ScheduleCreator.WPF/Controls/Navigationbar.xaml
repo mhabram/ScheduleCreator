@@ -25,10 +25,11 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Padding="10" FontSize="24" Foreground="White" Text="Schedule Creator" Background="{StaticResource BrushPrimaryDark}"/>
-            <RadioButton Grid.Row="1" Content="Conditions" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Conditions}"/>
+            <RadioButton Grid.Row="1" Content="Preferences" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Preference}"/>
             <RadioButton Grid.Row="2" Content="Create Schedule" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.CreateSchedule}"/>
             <RadioButton Grid.Row="3" Content="Employee" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Employee}"/>
             <RadioButton Grid.Row="4" Content="Help" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Help}"/>
+            
         </Grid>
     </Grid>
 </UserControl>
