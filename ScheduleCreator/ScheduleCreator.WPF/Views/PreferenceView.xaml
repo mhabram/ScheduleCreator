@@ -22,6 +22,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Margin="0 5">
@@ -31,7 +32,10 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Text="Last Name"/>
-                <TextBox Grid.Column="1" Margin="20 0 0 0"/> <!--TBC-->
+                <TextBox Grid.Column="1" Margin="20 0 0 0"
+                         HorizontalAlignment="Left"
+                         MinWidth="180"
+                         MaxWidth="180"/> <!--TBC-->
             </Grid>
 
 
@@ -42,7 +46,22 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Text="Date of the day"/>
-                <TextBox Grid.Column="1" Margin="20 0 0 0"/> <!--TBC-->
+                <DatePicker Grid.Column="1" Height="25"
+                            HorizontalAlignment="Left"
+                            MinWidth="180"
+                            MaxWidth="180"
+                            VerticalAlignment="Top"
+                            Margin="20 0 0 0"
+                            SelectedDateFormat="Long"
+                            Language="en-US"
+                            Name="FreeDay1">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox">
+                            <Setter Property="Text" Value="Select a date"/>
+                        </Style>
+                    </DatePicker.Resources>
+                </DatePicker>
+                <!--To be improved-->
             </Grid>
 
             <Grid Grid.Row="2" Margin="0 5">
@@ -52,7 +71,22 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Text="Date of the day"/>
-                <TextBox Grid.Column="1" Margin="20 0 0 0"/> <!--TBC-->
+                <DatePicker Grid.Column="1" Height="25"
+                            HorizontalAlignment="Left"
+                            MinWidth="180"
+                            MaxWidth="180"
+                            VerticalAlignment="Top"
+                            Margin="20 0 0 0"
+                            SelectedDateFormat="Long"
+                            Language="en-US"
+                            Name="FreeDay2">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox">
+                            <Setter Property="Text" Value="Select a date"/>
+                        </Style>
+                    </DatePicker.Resources>
+                </DatePicker>
+                <!--To be improved-->
             </Grid>
 
             <Grid Grid.Row="3" Margin="0 5">
@@ -62,8 +96,27 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Text="Date of the day"/>
-                <TextBox Grid.Column="1" Margin="20 0 0 0"/> <!--TBC-->
+                <DatePicker Grid.Column="1" Height="25"
+                            HorizontalAlignment="Left"
+                            MinWidth="180"
+                            MaxWidth="180"
+                            VerticalAlignment="Top"
+                            Margin="20 0 0 0"
+                            SelectedDateFormat="Long"
+                            Language="en-US"
+                            Name="FreeDay3">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox">
+                            <Setter Property="Text" Value="Select a date"/>
+                        </Style>
+                    </DatePicker.Resources>
+                </DatePicker>
+                <!--To be improved-->
             </Grid>
+            <Button Grid.Row="4" Grid.Column="2" HorizontalAlignment="Center"
+                    Margin="0 10"
+                    IsDefault="True"
+                    Content="Add"/>
         </Grid>
         
     </Grid>
