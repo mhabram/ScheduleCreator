@@ -23,6 +23,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Margin="0 5">
@@ -35,9 +36,9 @@
                 <TextBox Grid.Column="1" Margin="20 0 0 0"
                          HorizontalAlignment="Left"
                          MinWidth="180"
-                         MaxWidth="180"/> <!--TBC-->
+                         MaxWidth="180"
+                         Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
-
 
             <Grid Grid.Row="1" Margin="0 5">
                 <Grid.ColumnDefinitions>
@@ -45,29 +46,22 @@
                     <ColumnDefinition Width="250"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="Date of the day"/>
-                <DatePicker Grid.Column="1" Height="25"
-                            HorizontalAlignment="Left"
-                            MinWidth="180"
-                            MaxWidth="180"
-                            VerticalAlignment="Top"
-                            Margin="20 0 0 0"
-                            SelectedDateFormat="Long"
-                            Language="en-US"
-                            Name="FreeDay1">
-                    <DatePicker.Resources>
-                        <Style TargetType="DatePickerTextBox">
-                            <Setter Property="Text" Value="Select a date"/>
-                        </Style>
-                    </DatePicker.Resources>
-                </DatePicker>
-                <!--To be improved-->
+                <TextBlock Grid.Column="0" Text="Holidays"/>
+                <TextBox Grid.Column="1" Margin="20 0 0 0"
+                         HorizontalAlignment="Left"
+                         MinWidth="180"
+                         MaxWidth="180"
+                         x:Name="Holiday"
+                         MaxLength="1"
+                         TextChanged="Holiday_TextChanged"
+                         Text="{Binding Holidays, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
+
 
             <Grid Grid.Row="2" Margin="0 5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition SharedSizeGroup="Label" Width="auto"/>
-                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Text="Date of the day"/>
@@ -79,20 +73,20 @@
                             Margin="20 0 0 0"
                             SelectedDateFormat="Long"
                             Language="en-US"
-                            Name="FreeDay2">
+                            Name="FreeDay1"
+                            SelectedDate="{Binding DayOff1}">
                     <DatePicker.Resources>
                         <Style TargetType="DatePickerTextBox">
                             <Setter Property="Text" Value="Select a date"/>
                         </Style>
                     </DatePicker.Resources>
                 </DatePicker>
-                <!--To be improved-->
             </Grid>
 
             <Grid Grid.Row="3" Margin="0 5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition SharedSizeGroup="Label" Width="auto"/>
-                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Text="Date of the day"/>
@@ -104,19 +98,45 @@
                             Margin="20 0 0 0"
                             SelectedDateFormat="Long"
                             Language="en-US"
-                            Name="FreeDay3">
+                            Name="FreeDay2"
+                            SelectedDate="{Binding DayOff2}">
                     <DatePicker.Resources>
                         <Style TargetType="DatePickerTextBox">
                             <Setter Property="Text" Value="Select a date"/>
                         </Style>
                     </DatePicker.Resources>
                 </DatePicker>
-                <!--To be improved-->
             </Grid>
-            <Button Grid.Row="4" Grid.Column="2" HorizontalAlignment="Center"
+
+            <Grid Grid.Row="4" Margin="0 5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="Label" Width="auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Date of the day"/>
+                <DatePicker Grid.Column="1" Height="25"
+                            HorizontalAlignment="Left"
+                            MinWidth="180"
+                            MaxWidth="180"
+                            VerticalAlignment="Top"
+                            Margin="20 0 0 0"
+                            SelectedDateFormat="Long"
+                            Language="en-US"
+                            Name="FreeDay3"
+                            SelectedDate="{Binding DayOff3}">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox">
+                            <Setter Property="Text" Value="Select a date"/>
+                        </Style>
+                    </DatePicker.Resources>
+                </DatePicker>
+            </Grid>
+            <Button Grid.Row="5" Grid.Column="2" HorizontalAlignment="Center"
                     Margin="0 10"
                     IsDefault="True"
-                    Content="Add"/>
+                    Content="Add"
+                    Command="{Binding AddPreferenceCommand}"/>
         </Grid>
         
     </Grid>

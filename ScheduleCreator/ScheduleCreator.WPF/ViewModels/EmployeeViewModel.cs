@@ -33,7 +33,7 @@ namespace ScheduleCreator.WPF.ViewModels
             set
             {
                 _lastName = value;
-                OnPropertyChanged(nameof(Name));
+                OnPropertyChanged(nameof(LastName));
             }
         }
 

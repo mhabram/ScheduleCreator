@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ScheduleCreator.Domain.Services
 {
-    public interface IEmployeeService
+    public interface IPreferenceService
     {
-        Task<Employee> AddEmployee(string name, string lastName);
-        Task<int> GetEmployee(string lastName);
+        Task<Preferences> AddPreference(int employeId, sbyte holidays);
     }
 }

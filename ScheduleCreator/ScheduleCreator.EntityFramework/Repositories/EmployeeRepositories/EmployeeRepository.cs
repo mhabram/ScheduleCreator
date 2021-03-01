@@ -1,4 +1,5 @@
-﻿using ScheduleCreator.Domain.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ScheduleCreator.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,6 +24,19 @@ namespace ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories
                 await context.SaveChangesAsync();
 
                 return employee;
+            }
+        }
+
+        public async Task<int> GetEmployee(string lastName)
+        {
+            using (ScheduleCreatorDbContext context = _contextFactory.CreateDbContext())
+            {
+                Employee employee = await context.Employees.FirstAsync(e => e.LastName == lastName);
+                if (employee == null)
+                    return -1;
+
+                return employee.EmployeeId;
+
             }
         }
     }

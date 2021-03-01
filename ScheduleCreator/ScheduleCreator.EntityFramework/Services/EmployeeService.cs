@@ -10,22 +10,29 @@ namespace ScheduleCreator.EntityFramework.Services
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly IEmployeeRepository _employeRepository;
+        private readonly IEmployeeRepository _employeeRepository;
 
-        public EmployeeService(IEmployeeRepository employeRepository)
+        public EmployeeService(IEmployeeRepository employeeRepository)
         {
-            _employeRepository = employeRepository;
+            _employeeRepository = employeeRepository;
         }
 
-        public Task<Employee> AddEmployee(string name, string lastName)
+        public async Task<Employee> AddEmployee(string name, string lastName)
         {
             Employee employee = new Employee
             {
-                Name = name,
-                LastName = lastName
+                Name = name.ToLower(),
+                LastName = lastName.ToLower()
             };
 
-            return _employeRepository.AddEmployee(employee);
+            return await _employeeRepository.AddEmployee(employee);
+        }
+
+        public async Task<int> GetEmployee(string lastName)
+        {
+            int employeId = await _employeeRepository.GetEmployee(lastName.ToLower());
+
+            return employeId;
         }
     }
 }

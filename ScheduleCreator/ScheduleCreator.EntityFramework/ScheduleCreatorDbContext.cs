@@ -24,6 +24,7 @@ namespace ScheduleCreator.EntityFramework
                 .HasOne(s => s.Schedule)
                 .WithMany(es => es.EmployeeSchedules)
                 .HasForeignKey(si => si.ScheduleId);
+
             //modelBuilder.Entity<Schedule>().OwnsMany(e => e.Employees);
             //base.OnModelCreating(modelBuilder);
         }

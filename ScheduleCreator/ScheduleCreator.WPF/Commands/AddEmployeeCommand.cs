@@ -1,4 +1,5 @@
-﻿using ScheduleCreator.Domain.Services;
+﻿using ScheduleCreator.Domain.Models;
+using ScheduleCreator.Domain.Services;
 using ScheduleCreator.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -27,8 +28,9 @@ namespace ScheduleCreator.WPF.Commands
 
         public async void Execute(object parameter)
         {
-            //TBC
-            Object employee = await _employeeService.AddEmployee(_viewModel.Name, _viewModel.LastName);
+            await _employeeService.AddEmployee(_viewModel.Name, _viewModel.LastName);
+            
+            System.Windows.MessageBox.Show($"{_viewModel.Name} has been added to database.");
         }
     }
 }

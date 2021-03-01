@@ -1,14 +1,14 @@
 ﻿using ScheduleCreator.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ScheduleCreator.Domain.Services
 {
-    public interface IEmployeeService
+    public interface IDateService
     {
-        Task<Employee> AddEmployee(string name, string lastName);
-        Task<int> GetEmployee(string lastName);
+        Task<Date> AddDate(DateTime date, int preferencesId);
     }
 }

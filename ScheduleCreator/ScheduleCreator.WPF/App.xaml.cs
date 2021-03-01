@@ -2,7 +2,9 @@
 using ScheduleCreator.Domain.Models;
 using ScheduleCreator.Domain.Services;
 using ScheduleCreator.EntityFramework;
+using ScheduleCreator.EntityFramework.Repositories.DateRepository;
 using ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories;
+using ScheduleCreator.EntityFramework.Repositories.PreferenceRepository;
 using ScheduleCreator.EntityFramework.Services;
 using ScheduleCreator.WPF.State.Navigators;
 using ScheduleCreator.WPF.ViewModels;
@@ -41,9 +43,13 @@ namespace ScheduleCreator.WPF
 
             //Services
             services.AddSingleton<IEmployeeService, EmployeeService>();
+            services.AddSingleton<IPreferenceService, PreferenceService>();
+            services.AddSingleton<IDateService, DateService>();
 
             //Repositories
             services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+            services.AddSingleton<IPreferenceRepository, PreferenceRepository>();
+            services.AddSingleton<IDateRepository, DateRepository>();
 
             //Factories
             services.AddSingleton<IRootScheduleCreatorViewModelFactory, RootScheduleCreatorViewModelFactory>();

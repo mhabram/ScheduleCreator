@@ -9,5 +9,6 @@ namespace ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories
     public interface IEmployeeRepository
     {
         Task<Employee> AddEmployee(Employee employee);
+        Task<int> GetEmployee(string lastName);
     }
 }

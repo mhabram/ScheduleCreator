@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -21,6 +22,11 @@ namespace ScheduleCreator.WPF.Views
         public PreferenceView()
         {
             InitializeComponent();
+        }
+
+        private void Holiday_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Holiday.Text = Regex.Replace(Holiday.Text, "[^0-9]+", "");
         }
     }
 }
