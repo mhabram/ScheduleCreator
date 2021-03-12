@@ -23,12 +23,13 @@ namespace ScheduleCreator.EntityFramework.Services
         public async Task<Preferences> AddPreference(int employeId, sbyte holidays = 0)
         {
             DateTime CurrentDate = DateTime.Now.AddMonths(1); // Adding 1 to cause we are creating schedule for the next month
+            DateTime StartMonth = CurrentDate.AddDays(-CurrentDate.Day + 1); // Making the next month starting counting from 1
             int DaysInMonth = DateTime.DaysInMonth(CurrentDate.Year, CurrentDate.Month);
-            int Day = DaysInMonth;
-            DateTime StartMonth = CurrentDate.AddDays(-CurrentDate.Day); // Making the next month starting counting from 0
+            int Day = DaysInMonth - 1;
+
+            string internalId = String.Concat(StartMonth.Year.ToString(), StartMonth.Month.ToString());
 
             sbyte WeekDays = holidays;
-
             for(sbyte i = 1; i <= DaysInMonth; i++)
             {
                 string DayName = StartMonth.AddDays(-Day).DayOfWeek.ToString();
@@ -43,7 +44,8 @@ namespace ScheduleCreator.EntityFramework.Services
 
             Preferences preferences = new Preferences
             {
-                FreeWorkingDays = FreeWorkingDays
+                FreeWorkingDays = FreeWorkingDays,
+                InternalId = internalId
             };
 
             return await _preferenceRepository.AddPreference(preferences, employeId);

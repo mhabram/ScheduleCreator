@@ -1,4 +1,5 @@
-﻿using ScheduleCreator.WPF.State.Navigators;
+﻿using ScheduleCreator.Domain.Services;
+using ScheduleCreator.WPF.State.Navigators;
 using ScheduleCreator.WPF.ViewModels;
 using ScheduleCreator.WPF.ViewModels.Factories;
 using System;

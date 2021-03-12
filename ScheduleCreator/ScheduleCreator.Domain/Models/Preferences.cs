@@ -12,6 +12,8 @@ namespace ScheduleCreator.Domain.Models
         public int PreferencesId { get; set; }
         [Required]
         public sbyte FreeWorkingDays { get; set; }
+        [Required]
+        public string InternalId { get; set; }
 
         public virtual Employee Employee { get; set; }
         public ICollection<Date> Dates { get; set; }

@@ -3,6 +3,7 @@ using ScheduleCreator.Domain.Services;
 using ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,6 +27,19 @@ namespace ScheduleCreator.EntityFramework.Services
             };
 
             return await _employeeRepository.AddEmployee(employee);
+        }
+
+        public async Task<ObservableCollection<Employee>> GetDetails()
+        {
+            ObservableCollection<Employee> employees = new ObservableCollection<Employee>();
+            IEnumerable<Employee> employeeDetails = await _employeeRepository.GetDetails();
+
+            foreach (Employee employee in employeeDetails)
+            {
+                employees.Add(employee);
+            }
+
+            return employees;
         }
 
         public async Task<int> GetEmployee(string lastName)

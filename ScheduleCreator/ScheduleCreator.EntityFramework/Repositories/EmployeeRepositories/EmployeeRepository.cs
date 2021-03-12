@@ -27,6 +27,18 @@ namespace ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories
             }
         }
 
+        public async Task<IEnumerable<Employee>> GetDetails()
+        {
+            using (ScheduleCreatorDbContext context = _contextFactory.CreateDbContext())
+            {
+                IEnumerable<Employee> employees = await context.Employees.ToListAsync();
+                if (employees == null)
+                    return null;
+
+                return employees;
+            }
+        }
+
         public async Task<int> GetEmployee(string lastName)
         {
             using (ScheduleCreatorDbContext context = _contextFactory.CreateDbContext())
