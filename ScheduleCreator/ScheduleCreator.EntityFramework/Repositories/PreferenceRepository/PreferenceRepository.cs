@@ -22,6 +22,7 @@ namespace ScheduleCreator.EntityFramework.Repositories.PreferenceRepository
                 Employee employee =  await context.Employees.FindAsync(employeId);
                 preferences.Employee = employee;
 
+
                 await context.Preferences.AddAsync(preferences);
                 await context.SaveChangesAsync();
 

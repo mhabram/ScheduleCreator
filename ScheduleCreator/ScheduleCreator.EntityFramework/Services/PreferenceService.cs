@@ -37,7 +37,7 @@ namespace ScheduleCreator.EntityFramework.Services
                     WeekDays += 1;
 
                 Day -= 1;
-            }
+            } 
 
             sbyte FreeWorkingDays = (sbyte)(DaysInMonth - WeekDays);
 

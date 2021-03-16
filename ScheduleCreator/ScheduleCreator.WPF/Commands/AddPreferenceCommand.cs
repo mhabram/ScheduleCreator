@@ -32,14 +32,24 @@ namespace ScheduleCreator.WPF.Commands
         
         public async void Execute(object parameter)
         {
-            int employeId = await _employeeService.GetEmployee(_viewModel.LastName);
-            Preferences prefernces = await _preferenceService.AddPreference(employeId, _viewModel.Holidays);
-            await _dateService.AddDate(_viewModel.DayOff1, prefernces.PreferencesId);
-            await _dateService.AddDate(_viewModel.DayOff2, prefernces.PreferencesId);
-            await _dateService.AddDate(_viewModel.DayOff3, prefernces.PreferencesId);
+            if (_viewModel.LastName != null)
+            {
+                int employeId = await _employeeService.GetEmployee(_viewModel.LastName);
+                
+                if (employeId != -1)
+                {
+                    Preferences prefernces = await _preferenceService.AddPreference(employeId, _viewModel.Holidays);
+                    await _dateService.AddDate(_viewModel.DayOff1, prefernces.PreferencesId);
+                    await _dateService.AddDate(_viewModel.DayOff2, prefernces.PreferencesId);
+                    await _dateService.AddDate(_viewModel.DayOff3, prefernces.PreferencesId);
 
-            System.Windows.MessageBox.Show("Preferences has been applied to the employee.");
-            //System.Windows.MessageBox.Show($"Employee name: {employee.Name}, Last name: {employee.LastName}, User ID: {employee.EmployeeId}");
+                    System.Windows.MessageBox.Show("Preferences has been applied to the employee.");
+                }
+
+                System.Windows.MessageBox.Show($"Employee {_viewModel.LastName} doesn't exists");
+            }
+            else
+                System.Windows.MessageBox.Show("Provide last name of the employee");
         }
     }
 }

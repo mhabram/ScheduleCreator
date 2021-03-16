@@ -32,7 +32,10 @@ namespace ScheduleCreator.EntityFramework.Services
         public async Task<ObservableCollection<Employee>> GetDetails()
         {
             ObservableCollection<Employee> employees = new ObservableCollection<Employee>();
-            IEnumerable<Employee> employeeDetails = await _employeeRepository.GetDetails();
+            DateTime StartMonth = DateTime.Now.AddMonths(1).AddDays(-DateTime.Now.AddMonths(1).Day + 1);
+            string internalId = String.Concat(StartMonth.Year.ToString(), StartMonth.Month.ToString());
+
+            IEnumerable<Employee> employeeDetails = await _employeeRepository.GetDetails(internalId);
 
             foreach (Employee employee in employeeDetails)
             {
