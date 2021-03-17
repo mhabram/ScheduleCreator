@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScheduleCreator.EntityFramework;
 
 namespace ScheduleCreator.EntityFramework.Migrations
 {
     [DbContext(typeof(ScheduleCreatorDbContext))]
-    partial class ScheduleCreatorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210316132506_testing")]
+    partial class testing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,7 +122,7 @@ namespace ScheduleCreator.EntityFramework.Migrations
                     b.Property<short>("FreeWorkingDays")
                         .HasColumnType("smallint");
 
-                    b.Property<string>("InternalPreferenceId")
+                    b.Property<string>("InternalId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

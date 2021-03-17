@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScheduleCreator.EntityFramework;
 
 namespace ScheduleCreator.EntityFramework.Migrations
 {
     [DbContext(typeof(ScheduleCreatorDbContext))]
-    partial class ScheduleCreatorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210316134733_testing2")]
+    partial class testing2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

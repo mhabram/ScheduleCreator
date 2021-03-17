@@ -28,7 +28,7 @@ namespace ScheduleCreator.WPF.Commands
 
         public async void Execute(object parameter)
         {
-            if ((_viewModel.Name != null) && (_viewModel.LastName != null))
+            if ((_viewModel.Name != null) || (_viewModel.LastName != null))
             {
                 await _employeeService.AddEmployee(_viewModel.Name, _viewModel.LastName);
                 System.Windows.MessageBox.Show($"{_viewModel.Name} has been added to database.");

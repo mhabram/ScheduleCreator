@@ -28,20 +28,33 @@ namespace ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories
             }
         }
 
-        public async Task<IEnumerable<Employee>> GetDetails(string internalId)
+        public async Task<IEnumerable<Employee>> GetDetails(string internalPreferenceId, string internalWeekId)
         {
             using (ScheduleCreatorDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Employee> employees = await context.Employees
+                IEnumerable<Employee> employees = Enumerable.Empty<Employee>();
+
+
+                //employees = await context.Employees
+                //    .Select(e => new Employee
+                //    {
+                //        EmployeeId = e.EmployeeId,
+                //        Name = e.Name,
+                //        LastName = e.LastName,
+                //        Preferences = ,
+                //    })
+                //    .ToListAsync();
+
+                employees = await context.Employees
                     .Include(p => p.Preferences)
-                    .Where(p => p.Preferences.InternalId == internalId)
+                    .Where(p => p.Preferences.InternalPreferenceId == internalPreferenceId)
                     .Include(w => w.Weeks)
-                    .ThenInclude(w => w.Shift == 'S')
+                    //.Where(w => w.Weeks.)
                     .ToListAsync();
                 if (employees == null)
                     return null;
 
-                return employees;
+                return employees = null;
             }
         }
 

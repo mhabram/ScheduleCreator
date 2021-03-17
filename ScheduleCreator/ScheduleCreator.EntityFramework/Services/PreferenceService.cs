@@ -27,7 +27,7 @@ namespace ScheduleCreator.EntityFramework.Services
             int DaysInMonth = DateTime.DaysInMonth(CurrentDate.Year, CurrentDate.Month);
             int Day = DaysInMonth - 1;
 
-            string internalId = String.Concat(StartMonth.Year.ToString(), StartMonth.Month.ToString());
+            string internalPreferenceId = String.Concat(StartMonth.Year.ToString(), StartMonth.Month.ToString());
 
             sbyte WeekDays = holidays;
             for(sbyte i = 1; i <= DaysInMonth; i++)
@@ -45,7 +45,7 @@ namespace ScheduleCreator.EntityFramework.Services
             Preferences preferences = new Preferences
             {
                 FreeWorkingDays = FreeWorkingDays,
-                InternalId = internalId
+                InternalPreferenceId = internalPreferenceId
             };
 
             return await _preferenceRepository.AddPreference(preferences, employeId);

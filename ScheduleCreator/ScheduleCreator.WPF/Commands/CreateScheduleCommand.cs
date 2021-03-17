@@ -64,7 +64,7 @@ namespace ScheduleCreator.WPF.Commands
                         foreach (int val in listNumbers)
                         {
                             Employee emp = _viewModel.Employees.ElementAt(val - 1);
-                            System.Windows.MessageBox.Show($"Free working days: {emp.Preferences.InternalId}");
+                            System.Windows.MessageBox.Show($"Free working days: {emp.Preferences.InternalPreferenceId}");
 
                             if (emp.Weeks != null)
                             {

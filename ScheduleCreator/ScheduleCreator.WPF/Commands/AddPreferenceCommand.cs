@@ -45,8 +45,8 @@ namespace ScheduleCreator.WPF.Commands
 
                     System.Windows.MessageBox.Show("Preferences has been applied to the employee.");
                 }
-
-                System.Windows.MessageBox.Show($"Employee {_viewModel.LastName} doesn't exists");
+                else
+                    System.Windows.MessageBox.Show($"Employee {_viewModel.LastName} doesn't exists");
             }
             else
                 System.Windows.MessageBox.Show("Provide last name of the employee");

@@ -33,13 +33,17 @@ namespace ScheduleCreator.EntityFramework.Services
         {
             ObservableCollection<Employee> employees = new ObservableCollection<Employee>();
             DateTime StartMonth = DateTime.Now.AddMonths(1).AddDays(-DateTime.Now.AddMonths(1).Day + 1);
-            string internalId = String.Concat(StartMonth.Year.ToString(), StartMonth.Month.ToString());
+            string internalPreferenceId = String.Concat(StartMonth.Year.ToString(), StartMonth.Month.ToString());
+            string internalWeekId = String.Concat(StartMonth.Year.ToString(), StartMonth.Month.ToString(), 5);
 
-            IEnumerable<Employee> employeeDetails = await _employeeRepository.GetDetails(internalId);
+            IEnumerable<Employee> employeeDetails = await _employeeRepository.GetDetails(internalPreferenceId, internalWeekId);
 
-            foreach (Employee employee in employeeDetails)
+            if (employeeDetails != null)
             {
-                employees.Add(employee);
+                foreach (Employee employee in employeeDetails)
+                {
+                    employees.Add(employee);
+                }
             }
 
             return employees;
