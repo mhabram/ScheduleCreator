@@ -1,4 +1,5 @@
 ﻿using ScheduleCreator.Domain.Models;
+using ScheduleCreator.Domain.Services;
 using ScheduleCreator.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,12 @@ namespace ScheduleCreator.WPF.Commands
     class CreateScheduleCommand : ICommand
     {
         private readonly CreateScheduleViewModel _viewModel;
+        private readonly IEmployeeService _employeeService;
 
-        public CreateScheduleCommand(CreateScheduleViewModel viewModel)
+        public CreateScheduleCommand(CreateScheduleViewModel viewModel, IEmployeeService employeeService)
         {
             _viewModel = viewModel;
+            _employeeService = employeeService;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -31,12 +34,11 @@ namespace ScheduleCreator.WPF.Commands
 
             DateTime currentDate = DateTime.Now.AddMonths(1);
             DateTime startMonth = currentDate.AddDays(-currentDate.Day + 1);
-            IDictionary<int, int> weeksDict = Weeks(startMonth, currentDate);
-
+            IDictionary<int, int> weeksDict = Weeks(startMonth, currentDate); // splitting month into a 5 weeks. Feature fix - make a 4 weeks for 28 day Feb.
 
             // ------------ Might be needed for shuffle employees while creating schedule.
-            Random rand = new Random();
-            List<int> listNumbers = new List<int>();
+            Random rand = new();
+            List<int> listNumbers = new();
             int number;
 
             if (_viewModel.Employees != null)
@@ -51,7 +53,7 @@ namespace ScheduleCreator.WPF.Commands
                 }
                 // -------------
 
-                for (int i = 1; i <= 5; i++)
+                for (byte i = 1; i <= 5; i++)
                 {
                     //-------------
                     int dayShift = 0;
@@ -59,43 +61,44 @@ namespace ScheduleCreator.WPF.Commands
                     int nightShift = 0;
                     //-------------
 
-                    if (i == 1)
+                    if (i == 1) // ----- First week
                     {
-                        foreach (int val in listNumbers)
+                        foreach (int val in listNumbers) // looping shuffled employees
                         {
                             Employee emp = _viewModel.Employees.ElementAt(val - 1);
-                            System.Windows.MessageBox.Show($"Free working days: {emp.Preferences.InternalPreferenceId}");
-
-                            if (emp.Weeks != null)
+                            byte temp = 0; // day adding to the DateTime
+                            byte workingDays = 0;
+                            if (emp.Weeks.Count > 0)
                             {
-                                foreach (Week w in emp.Weeks)
+                                workingDays = (byte)emp.Weeks.ElementAt(0).Days.Count;
+                            }
+
+                            if (nightShift < 1)
+                            {
+                                if (emp.Weeks.Count >= 1) // second condition checks if employee already had working.
                                 {
-                                    System.Windows.MessageBox.Show($"Free working days: {w.Shift}");
+                                    Week week = new();
+                                    week = GetWeek(currentDate, startMonth, weeksDict.ElementAt(0).Value, workingDays);
+                                    await _employeeService.SetWeek(emp, week, i);
+                                    nightShift++;
+                                    temp++;
+                                }
+                                else if (emp.Weeks.Count < 1)
+                                {
+                                    Week week = new();
+                                    week = GetWeek(currentDate, startMonth, weeksDict.ElementAt(0).Value, workingDays);
+                                    await _employeeService.SetWeek(emp, week, i);
+                                    nightShift++;
+                                    temp++;
                                 }
                             }
 
-                            // Implement creating schedule. TBD
-
-                            if ((nightShift < 1) && (emp.Weeks.ElementAt(0).Shift == 'D'))
-                            {
-                                Week week = new Week(); // temporary, after repository creation can be removed and save immediatley to the database.
-                                week = GetWeek(currentDate, startMonth, weeksDict.ElementAt(0).Value);
-                                // week ready to save to database 
-                                nightShift++;
-                            }
-
-
-
-
-
-
-
-
-
-
-
                             //if (swingShift < 2)
                             //{
+                                //if ((emp.Weeks.ElementAt(0).Days.Last().Shift == 'D') &&
+                                //    (emp.Weeks.ElementAt(0).Days.Last().WorkingDay.AddDays(1) < startMonth.AddDays(temp))) // This is not needed while adding to N shift.
+                                //{
+                                //}
                             //    Console.WriteLine("Swing");
                             //    swingShift++;
                             //}
@@ -111,30 +114,29 @@ namespace ScheduleCreator.WPF.Commands
             }
             else
             {
-                int asd = _viewModel.Employees.Count();
-                System.Windows.MessageBox.Show($"Employees: {asd}");
+                System.Windows.MessageBox.Show("Employees");
             }
         }
 
-        private Week GetWeek(DateTime currentDate, DateTime startMonth, int weeksDict)
+        private Week GetWeek(DateTime currentDate, DateTime startMonth, int weeksDict, byte workingDays = 0)
         {
             Week week = new Week();
             ICollection<Day> days = new Collection<Day>();
-            byte workingDays = 0;
 
-            for (int day = 0; day < DateTime.DaysInMonth(currentDate.Year, currentDate.Month); day++)
+            if (workingDays <= 5)
             {
-                if ((weeksDict > day))
+                for (int day = 0; day < DateTime.DaysInMonth(currentDate.Year, currentDate.Month); day++)
                 {
-                    days.Add(new Day() { WorkingDay = startMonth.AddDays(day) });
-                    //days.Add(startMonth.AddDays(day));
-                    workingDays++;
+                    if (weeksDict > day)
+                    {
+                        days.Add(new Day() { WorkingDay = startMonth.AddDays(day), Shift = 'N' });
+                        workingDays++; // probably to delete week.Days.Count does the same job
+                    }
                 }
             }
 
             week.WorkingDays = workingDays;
             week.Days = days;
-            week.Shift = 'N';
 
             return week;
         }
@@ -145,12 +147,14 @@ namespace ScheduleCreator.WPF.Commands
             DateTime checkWeek = startMonth;
             sbyte daysAfterMonday = 0;
 
+            // Week 1
             while (startMonth.DayOfWeek.ToString() != "Monday")
             {
                 daysAfterMonday++;
                 startMonth = startMonth.AddDays(-1);
             }
 
+            // Weeks 2 - 4
             weeks.Add(1, checkWeek.AddDays(6 - daysAfterMonday).Day);
             for (int i = 2; i <= 4; i++)
             {
@@ -158,6 +162,7 @@ namespace ScheduleCreator.WPF.Commands
                 weeks.Add(i, checkWeek.AddDays(x).Day);
             }
 
+            // Week 5
             while (checkWeek.Day != DateTime.DaysInMonth(currentDate.Year, currentDate.Month))
             {
                 checkWeek = checkWeek.AddDays(1);

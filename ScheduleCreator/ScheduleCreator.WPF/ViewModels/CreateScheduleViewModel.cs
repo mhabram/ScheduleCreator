@@ -15,7 +15,7 @@ namespace ScheduleCreator.WPF.ViewModels
         {
             GetEmployeeDetailsCommand = new GetEmployeeDetailsCommand(this, employeeService);
             RemoveEmployeesCommand = new RemoveEmployeesCommand(this);
-            CreateScheduleCommand = new CreateScheduleCommand(this);
+            CreateScheduleCommand = new CreateScheduleCommand(this, employeeService);
         }
 
         private ObservableCollection<Employee> _employees;

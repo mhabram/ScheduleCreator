@@ -28,7 +28,7 @@ namespace ScheduleCreator.WPF.Commands
 
         public async void Execute(object parameter)
         {
-            if ((_viewModel.Name != null) || (_viewModel.LastName != null))
+            if ((_viewModel.Name != null) || (_viewModel.LastName != null)) // has to be changed later probably min string size to 2 letters fix this.
             {
                 await _employeeService.AddEmployee(_viewModel.Name, _viewModel.LastName);
                 System.Windows.MessageBox.Show($"{_viewModel.Name} has been added to database.");

@@ -11,8 +11,6 @@ namespace ScheduleCreator.Domain.Models
         [Key]
         public int WeekId { get; set; }
         [Required]
-        public char Shift { get; set; }
-        [Required]
         public byte WorkingDays { get; set; }
         [Required]
         public string InternalWeekId { get; set; }

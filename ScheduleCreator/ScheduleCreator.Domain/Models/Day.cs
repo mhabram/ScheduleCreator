@@ -11,6 +11,8 @@ namespace ScheduleCreator.Domain.Models
         [Key]
         public int DayId { get; set; }
         [Required]
+        public char Shift { get; set; }
+        [Required]
         public DateTime WorkingDay { get; set; }
 
         [ForeignKey("WeekId")]
