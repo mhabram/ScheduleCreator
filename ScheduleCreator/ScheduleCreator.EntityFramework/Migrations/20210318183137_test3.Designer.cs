@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScheduleCreator.EntityFramework;
 
 namespace ScheduleCreator.EntityFramework.Migrations
 {
     [DbContext(typeof(ScheduleCreatorDbContext))]
-    partial class ScheduleCreatorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210318183137_test3")]
+    partial class test3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +62,7 @@ namespace ScheduleCreator.EntityFramework.Migrations
 
                     b.HasIndex("WeekId");
 
-                    b.ToTable("Days");
+                    b.ToTable("Day");
                 });
 
             modelBuilder.Entity("ScheduleCreator.Domain.Models.Employee", b =>
@@ -179,7 +181,7 @@ namespace ScheduleCreator.EntityFramework.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Weeks");
+                    b.ToTable("Week");
                 });
 
             modelBuilder.Entity("ScheduleCreator.Domain.Models.Date", b =>

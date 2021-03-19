@@ -11,5 +11,6 @@ namespace ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories
         Task<Employee> AddEmployee(Employee employee);
         Task<int> GetEmployee(string lastName);
         Task<IEnumerable<Employee>> GetDetails(string internalPreferenceId, string internalWeekId);
+        Task<Employee> SetWeek(Employee emp, Week week, ICollection<Day> days);
     }
 }
