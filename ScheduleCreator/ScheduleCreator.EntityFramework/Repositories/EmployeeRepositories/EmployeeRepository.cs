@@ -33,9 +33,10 @@ namespace ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories
             using (ScheduleCreatorDbContext context = _contextFactory.CreateDbContext())
             {
                 IEnumerable<Employee> employees = Enumerable.Empty<Employee>();
-                
+
                 employees = await context.Employees
                     .Include(p => p.Preferences)
+                    .ThenInclude(d => d.Dates)
                     .Where(p => p.Preferences.InternalPreferenceId == internalPreferenceId)
                     .Include(w => w.Weeks.Where(id => id.InternalWeekId == internalWeekId))
                     .ThenInclude(d => d.Days)
