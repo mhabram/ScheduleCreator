@@ -15,7 +15,7 @@
             <DataTemplate DataType="{x:Type viewmodels:PreferenceViewModel}">
                 <views:PreferenceView/>
             </DataTemplate>
-            
+
             <DataTemplate DataType="{x:Type viewmodels:CreateScheduleViewModel}">
                 <views:CreateScheduleView/>
             </DataTemplate>

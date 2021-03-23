@@ -9,6 +9,57 @@ namespace ScheduleCreator.WPF.ApplicationLogic.Helpers
 {
     public class DayCount
     {
+        public byte DaysAfterMonday()
+        {
+            DateTime currentDate = DateTime.Now.AddMonths(1);
+            DateTime startMonth = currentDate.AddDays(-currentDate.Day + 1);
+
+            byte daysAfterMonday = 0;
+
+            while (startMonth.DayOfWeek.ToString() != "Monday")
+            {
+                daysAfterMonday++;
+                startMonth = startMonth.AddDays(-1);
+            }
+
+            return daysAfterMonday;
+        }
+
+        public IDictionary<int, int> Weeks()
+        {
+            IDictionary<int, int> weeks = new Dictionary<int, int>();
+            DateTime currentDate = DateTime.Now.AddMonths(1);
+            DateTime startMonth = currentDate.AddDays(-currentDate.Day + 1);
+            DateTime checkWeek = startMonth;
+
+            sbyte daysAfterMonday = 0;
+
+            // Week 1
+            while (startMonth.DayOfWeek.ToString() != "Monday")
+            {
+                daysAfterMonday++;
+                startMonth = startMonth.AddDays(-1);
+            }
+
+            // Weeks 2 - 4
+            weeks.Add(1, checkWeek.AddDays(6 - daysAfterMonday).Day);
+            for (byte i = 2; i <= 4; i++)
+            {
+                int x = (weeks.ElementAt(i - 2).Value + 6);
+                weeks.Add(i, checkWeek.AddDays(x).Day);
+            }
+
+            // Week 5
+            while (checkWeek.Day != DateTime.DaysInMonth(currentDate.Year, currentDate.Month))
+            {
+                checkWeek = checkWeek.AddDays(1);
+            }
+            weeks.Add(5, checkWeek.Day);
+
+            return weeks;
+        }
+
+
         public List<DateTime> ColleagueDays(Week weeks = null)
         {
             List<DateTime> colleagueDays = new();
