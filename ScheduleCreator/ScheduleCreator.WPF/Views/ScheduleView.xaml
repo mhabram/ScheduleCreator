@@ -1,0 +1,156 @@
+﻿<UserControl x:Class="ScheduleCreator.WPF.Views.ScheduleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ScheduleCreator.WPF.Views"
+             
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding GetCalendarEmployeeDetailsCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid Grid.IsSharedSizeScope="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0 10">
+            <TextBlock FontSize="20" HorizontalAlignment="Center" Text="Schedule"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="Day of week" Margin="20 0 15 0" Width="70" Height="20"/>
+                    <TextBlock Grid.Column="1" Text="Date" Margin="20 0 15 0" Width="70" Height="20"/>
+                    <TextBlock Grid.Column="2" Text="Day Shift" Margin="0 0 15 0" Width="100" Height="20"/>
+                    <TextBlock Grid.Column="3" Text="Day Shift" Margin="0 0 15 0" Width="100" Height="20"/>
+                    <TextBlock Grid.Column="4" Text="Day Shift" Margin="0 0 15 0" Width="100" Height="20"/>
+                    <TextBlock Grid.Column="5" Text="Swing Shift" Margin="0 0 15 0" Width="100" Height="20"/>
+                    <TextBlock Grid.Column="6" Text="Swing Shift" Margin="0 0 15 0" Width="100" Height="20"/>
+                    <TextBlock Grid.Column="7" Text="Night Shift" Margin="0 0 0 0" Width="100" Height="20"/>
+                </Grid>
+                
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Center" MinHeight="400" MaxHeight="700">
+                    <ListView Margin="20 0 0 0" ItemsSource="{Binding CalendarDates}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Date.DayOfWeek}" Margin="0 0 15 0" Width="70" Height="20"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0 0 15 0" Height="20" Width="60">
+                                        <TextBlock Text="{Binding Date.Day}"/>
+                                        <TextBlock Text="/"/>
+                                        <TextBlock Text="{Binding Date.Month}"/>
+                                        <TextBlock Text="/"/>
+                                        <TextBlock Text="{Binding Date.Year}"/>
+                                    </StackPanel>
+
+                                    <ComboBox ItemsSource="{Binding Employees}" SelectedItem="{Binding DataContext.SelectedEmployee, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              Margin="0 0 15 0" Width="100" Height="20">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding FullName}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <ComboBox ItemsSource="{Binding Employees}" SelectedItem="{Binding DataContext.SelectedEmployee, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              IsSynchronizedWithCurrentItem="False" Margin="0 0 15 0" Width="100" Height="20">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding FullName}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <ComboBox ItemsSource="{Binding Employees}" SelectedItem="{Binding DataContext.SelectedEmployee, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              IsSynchronizedWithCurrentItem="False" Margin="0 0 15 0" Width="100" Height="20">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding FullName}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <ComboBox ItemsSource="{Binding Employees}" SelectedItem="{Binding DataContext.SelectedEmployee, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              IsSynchronizedWithCurrentItem="False" Margin="0 0 15 0" Width="100" Height="20">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding FullName}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <ComboBox ItemsSource="{Binding Employees}" SelectedItem="{Binding DataContext.SelectedEmployee, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              IsSynchronizedWithCurrentItem="False" Margin="0 0 15 0" Width="100" Height="20">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding FullName}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <ComboBox ItemsSource="{Binding Employees}" SelectedItem="{Binding DataContext.SelectedEmployee, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              IsSynchronizedWithCurrentItem="False" Margin="0 0 15 0" Width="100" Height="20">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding FullName}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
+            </Grid>
+
+            <ItemsControl Grid.Column="1" ItemsSource="{Binding Employees}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Margin="5" Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin=" 5 5 0 0">
+                                <TextBlock Text="{Binding FullName}" FontWeight="Bold"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin=" 5 0 0 15">
+                                <TextBlock Text="Working days left: "/>
+                                <TextBlock Text="{Binding WorkingDays}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            
+            
+        </Grid>
+    </Grid>
+</UserControl>

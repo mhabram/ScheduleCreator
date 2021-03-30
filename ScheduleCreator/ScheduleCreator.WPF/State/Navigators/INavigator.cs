@@ -10,6 +10,7 @@ namespace ScheduleCreator.WPF.State.Navigators
     {
         Preference,
         CreateSchedule,
+        Schedule,
         Employee,
         Help
     }

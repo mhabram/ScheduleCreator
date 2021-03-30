@@ -47,7 +47,6 @@ namespace ScheduleCreator.WPF.ViewModels
         }
 
         public ICommand GetEmployeeDetailsCommand { get; set; }
-
         public ICommand RemoveEmployeesCommand { get; set; }
         public ICommand CreateScheduleCommand { get; set; }
 

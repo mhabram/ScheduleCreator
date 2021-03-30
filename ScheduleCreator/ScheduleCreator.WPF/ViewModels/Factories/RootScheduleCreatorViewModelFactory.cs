@@ -11,16 +11,19 @@ namespace ScheduleCreator.WPF.ViewModels.Factories
         private readonly IScheduleCreatorViewModelFactory<CreateScheduleViewModel> _createScheduleViewModel;
         private readonly IScheduleCreatorViewModelFactory<PreferenceViewModel> _preferenceViewModel;
         private readonly IScheduleCreatorViewModelFactory<EmployeeViewModel> _employeeViewModel;
+        private readonly IScheduleCreatorViewModelFactory<ScheduleViewModel> _scheduleViewModel;
 
         public RootScheduleCreatorViewModelFactory(IScheduleCreatorViewModelFactory<HelpViewModel> helpViewModelFactory,
             IScheduleCreatorViewModelFactory<CreateScheduleViewModel> createScheduleViewModel,
             IScheduleCreatorViewModelFactory<PreferenceViewModel> preferenceViewModel,
-            IScheduleCreatorViewModelFactory<EmployeeViewModel> employeeViewModel)
+            IScheduleCreatorViewModelFactory<EmployeeViewModel> employeeViewModel,
+            IScheduleCreatorViewModelFactory<ScheduleViewModel> scheduleViewModel)
         {
             _helpViewModelFactory = helpViewModelFactory;
             _employeeViewModel = employeeViewModel;
             _createScheduleViewModel = createScheduleViewModel;
             _preferenceViewModel = preferenceViewModel;
+            _scheduleViewModel = scheduleViewModel;
         }
 
         public ViewModelBase CreateViewModel(ViewType viewType)
@@ -35,6 +38,8 @@ namespace ScheduleCreator.WPF.ViewModels.Factories
                     return _employeeViewModel.CreateViewModel();
                 case ViewType.Help:
                     return _helpViewModelFactory.CreateViewModel();
+                case ViewType.Schedule:
+                    return _scheduleViewModel.CreateViewModel();
                 default:
                     throw new ArgumentException("The ViewType doesn't have a ViewModel.", "viewType");
             }

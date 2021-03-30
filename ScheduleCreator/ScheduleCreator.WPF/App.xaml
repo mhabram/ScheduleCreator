@@ -20,6 +20,10 @@
                 <views:CreateScheduleView/>
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewmodels:ScheduleViewModel}">
+                <views:ScheduleView/>
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type viewmodels:EmployeeViewModel}">
                 <views:EmployeeView/>
             </DataTemplate>
