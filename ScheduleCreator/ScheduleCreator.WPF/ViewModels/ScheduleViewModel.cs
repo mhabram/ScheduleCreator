@@ -4,6 +4,7 @@ using ScheduleCreator.WPF.Commands;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.ViewModels
@@ -13,6 +14,7 @@ namespace ScheduleCreator.WPF.ViewModels
         public ScheduleViewModel(IEmployeeService employeeService)
         {
             GetCalendarEmployeeDetailsCommand = new GetCalendarEmployeeDetailsCommand(this, employeeService);
+            CalendarUpdateCommand = new CalendarUpdateCommand(this);
         }
 
         private ObservableCollection<CalendarDateDTO> _calendarDates;
@@ -26,7 +28,6 @@ namespace ScheduleCreator.WPF.ViewModels
             {
                 _calendarDates = value;
                 OnPropertyChanged(nameof(CalendarDates));
-
             }
         }
 
@@ -54,8 +55,7 @@ namespace ScheduleCreator.WPF.ViewModels
             set
             {
                 _selectedCalendarDate = value;
-                OnPropertyChanged(nameof(SelectedCalendarDate));
-                System.Windows.MessageBox.Show(SelectedCalendarDate.ToString());
+                OnPropertyChanged(nameof(SelectedEmployee));
             }
         }
 
@@ -64,11 +64,16 @@ namespace ScheduleCreator.WPF.ViewModels
         {
             get
             {
-                return _selectedEmployee ?? (_selectedEmployee = new EmployeeDTO());
+                return _selectedEmployee;
+                //return _selectedEmployee ?? (_selectedEmployee = new EmployeeDTO());
             }
             set
             {
                 _selectedEmployee = value;
+                if (_selectedEmployee != null)
+                {
+                    UpdateCalendarDates();
+                }
                 OnPropertyChanged(nameof(SelectedEmployee));
             }
         }
@@ -84,14 +89,30 @@ namespace ScheduleCreator.WPF.ViewModels
             {
                 _selectedDate = value;
                 OnPropertyChanged(nameof(SelectedDate));
+                System.Windows.MessageBox.Show(SelectedDate.ToString());
+
             }
         }
 
-        public void UpdateSelectedCalendarDate(CalendarDateDTO SelectedCalendarDate)
+        public void UpdateCalendarDates()
         {
-            System.Windows.MessageBox.Show(SelectedCalendarDate.ToString());
+            foreach (CalendarDateDTO c in _calendarDates)
+            {
+                if (_selectedEmployee.Date.Day == c.Date.Day)
+                {
+                    foreach (EmployeeDTO e in c.Employees)
+                    {
+                        if (_selectedEmployee.FullName == e.FullName)
+                        {
+                            e.IsWorking = true;
+                            e.WorkingDays++;
+                        }             
+                    }
+                }
+            }
         }
 
         public ICommand GetCalendarEmployeeDetailsCommand { get; set; }
+        public ICommand CalendarUpdateCommand { get; set; }
     }
 }

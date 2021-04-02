@@ -10,5 +10,7 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
     {
         public string FullName { get; set; }
         public int WorkingDays { get; set; }
+        public DateTime Date { get; set; }
+        public bool IsWorking { get; set; }
     }
 }

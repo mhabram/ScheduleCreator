@@ -33,18 +33,25 @@ namespace ScheduleCreator.WPF.Commands
 
         public async void Execute(object parameter)
         {
-            Collection<Employee> employees = await _employeeService.GetDetails();
             ICollection<DateTime> calendar = ScheduleHelpers.CalendarDate();
+            Collection<Employee> employees = await _employeeService.GetDetails();
+            Collection<EmployeeDTO> tempEmployees;
+
+            foreach (DateTime d in calendar)
+            {
+                tempEmployees = new();
+                foreach (Employee e in employees)
+                {
+                    string fullName = String.Concat(e.Name, " ", e.LastName);
+                    tempEmployees.Add(new EmployeeDTO { FullName = fullName, WorkingDays = 0, Date = d, IsWorking = false });
+                }
+                _viewModel.CalendarDates.Add(new CalendarDateDTO { Employees = tempEmployees, Date = d });
+            }
 
             foreach (Employee e in employees)
             {
                 string fullName = String.Concat(e.Name, " ", e.LastName);
                 _viewModel.Employees.Add(new EmployeeDTO { FullName = fullName, WorkingDays = 0 });
-            }
-
-            foreach (DateTime d in calendar)
-            {
-                _viewModel.CalendarDates.Add(new CalendarDateDTO { Employees = _viewModel.Employees, Date = d });
             }
         }
     }

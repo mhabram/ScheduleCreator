@@ -9,6 +9,7 @@
              
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding GetCalendarEmployeeDetailsCommand}" />
@@ -58,15 +59,180 @@
                     <TextBlock Grid.Column="6" Text="Swing Shift" Margin="0 0 15 0" Width="100" Height="20"/>
                     <TextBlock Grid.Column="7" Text="Night Shift" Margin="0 0 0 0" Width="100" Height="20"/>
                 </Grid>
-                
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Center" MinHeight="400" MaxHeight="700">
+
+                <DataGrid ItemsSource="{Binding CalendarDates}"
+                          CanUserAddRows="False" HorizontalScrollBarVisibility="Visible" Height="600"
+                          AlternatingRowBackground="Gainsboro">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="DOW" Width="SizeToCells" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Date.DayOfWeek}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                        <DataGridTemplateColumn Header="Date" Width="SizeToCells" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Path=Date.Day}" />
+                                        <TextBlock Text="/" />
+                                        <TextBlock Text="{Binding Path=Date.Month}" />
+                                        <TextBlock Text="/" />
+                                        <TextBlock Text="{Binding Path=Date.Year}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="Day" Width="SizeToCells">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <!--<ComboBox ItemsSource="{Binding Employees}" DisplayMemberPath="FullName"
+                                              IsSynchronizedWithCurrentItem="False"
+                                              SelectedItem="{Binding DataContext.SelectedEmployee,
+                                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              Visibility="{Binding Path=IsWorking}" />-->
+                                    <ComboBox ItemsSource="{Binding Employees}"
+                                              IsSynchronizedWithCurrentItem="False"
+                                              SelectedItem="{Binding DataContext.SelectedEmployee,
+                                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              Margin="0 0 15 0" Width="100" Height="20">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding FullName}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="Day" Width="SizeToCells">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <!--<ComboBox ItemsSource="{Binding Employees}" DisplayMemberPath="FullName"
+                                              IsSynchronizedWithCurrentItem="False"
+                                              SelectedItem="{Binding DataContext.SelectedEmployee,
+                                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              Visibility="{Binding Path=IsWorking}" />-->
+                                    <ComboBox ItemsSource="{Binding Employees}"
+                                              IsSynchronizedWithCurrentItem="False"
+                                              SelectedItem="{Binding DataContext.SelectedEmployee,
+                                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              Margin="0 0 15 0" Width="100" Height="20">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding FullName}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="Day" Width="SizeToCells">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <!--<ComboBox ItemsSource="{Binding Employees}" DisplayMemberPath="FullName"
+                                              IsSynchronizedWithCurrentItem="False"
+                                              SelectedItem="{Binding DataContext.SelectedEmployee,
+                                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              Visibility="{Binding Path=IsWorking}" />-->
+                                    <ComboBox ItemsSource="{Binding Employees}"
+                                              IsSynchronizedWithCurrentItem="False"
+                                              SelectedItem="{Binding DataContext.SelectedEmployee,
+                                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              Margin="0 0 15 0" Width="100" Height="20">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding FullName}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="Swing" Width="SizeToCells">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <!--<ComboBox ItemsSource="{Binding Employees}" DisplayMemberPath="FullName"
+                                              IsSynchronizedWithCurrentItem="False"
+                                              SelectedItem="{Binding DataContext.SelectedEmployee,
+                                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              Visibility="{Binding Path=IsWorking}" />-->
+                                    <ComboBox ItemsSource="{Binding Employees}"
+                                              IsSynchronizedWithCurrentItem="False"
+                                              SelectedItem="{Binding DataContext.SelectedEmployee,
+                                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              Margin="0 0 15 0" Width="100" Height="20">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding FullName}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="Swing" Width="SizeToCells">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <!--<ComboBox ItemsSource="{Binding Employees}" DisplayMemberPath="FullName"
+                                              IsSynchronizedWithCurrentItem="False"
+                                              SelectedItem="{Binding DataContext.SelectedEmployee,
+                                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              Visibility="{Binding Path=IsWorking}" />-->
+                                    <ComboBox ItemsSource="{Binding Employees}"
+                                              IsSynchronizedWithCurrentItem="False"
+                                              SelectedItem="{Binding DataContext.SelectedEmployee,
+                                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              Margin="0 0 15 0" Width="100" Height="20">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding FullName}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="Night" Width="SizeToCells">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <!--<ComboBox ItemsSource="{Binding Employees}" DisplayMemberPath="FullName"
+                                              IsSynchronizedWithCurrentItem="False"
+                                              SelectedItem="{Binding DataContext.SelectedEmployee,
+                                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              Visibility="{Binding Path=IsWorking}" />-->
+                                    <ComboBox ItemsSource="{Binding Employees}"
+                                              IsSynchronizedWithCurrentItem="False"
+                                              SelectedItem="{Binding DataContext.SelectedEmployee,
+                                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Mode=OneWayToSource}"
+                                              Margin="0 0 15 0" Width="100" Height="20">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding FullName}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <!--<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Center" MinHeight="400" MaxHeight="700">
                     <ListView Margin="20 0 0 0" ItemsSource="{Binding CalendarDates}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Date.DayOfWeek}" Margin="0 0 15 0" Width="70" Height="20"/>
                                     <StackPanel Orientation="Horizontal" Margin="0 0 15 0" Height="20" Width="60">
-                                        <TextBlock Text="{Binding Date.Day}"/>
+                                        <TextBlock Text="{MultiBinding Date.Day SelectedDate}"/>
                                         <TextBlock Text="/"/>
                                         <TextBlock Text="{Binding Date.Month}"/>
                                         <TextBlock Text="/"/>
@@ -125,10 +291,10 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                </ScrollViewer>
+                </ScrollViewer>-->
             </Grid>
 
-            <ItemsControl Grid.Column="1" ItemsSource="{Binding Employees}">
+            <!--<ItemsControl Grid.Column="1" ItemsSource="{Binding Employees}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Margin="5" Orientation="Vertical"/>
@@ -148,7 +314,7 @@
                         </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            </ItemsControl>-->
             
             
         </Grid>
