@@ -25,6 +25,21 @@ namespace ScheduleCreator.WPF.ApplicationLogic.Helpers
             return daysAfterMonday;
         }
 
+        public sbyte WorkingDaysInMonth(sbyte freeDays)
+        {
+            DateTime currentDate = DateTime.Now.AddMonths(1);
+            DateTime startMonth = currentDate.AddDays(-currentDate.Day + 1);
+            sbyte workingDays = 0;
+
+            for (int i = 0; i < DateTime.DaysInMonth(currentDate.Year, currentDate.Month); i++)
+            {
+                if ((startMonth.AddDays(i).DayOfWeek.ToString() != "Sunday") && (startMonth.AddDays(i).DayOfWeek.ToString() != "Saturday"))
+                    workingDays++;
+            }
+
+            return workingDays;
+        }
+
         public IDictionary<int, int> Weeks()
         {
             IDictionary<int, int> weeks = new Dictionary<int, int>();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace ScheduleCreator.WPF.Views
     /// Interaction logic for ScheduleView.xaml
     /// </summary>
     public partial class ScheduleView : UserControl
-    {
+    {   
         public ScheduleView()
         {
             InitializeComponent();

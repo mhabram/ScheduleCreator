@@ -1,9 +1,11 @@
-﻿using ScheduleCreator.WPF.ViewModels;
+﻿using ScheduleCreator.Domain.DTO.ScheduleView;
+using ScheduleCreator.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.Commands
@@ -26,9 +28,6 @@ namespace ScheduleCreator.WPF.Commands
 
         public void Execute(object parameter)
         {
-            System.Windows.MessageBox.Show(_viewModel.SelectedCalendarDate.Count.ToString());
-            System.Windows.MessageBox.Show(_viewModel.SelectedEmployee.ToString());
-            System.Windows.MessageBox.Show(_viewModel.SelectedDate.ToString());
         }
     }
 }

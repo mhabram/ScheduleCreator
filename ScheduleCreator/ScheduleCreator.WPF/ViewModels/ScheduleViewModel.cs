@@ -1,10 +1,14 @@
-﻿using ScheduleCreator.Domain.DTO.ScheduleView;
+﻿using GalaSoft.MvvmLight.Command;
+using ScheduleCreator.Domain.DTO.ScheduleView;
 using ScheduleCreator.Domain.Services;
 using ScheduleCreator.WPF.Commands;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.ViewModels
@@ -14,105 +18,408 @@ namespace ScheduleCreator.WPF.ViewModels
         public ScheduleViewModel(IEmployeeService employeeService)
         {
             GetCalendarEmployeeDetailsCommand = new GetCalendarEmployeeDetailsCommand(this, employeeService);
-            CalendarUpdateCommand = new CalendarUpdateCommand(this);
+            //CalendarUpdateCommand = new RelayCommand<EmployeeDTO>(UpdateData);
+            CalendarUpdateDayShiftCommand = new RelayCommand<EmployeeDTO>(UpdateDayShift);
+            CalendarUpdateSwingShiftCommand = new RelayCommand<EmployeeDTO>(UpdateSwingShift);
+            CalendarUpdateNightShiftCommand = new RelayCommand<EmployeeDTO>(UpdateNightShift);
         }
 
         private ObservableCollection<CalendarDateDTO> _calendarDates;
-        public ObservableCollection<CalendarDateDTO> CalendarDates // By adding isSelected property should resolve this issue and BindingList<>()
+        public ObservableCollection<CalendarDateDTO> CalendarDates
         {
-            get
-            {
-                return _calendarDates ?? (_calendarDates = new ObservableCollection<CalendarDateDTO>());
-            }
+            get { return _calendarDates ?? (_calendarDates = new ObservableCollection<CalendarDateDTO>()); }
             set
             {
-                _calendarDates = value;
-                OnPropertyChanged(nameof(CalendarDates));
+                SetProperty(ref _calendarDates, value);
+                OnPropertyChanged("CalendarDates");
             }
         }
 
-        private ObservableCollection<EmployeeDTO> _employees;
-        public ObservableCollection<EmployeeDTO> Employees// By adding isSelected property should resolve this issue.
+        private ObservableCollection<EmployeeViewDTO> _employees;
+        public ObservableCollection<EmployeeViewDTO> Employees
         {
-            get
-            {
-                return _employees ?? (_employees = new ObservableCollection<EmployeeDTO>());
-            }
+            get { return _employees ?? (_employees = new ObservableCollection<EmployeeViewDTO>()); }
             set
             {
                 _employees = value;
-                OnPropertyChanged(nameof(Employees));
+                OnPropertyChanged("Employees");
             }
         }
 
-        private ObservableCollection<CalendarDateDTO> _selectedCalendarDate;
-        public ObservableCollection<CalendarDateDTO> SelectedCalendarDate
+        private void UpdateDayShift(EmployeeDTO employeeDTO)
         {
-            get
-            {
-                return _selectedCalendarDate ?? (_selectedCalendarDate = new ObservableCollection<CalendarDateDTO>());
-            }
-            set
-            {
-                _selectedCalendarDate = value;
-                OnPropertyChanged(nameof(SelectedEmployee));
-            }
-        }
+            List<DateTime> preferenceDates = GetPreferenceDay(employeeDTO);
+            string shift = "Day";
 
-        private EmployeeDTO _selectedEmployee;
-        public EmployeeDTO SelectedEmployee
-        {
-            get
+            if (employeeDTO.IsWorking)
             {
-                return _selectedEmployee;
-                //return _selectedEmployee ?? (_selectedEmployee = new EmployeeDTO());
-            }
-            set
-            {
-                _selectedEmployee = value;
-                if (_selectedEmployee != null)
+                if ((employeeDTO.Date.Day != preferenceDates[0].Day) && (employeeDTO.Date.Day != preferenceDates[1].Day) && (employeeDTO.Date.Day != preferenceDates[2].Day))
                 {
-                    UpdateCalendarDates();
+                    employeeDTO.Shift = shift;
+                    UpdateViewEmployee(employeeDTO);
                 }
-                OnPropertyChanged(nameof(SelectedEmployee));
             }
+
+            if ((employeeDTO.Shift == shift) && !employeeDTO.IsWorking)
+                employeeDTO.Shift = "";
+
+            if (employeeDTO.Shift != shift)
+                employeeDTO.IsWorking = false;
+
+            CollectionViewSource.GetDefaultView(Employees).Refresh();
+            CollectionViewSource.GetDefaultView(CalendarDates).Refresh(); // one of this can be deleted. to be checked one more time.
         }
 
-        private DateTime _selectedDate;
-        public DateTime SelectedDate
+        private void UpdateSwingShift(EmployeeDTO employeeDTO)
         {
-            get
-            {
-                return _selectedDate;
-            }
-            set
-            {
-                _selectedDate = value;
-                OnPropertyChanged(nameof(SelectedDate));
-                System.Windows.MessageBox.Show(SelectedDate.ToString());
+            List<DateTime> preferenceDates = GetPreferenceDay(employeeDTO);
+            string shift = "Swing";
 
+            if (employeeDTO.IsWorking)
+            {
+                if ((employeeDTO.Date.Day != preferenceDates[0].Day) && (employeeDTO.Date.Day != preferenceDates[1].Day) && (employeeDTO.Date.Day != preferenceDates[2].Day))
+                {
+                    employeeDTO.Shift = shift;
+                    UpdateViewEmployee(employeeDTO);
+                }
+            }
+
+            if ((employeeDTO.Shift == shift) && !employeeDTO.IsWorking)
+                employeeDTO.Shift = "";
+
+            if (employeeDTO.Shift != shift)
+                employeeDTO.IsWorking = false;
+
+            CollectionViewSource.GetDefaultView(Employees).Refresh();
+            CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
+        }
+
+        private void UpdateNightShift(EmployeeDTO employeeDTO)
+        {
+            List<DateTime> preferenceDates = GetPreferenceDay(employeeDTO);
+            string shift = "Night";
+
+            if (employeeDTO.IsWorking)
+            {
+                if ((employeeDTO.Date.Day != preferenceDates[0].Day) && (employeeDTO.Date.Day != preferenceDates[1].Day) && (employeeDTO.Date.Day != preferenceDates[2].Day))
+                {
+                    employeeDTO.Shift = shift;
+                    UpdateViewEmployee(employeeDTO);
+                }
+            }
+
+            if ((employeeDTO.Shift == shift) && !employeeDTO.IsWorking)
+                employeeDTO.Shift = "";
+
+            if (employeeDTO.Shift != shift)
+                employeeDTO.IsWorking = false;
+
+            CollectionViewSource.GetDefaultView(Employees).Refresh();
+            CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
+        }
+
+        private void UpdateViewEmployee(EmployeeDTO employeeDTO)
+        {
+            foreach (EmployeeViewDTO employeeView in _employees)
+            {
+                if ((employeeDTO.FullName == employeeView.FullName) && (employeeDTO.IsWorking))
+                    employeeView.WorkingDays--;
+
+                if ((employeeDTO.FullName == employeeView.FullName) && (!employeeDTO.IsWorking))
+                    employeeView.WorkingDays++;
             }
         }
 
-        public void UpdateCalendarDates()
+        private List<DateTime> GetPreferenceDay(EmployeeDTO employeeDTO)
+        {
+            List<DateTime> preferenceDays = new ();
+
+            foreach (EmployeeDTO e in _calendarDates.ElementAt(1).Employees)
+            {
+                if (e.FullName == employeeDTO.FullName)
+                {
+                    foreach (DateTime d in e.PreferenceDays)
+                    {
+                        preferenceDays.Add(d.Date);
+                    }
+                    break;
+                }
+            }
+
+            return preferenceDays;
+        }
+
+        private void UpdateData(EmployeeDTO employeeDTO, string shift)
         {
             foreach (CalendarDateDTO c in _calendarDates)
             {
-                if (_selectedEmployee.Date.Day == c.Date.Day)
+                if (employeeDTO.Date.Day == c.Date.Day)
                 {
                     foreach (EmployeeDTO e in c.Employees)
                     {
-                        if (_selectedEmployee.FullName == e.FullName)
+                        if (employeeDTO.FullName == e.FullName)
                         {
-                            e.IsWorking = true;
-                            e.WorkingDays++;
-                        }             
+                            e.IsWorking = employeeDTO.IsWorking;
+
+                            if (e.IsWorking)
+                                e.Shift = shift;
+                            else
+                                e.Shift = "";
+
+                            break;
+                        }
                     }
                 }
             }
+
+            foreach (EmployeeViewDTO employeeView in _employees)
+            {
+                if ((employeeDTO.FullName == employeeView.FullName) && (employeeDTO.IsWorking))
+                    employeeView.WorkingDays--;
+
+                if ((employeeDTO.FullName == employeeView.FullName) && (!employeeDTO.IsWorking))
+                    employeeView.WorkingDays++;
+            }
+
+            CollectionViewSource.GetDefaultView(Employees).Refresh();
+            CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
+        }
+        private bool IsEmployeeWorking(EmployeeDTO newEmployeeDTO, string shift)
+        {
+            bool isEmployeeWorking = false;
+
+            foreach (CalendarDateDTO c in _calendarDates)
+            {
+                if (newEmployeeDTO.Date.Day == c.Date.Day)
+                {
+                    foreach (EmployeeDTO e in c.Employees)
+                    {
+                        if (newEmployeeDTO.Shift == shift)
+                        {
+                            isEmployeeWorking = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            return isEmployeeWorking;
         }
 
         public ICommand GetCalendarEmployeeDetailsCommand { get; set; }
-        public ICommand CalendarUpdateCommand { get; set; }
+        public ICommand CalendarUpdateCommand { get; private set; }
+        public ICommand CalendarUpdateDayShiftCommand { get; private set; }
+        public ICommand CalendarUpdateSwingShiftCommand { get; private set; }
+        public ICommand CalendarUpdateNightShiftCommand { get; private set; }
+
+
+
+        //private EmployeeDTO _selectedEmployeeDayOne;
+        //public EmployeeDTO SelectedEmployeeDayOne
+        //{
+        //    get { return _selectedEmployeeDayOne; }
+        //    set
+        //    {
+        //        if (value != null)
+        //        {
+        //            if (IsEmployeeWorking(value))
+        //                MessageBox.Show($"Employee {value.FullName} is already working on that day. Please select someone else.");
+        //            else
+        //            {
+        //                if (_selectedEmployeeDayOne != null)
+        //                    ChangeSelectedEmployee(_selectedEmployeeDayOne, value);
+        //                SetProperty(ref _selectedEmployeeDayOne, value);
+        //                UpdateCalendarDates(value);
+        //            }
+        //        }
+
+        //        //OnPropertyChanged(nameof(SelectedEmployeeDayOne));
+        //        CollectionViewSource.GetDefaultView(Employees).Refresh();
+        //        CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
+        //    }
+        //}
+
+        //private EmployeeDTO _selectedEmployeeDayTwo;
+        //public EmployeeDTO SelectedEmployeeDayTwo
+        //{
+        //    get { return _selectedEmployeeDayTwo; }
+        //    set
+        //    {
+        //        //SetProperty(ref _selectedEmployeeDayTwo, value);
+        //        if (value != null)
+        //        {
+        //            if (IsEmployeeWorking(value))
+        //                MessageBox.Show($"Employee {value.FullName} is already working on that day. Please select someone else.");
+        //            else
+        //            {
+        //                if (_selectedEmployeeDayTwo != null)
+        //                    ChangeSelectedEmployee(_selectedEmployeeDayTwo, value);
+        //                SetProperty(ref _selectedEmployeeDayTwo, value);
+        //                UpdateCalendarDates(value);
+        //            }
+        //        }
+
+        //        OnPropertyChanged(nameof(SelectedEmployeeDayTwo));
+        //        CollectionViewSource.GetDefaultView(Employees).Refresh();
+        //        CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
+        //    }
+        //}
+
+        //private EmployeeDTO _selectedEmployeeDayThree;
+        //public EmployeeDTO SelectedEmployeeDayThree
+        //{
+        //    get { return _selectedEmployeeDayThree; }
+        //    set
+        //    {
+        //        if (value != null)
+        //        {
+        //            if (IsEmployeeWorking(value))
+        //                MessageBox.Show($"Employee {value.FullName} is already working on that day. Please select someone else.");
+        //            else
+        //            {
+        //                if (_selectedEmployeeDayThree != null)
+        //                    ChangeSelectedEmployee(_selectedEmployeeDayThree, value);
+        //                SetProperty(ref _selectedEmployeeDayThree, value);
+        //                UpdateCalendarDates(value);
+        //            }
+        //        }
+
+        //        OnPropertyChanged(nameof(SelectedEmployeeDayThree));
+        //        CollectionViewSource.GetDefaultView(Employees).Refresh();
+        //        CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
+        //    }
+        //}
+
+        //private EmployeeDTO _selectedEmployeeSwingOne;
+        //public EmployeeDTO SelectedEmployeeSwingOne
+        //{
+        //    get { return _selectedEmployeeSwingOne; }
+        //    set
+        //    {
+        //        if (value != null)
+        //        {
+        //            if (IsEmployeeWorking(value))
+        //                MessageBox.Show($"Employee {value.FullName} is already working on that day. Please select someone else.");
+        //            else
+        //            {
+        //                if (_selectedEmployeeSwingOne != null)
+        //                    ChangeSelectedEmployee(_selectedEmployeeSwingOne, value);
+        //                SetProperty(ref _selectedEmployeeSwingOne, value);
+        //                UpdateCalendarDates(value);
+        //            }
+        //        }
+
+        //        OnPropertyChanged(nameof(SelectedEmployeeSwingOne));
+        //        CollectionViewSource.GetDefaultView(Employees).Refresh();
+        //        CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
+        //    }
+        //}
+
+        //private EmployeeDTO _selectedEmployeeSwingTwo;
+        //public EmployeeDTO SelectedEmployeeSwingTwo
+        //{
+        //    get { return _selectedEmployeeSwingTwo; }
+        //    set
+        //    {
+        //        if (value != null)
+        //        {
+        //            if (IsEmployeeWorking(value))
+        //                MessageBox.Show($"Employee {value.FullName} is already working on that day. Please select someone else.");
+        //            else
+        //            {
+        //                if (_selectedEmployeeSwingTwo != null)
+        //                    ChangeSelectedEmployee(_selectedEmployeeSwingTwo, value);
+        //                SetProperty(ref _selectedEmployeeSwingTwo, value);
+        //                UpdateCalendarDates(value);
+        //            }
+        //        }
+
+        //        OnPropertyChanged(nameof(SelectedEmployeeSwingTwo));
+        //        CollectionViewSource.GetDefaultView(Employees).Refresh();
+        //        CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
+        //    }
+        //}
+
+        //private EmployeeDTO _selectedEmployeeNight;
+        //public EmployeeDTO SelectedEmployeeNight
+        //{
+        //    get { return _selectedEmployeeNight; }
+        //    set
+        //    {
+        //        if (value != null)
+        //        {
+        //            if (IsEmployeeWorking(value))
+        //                MessageBox.Show($"Employee {value.FullName} is already working on that day. Please select someone else.");
+        //            else
+        //            {
+        //                if (_selectedEmployeeNight != null)
+        //                    ChangeSelectedEmployee(_selectedEmployeeNight, value);
+        //                SetProperty(ref _selectedEmployeeNight, value);
+        //                UpdateCalendarDates(value);
+        //            }
+        //        }
+
+        //        OnPropertyChanged(nameof(SelectedEmployeeNight));
+        //        CollectionViewSource.GetDefaultView(Employees).Refresh();
+        //        CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
+        //    }
+        //}
+
+        //private void UpdateCalendarDates(EmployeeDTO employeeDTO)
+        //{
+        //    foreach (CalendarDateDTO c in _calendarDates)
+        //    {
+        //        if (employeeDTO.Date.Day == c.Date.Day)
+        //        {
+        //            foreach (EmployeeDTO e in c.Employees)
+        //            {
+        //                if (employeeDTO.FullName == e.FullName)
+        //                {
+        //                    e.IsWorking = true;
+        //                    e.WorkingDays++;
+
+        //                    foreach (EmployeeViewDTO employeeView in _employees)
+        //                    {
+        //                        if (employeeView.FullName == e.FullName)
+        //                            employeeView.WorkingDays--;
+        //                    }
+
+        //                    break;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    OnPropertyChanged(nameof(Employees));
+        //}
+
+        //private void ChangeSelectedEmployee(EmployeeDTO employeeDTO, EmployeeDTO newEmloyeeDTO)
+        //{
+        //    if ((employeeDTO.Date.Day == newEmloyeeDTO.Date.Day) && (employeeDTO.FullName != newEmloyeeDTO.FullName))
+        //    {
+        //        foreach (CalendarDateDTO c in _calendarDates)
+        //        {
+        //            if (employeeDTO.Date.Day == c.Date.Day)
+        //            {
+        //                foreach (EmployeeDTO e in c.Employees)
+        //                {
+        //                    if (employeeDTO.FullName == e.FullName)
+        //                    {
+        //                        e.IsWorking = false;
+        //                        e.WorkingDays--;
+
+        //                        foreach (EmployeeViewDTO employeeView in _employees)
+        //                        {
+        //                            if (employeeView.FullName == e.FullName)
+        //                                employeeView.WorkingDays++;
+        //                        }
+
+        //                        break;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    OnPropertyChanged(nameof(Employees));
+        //}
+
     }
 }

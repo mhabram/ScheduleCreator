@@ -35,7 +35,9 @@ namespace ScheduleCreator.WPF.Commands
         {
             ICollection<DateTime> calendar = ScheduleHelpers.CalendarDate();
             Collection<Employee> employees = await _employeeService.GetDetails();
+            Collection<DateTime> tempPreferenceDays = new();
             Collection<EmployeeDTO> tempEmployees;
+            DayCount dayCount = new();
 
             foreach (DateTime d in calendar)
             {
@@ -43,15 +45,32 @@ namespace ScheduleCreator.WPF.Commands
                 foreach (Employee e in employees)
                 {
                     string fullName = String.Concat(e.Name, " ", e.LastName);
-                    tempEmployees.Add(new EmployeeDTO { FullName = fullName, WorkingDays = 0, Date = d, IsWorking = false });
+
+                    foreach (Date date in e.Preferences.Dates)
+                    {
+                        tempPreferenceDays.Add(date.FreeDayChosen);
+                    }
+                    
+                    tempEmployees.Add(new EmployeeDTO
+                    {
+                        FullName = fullName,
+                        WorkingDays = 0,
+                        Date = d,
+                        IsWorking = false,
+                        PreferenceDays = tempPreferenceDays
+                    });
+
+                    tempPreferenceDays = new();
                 }
+
                 _viewModel.CalendarDates.Add(new CalendarDateDTO { Employees = tempEmployees, Date = d });
             }
 
             foreach (Employee e in employees)
             {
                 string fullName = String.Concat(e.Name, " ", e.LastName);
-                _viewModel.Employees.Add(new EmployeeDTO { FullName = fullName, WorkingDays = 0 });
+                sbyte freeWorkingDays = dayCount.WorkingDaysInMonth(e.Preferences.FreeWorkingDays);
+                _viewModel.Employees.Add(new EmployeeViewDTO { FullName = fullName, WorkingDays = freeWorkingDays });
             }
         }
     }
