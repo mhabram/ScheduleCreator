@@ -1,4 +1,5 @@
-﻿using ScheduleCreator.Domain.Services;
+﻿using ScheduleCreator.Domain.GenerateToExcel;
+using ScheduleCreator.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

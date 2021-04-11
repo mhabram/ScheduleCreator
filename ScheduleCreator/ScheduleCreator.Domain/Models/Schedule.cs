@@ -17,7 +17,7 @@ namespace ScheduleCreator.Domain.Models
         [Required]
         public sbyte WorkingDays { get; set; } //numbers of a working day
         [Required]
-        public char Shift { get; set; } //Depends on the char. D = Day shift, S = Swing shift and N stands for Night shift
+        public virtual char Shift { get; set; } //Depends on the char. D = Day shift, S = Swing shift and N stands for Night shift
         
         public virtual ICollection<EmployeeSchedule> EmployeeSchedules{ get; set; }
     }

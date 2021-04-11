@@ -4,6 +4,7 @@ using ScheduleCreator.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.Commands
@@ -31,10 +32,10 @@ namespace ScheduleCreator.WPF.Commands
             if ((_viewModel.Name != null) || (_viewModel.LastName != null)) // has to be changed later probably min string size to 2 letters fix this.
             {
                 await _employeeService.AddEmployee(_viewModel.Name, _viewModel.LastName);
-                System.Windows.MessageBox.Show($"{_viewModel.Name} has been added to database.");
+                MessageBox.Show($"{_viewModel.Name} has been added to database.");
             }
             else
-                System.Windows.MessageBox.Show("Can not add employee without name and lastname.");
+                MessageBox.Show("Can not add employee without name and lastname.");
             
         }
     }

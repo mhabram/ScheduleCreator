@@ -18,6 +18,9 @@ namespace ScheduleCreator.WPF.Commands
         private readonly ScheduleViewModel _viewModel;
         private readonly IEmployeeService _employeeService;
 
+        private readonly ScheduleHelpers _scheduleHelpers = new ScheduleHelpers();
+        private readonly DayCount _dayCount = new DayCount();
+
         public GetCalendarEmployeeDetailsCommand(ScheduleViewModel viewModel, IEmployeeService employeeService)
         {
             _viewModel = viewModel;
@@ -33,11 +36,18 @@ namespace ScheduleCreator.WPF.Commands
 
         public async void Execute(object parameter)
         {
-            ICollection<DateTime> calendar = ScheduleHelpers.CalendarDate();
+            ICollection<DateTime> calendar = _scheduleHelpers.CalendarDate();
             Collection<Employee> employees = await _employeeService.GetDetails();
             Collection<DateTime> tempPreferenceDays = new();
             Collection<EmployeeDTO> tempEmployees;
-            DayCount dayCount = new();
+            sbyte freeWorkingDays;
+
+            foreach (Employee e in employees)
+            {
+                string fullName = String.Concat(e.Name, " ", e.LastName);
+                freeWorkingDays = _dayCount.WorkingDaysInMonth(e.Preferences.FreeWorkingDays);
+                _viewModel.Employees.Add(new EmployeeViewDTO { FullName = fullName, WorkingDays = freeWorkingDays });
+            }
 
             foreach (DateTime d in calendar)
             {
@@ -45,6 +55,7 @@ namespace ScheduleCreator.WPF.Commands
                 foreach (Employee e in employees)
                 {
                     string fullName = String.Concat(e.Name, " ", e.LastName);
+                    freeWorkingDays = _dayCount.WorkingDaysInMonth(e.Preferences.FreeWorkingDays);
 
                     foreach (Date date in e.Preferences.Dates)
                     {
@@ -64,13 +75,6 @@ namespace ScheduleCreator.WPF.Commands
                 }
 
                 _viewModel.CalendarDates.Add(new CalendarDateDTO { Employees = tempEmployees, Date = d });
-            }
-
-            foreach (Employee e in employees)
-            {
-                string fullName = String.Concat(e.Name, " ", e.LastName);
-                sbyte freeWorkingDays = dayCount.WorkingDaysInMonth(e.Preferences.FreeWorkingDays);
-                _viewModel.Employees.Add(new EmployeeViewDTO { FullName = fullName, WorkingDays = freeWorkingDays });
             }
         }
     }

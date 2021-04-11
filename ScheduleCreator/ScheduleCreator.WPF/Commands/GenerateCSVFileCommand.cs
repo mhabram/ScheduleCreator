@@ -1,20 +1,20 @@
-﻿using ScheduleCreator.Domain.DTO.ScheduleView;
+﻿using ScheduleCreator.Domain.GenerateToExcel;
 using ScheduleCreator.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.Commands
 {
-    class CalendarUpdateCommand : ICommand
+    class GenerateCSVFileCommand : ICommand
     {
         private readonly ScheduleViewModel _viewModel;
+        private readonly GenerateToCSV _generateToCSV = new GenerateToCSV();
 
-        public CalendarUpdateCommand(ScheduleViewModel viewModel)
+        public GenerateCSVFileCommand(ScheduleViewModel viewModel)
         {
             _viewModel = viewModel;
         }
@@ -28,7 +28,7 @@ namespace ScheduleCreator.WPF.Commands
 
         public void Execute(object parameter)
         {
-            MessageBox.Show($"{_viewModel.CalendarDates.Count}, Employees: {_viewModel.Employees.Count}");
+            _generateToCSV.ToCSV();
         }
     }
 }

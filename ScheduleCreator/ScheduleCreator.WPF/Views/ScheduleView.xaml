@@ -175,8 +175,19 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            
-            
+            <!--Styles has to be corrected, the below is just for testing purposes-->
+            <Button HorizontalAlignment="Center"
+                    Margin="0 10"
+                    IsDefault="True"
+                    Content="Generate CSV File"
+                    Command="{Binding GenerateCSVFileCommand}"/>
+
+            <Button HorizontalAlignment="Center"
+                    Margin="0 10"
+                    IsDefault="True"
+                    Content="Update Database"
+                    Command="{Binding CalendarUpdateCommand}"/>
+
         </Grid>
     </Grid>
 </UserControl>

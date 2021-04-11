@@ -5,7 +5,7 @@ namespace ScheduleCreator.WPF.ApplicationLogic.Helpers
 {
     public class ScheduleHelpers
     {
-        public static Collection<DateTime> CalendarDate()
+        public Collection<DateTime> CalendarDate()
         {
             Collection<DateTime> calendarDate = new Collection<DateTime>();
 
