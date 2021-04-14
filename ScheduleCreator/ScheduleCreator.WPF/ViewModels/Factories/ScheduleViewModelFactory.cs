@@ -11,15 +11,17 @@ namespace ScheduleCreator.WPF.ViewModels.Factories
     class ScheduleViewModelFactory : IScheduleCreatorViewModelFactory<ScheduleViewModel>
     {
         private readonly IEmployeeService _employeeService;
+        private readonly IScheduleService _scheduleService;
 
-        public ScheduleViewModelFactory(IEmployeeService employeeService)
+        public ScheduleViewModelFactory(IEmployeeService employeeService, IScheduleService scheduleService)
         {
             _employeeService = employeeService;
+            _scheduleService = scheduleService;
         }
 
         public ScheduleViewModel CreateViewModel()
         {
-            return new ScheduleViewModel(_employeeService);
+            return new ScheduleViewModel(_employeeService, _scheduleService);
         }
     }
 }

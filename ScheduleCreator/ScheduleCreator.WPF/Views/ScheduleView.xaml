@@ -21,6 +21,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Margin="0 10">
@@ -176,18 +177,26 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
             <!--Styles has to be corrected, the below is just for testing purposes-->
-            <Button HorizontalAlignment="Center"
+
+        </Grid>
+        
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="0" HorizontalAlignment="Center"
                     Margin="0 10"
                     IsDefault="True"
                     Content="Generate CSV File"
                     Command="{Binding GenerateCSVFileCommand}"/>
 
-            <Button HorizontalAlignment="Center"
+            <Button Grid.Column="1"  HorizontalAlignment="Center"
                     Margin="0 10"
                     IsDefault="True"
                     Content="Update Database"
                     Command="{Binding CalendarUpdateCommand}"/>
-
         </Grid>
     </Grid>
 </UserControl>

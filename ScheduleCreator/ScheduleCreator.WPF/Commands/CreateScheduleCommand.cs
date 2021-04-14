@@ -1,6 +1,6 @@
-﻿using ScheduleCreator.Domain.Models;
+﻿using ScheduleCreator.Domain.Helpers.Calendar;
+using ScheduleCreator.Domain.Models;
 using ScheduleCreator.Domain.Services;
-using ScheduleCreator.WPF.ApplicationLogic.Helpers;
 using ScheduleCreator.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -15,6 +15,8 @@ namespace ScheduleCreator.WPF.Commands
     {
         private readonly CreateScheduleViewModel _viewModel;
         private readonly IEmployeeService _employeeService;
+
+        private readonly CalendarHelper _calendarHelper = new();
 
         public CreateScheduleCommand(CreateScheduleViewModel viewModel, IEmployeeService employeeService)
         {
@@ -33,12 +35,10 @@ namespace ScheduleCreator.WPF.Commands
         public async void Execute(object parameter)
         {
             Employee tempEmployee = new Employee();
-            ShiftCount shiftCount = new();
-            DayCount dayCount = new();
             Random rand = new();
             List<int> listNumbers = new();
 
-            IDictionary<int, int> weeksDict = dayCount.Weeks(); // splitting month into a 5 weeks. Feature fix - make a 4 weeks for 28 day Feb.
+            IDictionary<int, int> weeksDict = _calendarHelper.Weeks();
 
             tempEmployee.Weeks = new List<Week>();
 
@@ -77,9 +77,9 @@ namespace ScheduleCreator.WPF.Commands
                                 workingDays = employee.Weeks.ElementAt(0).Days.Count;
                             }
 
-                            if (nightShift < (6 - dayCount.DaysAfterMonday()))
+                            if (nightShift < (6 - _calendarHelper.DaysAfterMonday()))
                             {
-                                tempWeek = shiftCount.CheckWeek(tempEmployee, employee, weeksDict.ElementAt(i - 1).Value, 'N', workingDays);
+                                tempWeek = _calendarHelper.CheckWeek(tempEmployee, employee, weeksDict.ElementAt(i - 1).Value, "Night", workingDays);
                                 if (tempWeek.Days.Count > 0)
                                 {
                                     week = tempWeek;
@@ -90,10 +90,10 @@ namespace ScheduleCreator.WPF.Commands
                             else
                                 tempEmployee.Weeks = new List<Week>();
 
-                            if (swingShift < (14 - (dayCount.DaysAfterMonday() * 2))) //&& // Condition multiply depends on the users working on that shift (dayCount.DaysAfterMonday(startMonth) * 2)
+                            if (swingShift < (14 - (_calendarHelper.DaysAfterMonday() * 2))) //&& // Condition multiply depends on the users working on that shift (dayCount.DaysAfterMonday(startMonth) * 2)
                                 //(tempEmployee.Weeks.ElementAt(0).Days.Count < (5 - workingDays))) // this contitions checking if employee has below 5 working days if yes, program will add to him other shift
                             {
-                                tempWeek = shiftCount.CheckWeek(tempEmployee, employee, weeksDict.ElementAt(i - 1).Value, 'S', workingDays);
+                                tempWeek = _calendarHelper.CheckWeek(tempEmployee, employee, weeksDict.ElementAt(i - 1).Value, "Swing", workingDays);
                                 if (tempWeek.Days.Count > 0)
                                 {
                                     if (week.Days != null)
@@ -113,9 +113,9 @@ namespace ScheduleCreator.WPF.Commands
                             else
                                 tempEmployee.Weeks = new List<Week>();
 
-                            if (dayShift < ((14 - dayCount.DaysAfterMonday() * 2)))
+                            if (dayShift < ((14 - _calendarHelper.DaysAfterMonday() * 2)))
                             {
-                                tempWeek = shiftCount.CheckWeek(tempEmployee, employee, weeksDict.ElementAt(i - 1).Value, 'S', workingDays);
+                                tempWeek = _calendarHelper.CheckWeek(tempEmployee, employee, weeksDict.ElementAt(i - 1).Value, "Swing", workingDays);
                                 if (tempWeek.Days.Count > 0)
                                 {
                                     if (week.Days != null)
@@ -162,7 +162,7 @@ namespace ScheduleCreator.WPF.Commands
 
                             if (nightShift < 6)
                             {
-                                tempWeek = shiftCount.CheckWeek(tempEmployee, employee, weeksDict.ElementAt(i - 1).Value, 'N', workingDays);
+                                tempWeek = _calendarHelper.CheckWeek(tempEmployee, employee, weeksDict.ElementAt(i - 1).Value, "Night", workingDays);
                                 if (tempWeek.Days.Count > 0)
                                 {
                                     week = tempWeek;
@@ -175,7 +175,7 @@ namespace ScheduleCreator.WPF.Commands
 
                             if (swingShift < 14)
                             {
-                                tempWeek = shiftCount.CheckWeek(tempEmployee, employee, weeksDict.ElementAt(i - 1).Value, 'S', workingDays);
+                                tempWeek = _calendarHelper.CheckWeek(tempEmployee, employee, weeksDict.ElementAt(i - 1).Value, "Swing", workingDays);
                                 if (tempWeek.Days.Count > 0)
                                 {
                                     if (week.Days != null)
@@ -197,7 +197,7 @@ namespace ScheduleCreator.WPF.Commands
 
                             if (dayShift < 14)
                             {
-                                tempWeek = shiftCount.CheckWeek(tempEmployee, employee, weeksDict.ElementAt(i - 1).Value, 'S', workingDays);
+                                tempWeek = _calendarHelper.CheckWeek(tempEmployee, employee, weeksDict.ElementAt(i - 1).Value, "Swing", workingDays);
                                 if (tempWeek.Days.Count > 0)
                                 {
                                     if (week.Days != null)
@@ -223,60 +223,6 @@ namespace ScheduleCreator.WPF.Commands
                             }
                         }
                     }
-
-                    //if (i == 5)
-                    //{
-                    //    tempEmployee = null;
-
-                    //    foreach (int val in listNumbers) // looping shuffled employees
-                    //    {
-                    //        Employee employee = _viewModel.Employees.ElementAt(val - 1);
-                    //        int workingDays = 0;
-                    //        if (employee.Weeks.Count > 0)
-                    //        {
-                    //            workingDays = employee.Weeks.ElementAt(0).Days.Count;
-                    //        }
-
-                    //        if (nightShift < 6) // to be fixed, need to cunt how many days left to the end of month
-                    //        {
-                    //            Week week = shiftCount.CheckWeek(tempEmployee, employee, weeksDict.ElementAt(i - 1).Value, 'N', workingDays);
-
-                    //            if (week.Days.Count > 0)
-                    //            {
-                    //                tempEmployee = await _employeeService.SetWeek(employee, week, i);
-                    //                nightShift += tempEmployee.Weeks.ElementAt(0).Days.Count;
-                    //            }
-                    //        }
-                    //        else
-                    //            tempEmployee = null;
-
-                    //        if (swingShift < 14)
-                    //        {
-                    //            Week week = shiftCount.CheckWeek(tempEmployee, employee, weeksDict.ElementAt(i - 1).Value, 'S', workingDays);
-
-                    //            if (week.Days.Count > 0)
-                    //            {
-                    //                tempEmployee = await _employeeService.SetWeek(employee, week, i);
-                    //                swingShift += tempEmployee.Weeks.ElementAt(0).Days.Count;
-                    //            }
-                    //        }
-                    //        else
-                    //            tempEmployee = null;
-
-                    //        if (dayShift < 14)
-                    //        {
-                    //            Week week = shiftCount.CheckWeek(tempEmployee, employee, weeksDict.ElementAt(i - 1).Value, 'D', workingDays);
-
-                    //            if (week.Days.Count > 0)
-                    //            {
-                    //                tempEmployee = await _employeeService.SetWeek(employee, week, i);
-                    //                dayShift += tempEmployee.Weeks.ElementAt(0).Days.Count;
-                    //            }
-                    //        }
-                    //        else
-                    //            tempEmployee = null;
-                    //    }
-                    //}
                 }
             }
             else

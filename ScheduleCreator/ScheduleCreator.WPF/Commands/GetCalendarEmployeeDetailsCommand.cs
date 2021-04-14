@@ -1,7 +1,7 @@
 ﻿using ScheduleCreator.Domain.DTO.ScheduleView;
+using ScheduleCreator.Domain.Helpers.Calendar;
 using ScheduleCreator.Domain.Models;
 using ScheduleCreator.Domain.Services;
-using ScheduleCreator.WPF.ApplicationLogic.Helpers;
 using ScheduleCreator.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -18,8 +18,7 @@ namespace ScheduleCreator.WPF.Commands
         private readonly ScheduleViewModel _viewModel;
         private readonly IEmployeeService _employeeService;
 
-        private readonly ScheduleHelpers _scheduleHelpers = new ScheduleHelpers();
-        private readonly DayCount _dayCount = new DayCount();
+        private readonly CalendarHelper _calendarHelper = new();
 
         public GetCalendarEmployeeDetailsCommand(ScheduleViewModel viewModel, IEmployeeService employeeService)
         {
@@ -36,7 +35,7 @@ namespace ScheduleCreator.WPF.Commands
 
         public async void Execute(object parameter)
         {
-            ICollection<DateTime> calendar = _scheduleHelpers.CalendarDate();
+            ICollection<DateTime> calendar = _calendarHelper.CalendarDate();
             Collection<Employee> employees = await _employeeService.GetDetails();
             Collection<DateTime> tempPreferenceDays = new();
             Collection<EmployeeDTO> tempEmployees;
@@ -45,7 +44,7 @@ namespace ScheduleCreator.WPF.Commands
             foreach (Employee e in employees)
             {
                 string fullName = String.Concat(e.Name, " ", e.LastName);
-                freeWorkingDays = _dayCount.WorkingDaysInMonth(e.Preferences.FreeWorkingDays);
+                freeWorkingDays = _calendarHelper.WorkingDaysInMonth(e.Preferences.FreeWorkingDays);
                 _viewModel.Employees.Add(new EmployeeViewDTO { FullName = fullName, WorkingDays = freeWorkingDays });
             }
 
@@ -55,7 +54,7 @@ namespace ScheduleCreator.WPF.Commands
                 foreach (Employee e in employees)
                 {
                     string fullName = String.Concat(e.Name, " ", e.LastName);
-                    freeWorkingDays = _dayCount.WorkingDaysInMonth(e.Preferences.FreeWorkingDays);
+                    freeWorkingDays = _calendarHelper.WorkingDaysInMonth(e.Preferences.FreeWorkingDays);
 
                     foreach (Date date in e.Preferences.Dates)
                     {

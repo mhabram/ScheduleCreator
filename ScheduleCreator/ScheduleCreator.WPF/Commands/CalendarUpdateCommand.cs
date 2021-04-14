@@ -1,4 +1,5 @@
 ﻿using ScheduleCreator.Domain.DTO.ScheduleView;
+using ScheduleCreator.Domain.Services;
 using ScheduleCreator.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,12 @@ namespace ScheduleCreator.WPF.Commands
     class CalendarUpdateCommand : ICommand
     {
         private readonly ScheduleViewModel _viewModel;
+        private readonly IScheduleService _scheduleService;
 
-        public CalendarUpdateCommand(ScheduleViewModel viewModel)
+        public CalendarUpdateCommand(ScheduleViewModel viewModel, IScheduleService scheduleService)
         {
             _viewModel = viewModel;
+            _scheduleService = scheduleService;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -26,9 +29,13 @@ namespace ScheduleCreator.WPF.Commands
             return true;
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
-            MessageBox.Show($"{_viewModel.CalendarDates.Count}, Employees: {_viewModel.Employees.Count}");
+            bool isSaved = await _scheduleService.CreateSchedule(_viewModel.CalendarDates);
+            if (isSaved)
+                MessageBox.Show($"Schedule has been saved to the database.");
+            else
+                MessageBox.Show($"Schedule has not been saved to the database.");
         }
     }
 }

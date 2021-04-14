@@ -16,11 +16,11 @@ namespace ScheduleCreator.WPF.ViewModels
 {
     public class ScheduleViewModel : ViewModelBase
     {
-        public ScheduleViewModel(IEmployeeService employeeService)
+        public ScheduleViewModel(IEmployeeService employeeService, IScheduleService scheduleService)
         {
             GetCalendarEmployeeDetailsCommand = new GetCalendarEmployeeDetailsCommand(this, employeeService);
-            GenerateCSVFileCommand = new GenerateCSVFileCommand(this);
-            CalendarUpdateCommand = new CalendarUpdateCommand(this);
+            GenerateCSVFileCommand = new GenerateCSVFileCommand(this, scheduleService);
+            CalendarUpdateCommand = new CalendarUpdateCommand(this, scheduleService);
             CalendarUpdateDayShiftCommand = new RelayCommand<EmployeeDTO>(UpdateDayShift);
             CalendarUpdateSwingShiftCommand = new RelayCommand<EmployeeDTO>(UpdateSwingShift);
             CalendarUpdateNightShiftCommand = new RelayCommand<EmployeeDTO>(UpdateNightShift);
