@@ -50,5 +50,14 @@ namespace ScheduleCreator.EntityFramework.Services
 
             return await _preferenceRepository.AddPreference(preferences, employeId);
         }
+
+        public async Task<ICollection<Preferences>> GetPreferences()
+        {
+            DateTime StartMonth = DateTime.Now.AddMonths(1).AddDays(-DateTime.Now.AddMonths(1).Day + 1);
+
+            string internalPreferenceId = String.Concat(StartMonth.Year.ToString(), StartMonth.Month.ToString());
+
+            return await _preferenceRepository.GetPreferences(internalPreferenceId);
+        }
     }
 }

@@ -25,9 +25,9 @@ namespace ScheduleCreator.EntityFramework.Services
         public async Task<ICollection<Employee>> GetSchedule()
         {
             ICollection<Employee> employees = new Collection<Employee>();
-            string internalWeekId = String.Concat(DateTime.Now.AddMonths(1).Year.ToString(), DateTime.Now.AddMonths(1).Month.ToString());
+            string internalId = String.Concat(DateTime.Now.AddMonths(1).Year.ToString(), DateTime.Now.AddMonths(1).Month.ToString());
             
-            employees =  await _scheduleRepository.GetSchedule(internalWeekId);
+            employees =  await _scheduleRepository.GetSchedule(internalId);
 
             return employees;
         }

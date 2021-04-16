@@ -9,6 +9,6 @@ namespace ScheduleCreator.EntityFramework.Repositories.ScheduleRepository
 {
     public interface IScheduleRepository
     {
-        Task<ICollection<Employee>> GetSchedule(string internalWeekId);
+        Task<ICollection<Employee>> GetSchedule(string internalId);
     }
 }

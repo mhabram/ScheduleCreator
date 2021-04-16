@@ -155,7 +155,7 @@
                 </DataGrid>
             </Grid>
 
-            <ItemsControl Grid.Column="1" ItemsSource="{Binding Path=Employees, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+            <ItemsControl Grid.Column="1" ItemsSource="{Binding Employees, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Margin="5" Orientation="Vertical"/>

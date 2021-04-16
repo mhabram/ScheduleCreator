@@ -1,6 +1,9 @@
-﻿using ScheduleCreator.Domain.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ScheduleCreator.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,6 +31,16 @@ namespace ScheduleCreator.EntityFramework.Repositories.PreferenceRepository
 
                 return preferences;
             }
+        }
+
+        public async Task<ICollection<Preferences>> GetPreferences(string internalPreferenceId)
+        {
+            using ScheduleCreatorDbContext context = _contextFactory.CreateDbContext();
+
+            List<Preferences> preferences = await context.Preferences.Where(p => p.InternalPreferenceId == internalPreferenceId)
+                .ToListAsync();
+
+            return preferences;
         }
     }
 }

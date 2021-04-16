@@ -9,5 +9,6 @@ namespace ScheduleCreator.EntityFramework.Repositories.PreferenceRepository
     public interface IPreferenceRepository
     {
         Task<Preferences> AddPreference(Preferences preferences, int employeId);
+        Task<ICollection<Preferences>> GetPreferences(string internalPreferenceId);
     }
 }

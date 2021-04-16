@@ -18,15 +18,18 @@ namespace ScheduleCreator.EntityFramework.Repositories.ScheduleRepository
             _contextFactory = contextFactory;
         }
 
-        public async Task<ICollection<Employee>> GetSchedule(string internalWeekId)
+        public async Task<ICollection<Employee>> GetSchedule(string internalId)
         {
             ICollection<Employee> employees = new Collection<Employee>();
 
             using ScheduleCreatorDbContext context = _contextFactory.CreateDbContext();
             
             employees = await context.Employees
-                .Include(w => w.Weeks.Where(i => i.InternalWeekId.Contains(internalWeekId)))
+                .Include(w => w.Weeks.Where(i => i.InternalWeekId.Contains(internalId)))
                 .ThenInclude(s => s.Days)
+                .Include(p => p.Preferences)
+                .ThenInclude(d => d.Dates)
+                .Where(i => i.Preferences.InternalPreferenceId == internalId)
                 .ToListAsync();
 
             return employees;
