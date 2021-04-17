@@ -37,6 +37,7 @@ namespace ScheduleCreator.EntityFramework.Services
             Dictionary<string, ICollection<Day>> employeeFullNameWorkingDays = new Dictionary<string, ICollection<Day>>();
             bool isSaved = false;
             string shift = "";
+            bool isWorking = false;
 
             foreach (CalendarDateDTO calendarDTO in calendarDateDTO)
             {
@@ -47,6 +48,9 @@ namespace ScheduleCreator.EntityFramework.Services
                     else
                         shift = employeeDTO.Shift;
 
+                    if (employeeDTO.Day || employeeDTO.Swing || employeeDTO.Night)
+                        isWorking = true;
+
                     if (employeeFullNameWorkingDays.ContainsKey(employeeDTO.FullName))
                     {
 
@@ -54,7 +58,8 @@ namespace ScheduleCreator.EntityFramework.Services
                             new Day()
                             {
                                 Shift = shift,
-                                IsWorking = employeeDTO.IsWorking,
+                                IsWorking = isWorking,
+                                //IsWorking = employeeDTO.IsWorking,
                                 WorkingDay = employeeDTO.Date
                             });
                     }
@@ -65,7 +70,8 @@ namespace ScheduleCreator.EntityFramework.Services
                                 new Day()
                                 {
                                     Shift = shift,
-                                    IsWorking = employeeDTO.IsWorking,
+                                    IsWorking = isWorking,
+                                    //IsWorking = employeeDTO.IsWorking,
                                     WorkingDay = employeeDTO.Date
                                 }
                             });

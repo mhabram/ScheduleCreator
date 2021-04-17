@@ -69,8 +69,8 @@ namespace ScheduleCreator.WPF.Commands
                     tempEmployees.Add(new EmployeeDTO
                     {
                         FullName = fullName,
-                        Date = calendar[i],
-                        IsWorking = false,
+                        Date = calendar[i]
+                        //IsWorking = false,
                     });
                 }
                 _viewModel.CalendarDates.Add(new CalendarDateDTO { Employees = tempEmployees, Date = calendar[i]});

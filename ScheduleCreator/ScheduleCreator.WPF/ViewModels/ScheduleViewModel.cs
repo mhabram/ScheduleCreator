@@ -319,15 +319,20 @@ namespace ScheduleCreator.WPF.ViewModels
 
         private void UpdateViewEmployee(EmployeeDTO employeeDTO)
         {
+            bool isWorking = false;
+
+            if (employeeDTO.Day || employeeDTO.Swing || employeeDTO.Night)
+                isWorking = true;
+
             for (int i = 0; i < _employees.Count; i++)
             {
-                if ((employeeDTO.FullName == _employees[i].FullName) && (employeeDTO.IsWorking))
+                if ((employeeDTO.FullName == _employees[i].FullName) && isWorking)
                 {
                     _employees[i].WorkingDays--;
                     break;
                 }
 
-                if ((employeeDTO.FullName == _employees[i].FullName) && (!employeeDTO.IsWorking))
+                if ((employeeDTO.FullName == _employees[i].FullName) && isWorking)
                 {
                     _employees[i].WorkingDays++;
                     break;
