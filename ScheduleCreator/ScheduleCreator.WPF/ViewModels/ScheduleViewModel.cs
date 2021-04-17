@@ -45,7 +45,7 @@ namespace ScheduleCreator.WPF.ViewModels
             set
             {
                 _employees = value;
-                OnPropertyChanged(nameof(Employee));
+                OnPropertyChanged(nameof(Employees));
             }
         }
 
@@ -69,17 +69,16 @@ namespace ScheduleCreator.WPF.ViewModels
 
             if (workingDays > 0)
             {
-                if (employeeDTO.IsWorking)
+                if (employeeDTO.Day)
                 {
                     if (!IsPreferenceDay(employeeDTO))
                     {
-                        if (((employeeDTO.Date.DayOfWeek.ToString().ToLower() == "saturday") || (employeeDTO.Date.DayOfWeek.ToString().ToLower() == "sunday")) &&
-                            (numnberOfEmployeesWorkingOnShift < 1))
+                        if (((employeeDTO.Date.DayOfWeek.ToString().ToLower() == "saturday") || (employeeDTO.Date.DayOfWeek.ToString().ToLower() == "sunday")) && (numnberOfEmployeesWorkingOnShift < 1))
                         {
                             employeeDTO.Shift = shift;
                             UpdateViewEmployee(employeeDTO);
                         }
-                    
+
                         if ((employeeDTO.Date.DayOfWeek.ToString().ToLower() != "saturday") && (employeeDTO.Date.DayOfWeek.ToString().ToLower() != "sunday"))
                         {
                             employeeDTO.Shift = shift;
@@ -87,16 +86,53 @@ namespace ScheduleCreator.WPF.ViewModels
                         }
                     }
                 }
+
+                if ((employeeDTO.Shift == shift) && !employeeDTO.Day)
+                    employeeDTO.Shift = "";
             }
 
-            if ((employeeDTO.Shift == shift) && !employeeDTO.IsWorking)
-                employeeDTO.Shift = "";
-
             if (employeeDTO.Shift != shift)
-                employeeDTO.IsWorking = false;
+            {
+                if ((employeeDTO.Shift == "") || (employeeDTO.Shift == null))
+                    employeeDTO.Day = false;
+                else
+                    employeeDTO.Day = true;
+            }
 
-            //CollectionViewSource.GetDefaultView(Employees).Refresh();
-            //CollectionViewSource.GetDefaultView(CalendarDates).Refresh(); // one of this can be deleted. to be checked one more time.
+            //if (workingDays > 0)
+            //{
+            //    if (employeeDTO.IsWorking)
+            //    {
+            //        if (!IsPreferenceDay(employeeDTO))
+            //        {
+            //            if (((employeeDTO.Date.DayOfWeek.ToString().ToLower() == "saturday") || (employeeDTO.Date.DayOfWeek.ToString().ToLower() == "sunday")) && (numnberOfEmployeesWorkingOnShift < 1))
+            //            {
+            //                employeeDTO.Shift = shift;
+            //                UpdateViewEmployee(employeeDTO);
+            //            }
+
+            //            if ((employeeDTO.Date.DayOfWeek.ToString().ToLower() != "saturday") && (employeeDTO.Date.DayOfWeek.ToString().ToLower() != "sunday"))
+            //            {
+            //                employeeDTO.Shift = shift;
+            //                UpdateViewEmployee(employeeDTO);
+            //            }
+            //        }
+            //    }
+
+            //    if ((employeeDTO.Shift == shift) && !employeeDTO.IsWorking)
+            //        employeeDTO.Shift = "";
+            //}
+
+            //if (employeeDTO.Shift != shift)
+            //{
+            //    if ((employeeDTO.Shift == "") || (employeeDTO.Shift == null))
+            //        employeeDTO.IsWorking = false;
+            //    else
+            //        employeeDTO.IsWorking = true;
+            //}
+
+            CollectionViewSource.GetDefaultView(Employees).Refresh();
+            CollectionViewSource.GetDefaultView(CalendarDates).Refresh(); // one of this can be deleted. to be checked one more time.
         }
 
         private void UpdateSwingShift(EmployeeDTO employeeDTO)
@@ -108,7 +144,7 @@ namespace ScheduleCreator.WPF.ViewModels
 
             if (workingDays > 0)
             {
-                if (employeeDTO.IsWorking)
+                if (employeeDTO.Swing)
                 {
                     if (!IsPreferenceDay(employeeDTO))
                     {
@@ -126,16 +162,54 @@ namespace ScheduleCreator.WPF.ViewModels
                         }
                     }
                 }
+
+                if ((employeeDTO.Shift == shift) && !employeeDTO.Swing)
+                    employeeDTO.Shift = "";
             }
 
-            if ((employeeDTO.Shift == shift) && !employeeDTO.IsWorking)
-                employeeDTO.Shift = "";
-
             if (employeeDTO.Shift != shift)
-                employeeDTO.IsWorking = false;
+            {
+                if ((employeeDTO.Shift == "") || (employeeDTO.Shift == null))
+                    employeeDTO.Swing = false;
+                else
+                    employeeDTO.Swing= true;
+            }
 
-            //CollectionViewSource.GetDefaultView(Employees).Refresh();
-            //CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
+            //if (workingDays > 0)
+            //{
+            //    if (employeeDTO.IsWorking)
+            //    {
+            //        if (!IsPreferenceDay(employeeDTO))
+            //        {
+            //            if (((employeeDTO.Date.DayOfWeek.ToString().ToLower() == "saturday") || (employeeDTO.Date.DayOfWeek.ToString().ToLower() == "sunday")) &&
+            //                (numnberOfEmployeesWorkingOnShift < 1))
+            //            {
+            //                employeeDTO.Shift = shift;
+            //                UpdateViewEmployee(employeeDTO);
+            //            }
+
+            //            if ((employeeDTO.Date.DayOfWeek.ToString().ToLower() != "saturday") && (employeeDTO.Date.DayOfWeek.ToString().ToLower() != "sunday"))
+            //            {
+            //                employeeDTO.Shift = shift;
+            //                UpdateViewEmployee(employeeDTO);
+            //            }
+            //        }
+            //    }
+
+            //    if ((employeeDTO.Shift == shift) && !employeeDTO.IsWorking)
+            //        employeeDTO.Shift = "";
+            //}
+
+            //if (employeeDTO.Shift != shift)
+            //{
+            //    if ((employeeDTO.Shift == "") || (employeeDTO.Shift == null))
+            //        employeeDTO.IsWorking = false;
+            //    else
+            //        employeeDTO.IsWorking = true;
+            //}
+
+            CollectionViewSource.GetDefaultView(Employees).Refresh();
+            CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
         }
 
         private void UpdateNightShift(EmployeeDTO employeeDTO)
@@ -147,7 +221,7 @@ namespace ScheduleCreator.WPF.ViewModels
 
             if (workingDays > 0)
             {
-                if (employeeDTO.IsWorking)
+                if (employeeDTO.Night)
                 {
                     if (!IsPreferenceDay(employeeDTO))
                     {
@@ -165,16 +239,54 @@ namespace ScheduleCreator.WPF.ViewModels
                         }
                     }
                 }
+
+                if ((employeeDTO.Shift == shift) && !employeeDTO.Night)
+                    employeeDTO.Shift = "";
             }
 
-            if ((employeeDTO.Shift == shift) && !employeeDTO.IsWorking)
-                employeeDTO.Shift = "";
-
             if (employeeDTO.Shift != shift)
-                employeeDTO.IsWorking = false;
+            {
+                if ((employeeDTO.Shift == "") || (employeeDTO.Shift == null))
+                    employeeDTO.Night = false;
+                else
+                    employeeDTO.Night = true;
+            }
 
-            //CollectionViewSource.GetDefaultView(Employees).Refresh();
-            //CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
+            //if (workingDays > 0)
+            //{
+            //    if (employeeDTO.IsWorking)
+            //    {
+            //        if (!IsPreferenceDay(employeeDTO))
+            //        {
+            //            if (((employeeDTO.Date.DayOfWeek.ToString().ToLower() == "saturday") || (employeeDTO.Date.DayOfWeek.ToString().ToLower() == "sunday")) &&
+            //                (numnberOfEmployeesWorkingOnShift < 1))
+            //            {
+            //                employeeDTO.Shift = shift;
+            //                UpdateViewEmployee(employeeDTO);
+            //            }
+
+            //            if ((employeeDTO.Date.DayOfWeek.ToString().ToLower() != "saturday") && (employeeDTO.Date.DayOfWeek.ToString().ToLower() != "sunday"))
+            //            {
+            //                employeeDTO.Shift = shift;
+            //                UpdateViewEmployee(employeeDTO);
+            //            }
+            //        }
+            //    }
+
+            //    if ((employeeDTO.Shift == shift) && !employeeDTO.IsWorking)
+            //        employeeDTO.Shift = "";
+            //}
+
+            //if (employeeDTO.Shift != shift)
+            //{
+            //    if ((employeeDTO.Shift == "") || (employeeDTO.Shift == null))
+            //        employeeDTO.IsWorking = false;
+            //    else
+            //        employeeDTO.IsWorking = true;
+            //}
+
+            CollectionViewSource.GetDefaultView(Employees).Refresh();
+            CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
         }
 
         private bool IsPreferenceDay(EmployeeDTO employeeDTO)

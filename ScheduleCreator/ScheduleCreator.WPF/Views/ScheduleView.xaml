@@ -34,7 +34,72 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
+
             <Grid>
+                <ListView ItemsSource="{Binding CalendarDates}" Width="1160">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" Width="1200"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ListViewItem>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Path=Date.Day}" />
+                                        <TextBlock Text="/" />
+                                        <TextBlock Text="{Binding Path=Date.Month}" />
+                                        <TextBlock Text="/" />
+                                        <TextBlock Text="{Binding Path=Date.Year}" />
+                                    </StackPanel>
+
+                                    <ListBox ItemsSource="{Binding Path=Employees}" >
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel>
+                                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding FullName}" />
+                                                        <TextBlock Text="{Binding Shift}" />
+                                                    </StackPanel>
+                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <StackPanel VerticalAlignment="Center">
+                                                            <RadioButton IsChecked="{Binding Day}"
+                                                                      Command="{Binding DataContext.CalendarUpdateDayShiftCommand, RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                      AncestorType=Grid, AncestorLevel=2}, Mode=OneWay}"
+                                                                      CommandParameter="{Binding}">
+                                                            </RadioButton>
+                                                            <TextBlock Text="D"/>
+                                                        </StackPanel>
+                                                        <StackPanel VerticalAlignment="Center">
+                                                            <RadioButton IsChecked="{Binding Swing}"
+                                                                Command="{Binding DataContext.CalendarUpdateSwingShiftCommand, RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                AncestorType=Grid, AncestorLevel=2}, Mode=OneWay}"
+                                                                CommandParameter="{Binding}">
+                                                            </RadioButton>
+                                                            <TextBlock Text="S" />
+                                                        </StackPanel>
+                                                        <StackPanel>
+                                                            <RadioButton IsChecked="{Binding Night}"
+                                                                Command="{Binding DataContext.CalendarUpdateNightShiftCommand, RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                AncestorType=Grid, AncestorLevel=2}, Mode=OneTime}"
+                                                                CommandParameter="{Binding}">
+                                                            </RadioButton>
+                                                            <TextBlock Text="N" />
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </StackPanel>
+                            </ListViewItem>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            
+            <!--<Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
@@ -153,7 +218,7 @@
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-            </Grid>
+            </Grid>-->
 
             <ItemsControl Grid.Column="1" ItemsSource="{Binding Employees, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                 <ItemsControl.ItemsPanel>

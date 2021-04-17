@@ -11,7 +11,10 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
     {
         public string FullName { get; set; }
         public DateTime Date { get; set; }
-        public bool IsWorking { get; set; }
+        //public bool IsWorking { get; set; }
+        public bool Day { get; set; }
+        public bool Swing { get; set; }
+        public bool Night { get; set; }
         public string Shift { get; set; }
         public ICollection<DateTime> PreferenceDays { get; set; }
     }

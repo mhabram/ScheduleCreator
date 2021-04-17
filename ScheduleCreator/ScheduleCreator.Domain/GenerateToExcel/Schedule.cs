@@ -33,7 +33,6 @@ namespace ScheduleCreator.Domain.GenerateToExcel
             try
             {
                 workbook = new XLWorkbook();
-                //worksheet = workbook.Worksheets.Last();
                 worksheet = workbook.Worksheets.Add("Schedule");
 
                 #region Header

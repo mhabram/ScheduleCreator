@@ -38,7 +38,7 @@ namespace ScheduleCreator.EntityFramework.Services
             string internalWeekId = String.Concat(StartMonth.Year.ToString(), StartMonth.Month.ToString(), 5);
 
             // to fix issue with the 28 days of February need to create another getDetails repository and add to if that will be checking if month has 4 or 5 weeks.
-            IEnumerable<Employee>? employeeDetails = await _employeeRepository.GetDetails(internalPreferenceId, internalWeekId);
+            IEnumerable<Employee> employeeDetails = await _employeeRepository.GetDetails(internalPreferenceId, internalWeekId);
 
             if (employeeDetails != null)
             {

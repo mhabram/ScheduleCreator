@@ -36,7 +36,8 @@ namespace ScheduleCreator.WPF.Commands
             }
             else
                 MessageBox.Show("Can not add employee without name and lastname.");
-            
+
+
         }
     }
 }

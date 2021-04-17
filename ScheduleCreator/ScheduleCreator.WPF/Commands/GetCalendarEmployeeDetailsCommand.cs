@@ -36,7 +36,7 @@ namespace ScheduleCreator.WPF.Commands
         }
 
         public async void Execute(object parameter)
-        {
+        { 
             CalendarHelper calendarHelper = new();
             Collection<DateTime> calendar = calendarHelper.CalendarDate();
             Collection<Employee> employees = await _employeeService.GetDetails();
