@@ -9,62 +9,12 @@ using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.ViewModels
 {
-    public class PreferenceViewModel : ViewModelBase, INotifyPropertyChanged
+    public class PreferenceViewModel : ViewModelBase
     {
-        //private DateTime _freeWorkingDay = DateTime.Now.AddMonths(1);
-        //public DateTime FreeWorkingDay
-        //{
-        //    get
-        //    {
-        //        return _freeWorkingDay;
-        //    }
-        //    set
-        //    {
-        //        _freeWorkingDay = value;
-        //        OnPropertyChanged("StartDate");
-        //    }
-        //}
-        //private List<DateTime> _test;
-        //public List<DateTime> Test
-        //{
-        //    get
-        //    {
-        //        return new List<DateTime> { DateTime.Now.AddMonths(1), DateTime.Now.AddMonths(1), DateTime.Now.AddMonths(1) };
-        //    }
-        //    set
-        //    {
-        //        _test.Add({ value });
-        //        OnPropertyChanged("StartDate");
-        //    }
-        //}
-
-        //private DateTime _freeWorkingDay = DateTime.Now.AddMonths(1);
-        //public DateTime FreeWorkingDay
-        //{
-        //    get
-        //    {
-        //        return _freeWorkingDay;
-        //    }
-        //    set
-        //    {
-        //        _freeWorkingDay = value;
-        //        OnPropertyChanged("StartDate");
-        //    }
-        //}
-
-        // = new BindingList<DateTime>() { DateTime.Now.AddMonths(1), DateTime.Now.AddMonths(1), DateTime.Now.AddMonths(1) }
-        //public BindingList<DateTime> _freeWorkingDays;
-        //public BindingList<DateTime> FreeWorkingDays
-        //{
-        //    get
-        //    {
-        //        return _freeWorkingDays;
-        //    }
-        //    set
-        //    {
-        //        _freeWorkingDays = value;
-        //    }
-        //}
+        public PreferenceViewModel(IPreferenceService preferenceService, IEmployeeService employeeService, IDateService dateService)
+        {
+            AddPreferenceCommand = new AddPreferenceCommand(this, preferenceService, employeeService, dateService);
+        }
 
         private DateTime _dayOff1 = DateTime.Now.AddMonths(1);
         public DateTime DayOff1
@@ -90,7 +40,7 @@ namespace ScheduleCreator.WPF.ViewModels
             set
             {
                 _dayOff2 = value;
-                OnPropertyChanged(nameof(DayOff1));
+                OnPropertyChanged(nameof(DayOff2));
             }
         }
 
@@ -104,17 +54,9 @@ namespace ScheduleCreator.WPF.ViewModels
             set
             {
                 _dayOff3 = value;
-                OnPropertyChanged(nameof(DayOff1));
+                OnPropertyChanged(nameof(DayOff3));
             }
         }
-
-        //public event PropertyChangedEventHandler PropertyChanged;
-        //public void OnPropertyChanged(string name)
-        //{
-        //    PropertyChangedEventHandler handler = PropertyChanged;
-        //    if (handler != null)
-        //        handler(this, new PropertyChangedEventArgs(name));
-        //}
 
         public string _lastName;
         public string LastName
@@ -145,10 +87,5 @@ namespace ScheduleCreator.WPF.ViewModels
         }
 
         public ICommand AddPreferenceCommand { get; set; }
-
-        public PreferenceViewModel(IPreferenceService preferenceService, IEmployeeService employeeService, IDateService dateService)
-        {
-            AddPreferenceCommand = new AddPreferenceCommand(this, preferenceService, employeeService, dateService);
-        }
     }
 }

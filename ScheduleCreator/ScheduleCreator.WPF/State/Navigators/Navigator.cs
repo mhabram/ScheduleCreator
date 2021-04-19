@@ -1,18 +1,18 @@
-﻿using ScheduleCreator.WPF.Commands;
-using ScheduleCreator.WPF.Models;
+﻿using ScheduleCreator.Domain.DTO.Observable;
+using ScheduleCreator.WPF.Commands;
 using ScheduleCreator.WPF.ViewModels;
 using ScheduleCreator.WPF.ViewModels.Factories;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.State.Navigators
 {
     public class Navigator : ObservableObject, INavigator
     {
+        public Navigator(IRootScheduleCreatorViewModelFactory viewModelFactory)
+        {
+            UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(this, viewModelFactory);
+        }
+
         private ViewModelBase _currentViewModel;
 
         public ViewModelBase CurrentViewModel
@@ -29,10 +29,5 @@ namespace ScheduleCreator.WPF.State.Navigators
         }
 
         public ICommand UpdateCurrentViewModelCommand { get; set; }
-
-        public Navigator(IRootScheduleCreatorViewModelFactory viewModelFactory)
-        {
-            UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(this, viewModelFactory);
-        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using ScheduleCreator.Domain.Models;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 
 namespace ScheduleCreator.Domain.DTO.ScheduleView

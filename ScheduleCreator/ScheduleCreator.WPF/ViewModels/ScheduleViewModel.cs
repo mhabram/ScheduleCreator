@@ -1,16 +1,12 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using ScheduleCreator.Domain.DTO.ScheduleView;
-using ScheduleCreator.Domain.GenerateToExcel;
 using ScheduleCreator.Domain.Models;
 using ScheduleCreator.Domain.Services;
 using ScheduleCreator.WPF.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Windows;
-using System.Windows.Data;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.ViewModels
@@ -30,10 +26,10 @@ namespace ScheduleCreator.WPF.ViewModels
         private ObservableCollection<CalendarDateDTO> _calendarDates;
         public ObservableCollection<CalendarDateDTO> CalendarDates
         {
-            get { return _calendarDates ?? (_calendarDates = new ObservableCollection<CalendarDateDTO>()); }
+            get { return _calendarDates ??= new ObservableCollection<CalendarDateDTO>(); }
             set
             {
-                SetProperty(ref _calendarDates, value);
+                _calendarDates = value;
                 OnPropertyChanged(nameof(CalendarDates));
             }
         }
@@ -41,7 +37,7 @@ namespace ScheduleCreator.WPF.ViewModels
         private ObservableCollection<EmployeeViewDTO> _employees;
         public ObservableCollection<EmployeeViewDTO> Employees
         {
-            get { return _employees ?? (_employees = new ObservableCollection<EmployeeViewDTO>()); }
+            get { return _employees ??= new ObservableCollection<EmployeeViewDTO>(); }
             set
             {
                 _employees = value;
@@ -52,7 +48,7 @@ namespace ScheduleCreator.WPF.ViewModels
         private List<Preferences> _preferences;
         public List<Preferences> Preferences
         {
-            get { return _preferences ?? (_preferences = new List<Preferences>()); }
+            get { return _preferences ??= new List<Preferences>(); }
             set
             {
                 _preferences = value;
@@ -131,8 +127,8 @@ namespace ScheduleCreator.WPF.ViewModels
             //        employeeDTO.IsWorking = true;
             //}
 
-            CollectionViewSource.GetDefaultView(Employees).Refresh();
-            CollectionViewSource.GetDefaultView(CalendarDates).Refresh(); // one of this can be deleted. to be checked one more time.
+            //CollectionViewSource.GetDefaultView(Employees).Refresh();
+            //CollectionViewSource.GetDefaultView(CalendarDates).Refresh(); // one of this can be deleted. to be checked one more time.
         }
 
         private void UpdateSwingShift(EmployeeDTO employeeDTO)
@@ -208,8 +204,8 @@ namespace ScheduleCreator.WPF.ViewModels
             //        employeeDTO.IsWorking = true;
             //}
 
-            CollectionViewSource.GetDefaultView(Employees).Refresh();
-            CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
+            //CollectionViewSource.GetDefaultView(Employees).Refresh();
+            //CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
         }
 
         private void UpdateNightShift(EmployeeDTO employeeDTO)
@@ -285,8 +281,8 @@ namespace ScheduleCreator.WPF.ViewModels
             //        employeeDTO.IsWorking = true;
             //}
 
-            CollectionViewSource.GetDefaultView(Employees).Refresh();
-            CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
+            //CollectionViewSource.GetDefaultView(Employees).Refresh();
+            //CollectionViewSource.GetDefaultView(CalendarDates).Refresh();
         }
 
         private bool IsPreferenceDay(EmployeeDTO employeeDTO)

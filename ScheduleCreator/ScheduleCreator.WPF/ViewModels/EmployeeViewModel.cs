@@ -9,6 +9,11 @@ namespace ScheduleCreator.WPF.ViewModels
 {
     public class EmployeeViewModel : ViewModelBase
     {
+        public EmployeeViewModel(IEmployeeService employeeService)
+        {
+            AddEmployeeCommand = new AddEmployeeCommand(this, employeeService);
+        }
+
         public string _name;
         public string Name
         {
@@ -38,10 +43,5 @@ namespace ScheduleCreator.WPF.ViewModels
         }
 
         public ICommand AddEmployeeCommand { get; set; }
-
-        public EmployeeViewModel(IEmployeeService employeeService)
-        {
-            AddEmployeeCommand = new AddEmployeeCommand(this, employeeService);
-        }
     }
 }
