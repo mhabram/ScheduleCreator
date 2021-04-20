@@ -22,9 +22,9 @@ namespace ScheduleCreator.EntityFramework.Services
             _scheduleRepository = scheduleRepository;
         }
 
-        public async Task<ICollection<Employee>> GetSchedule()
+        public async Task<IList<Employee>> GetSchedule()
         {
-            ICollection<Employee> employees = new Collection<Employee>();
+            IList<Employee> employees = new List<Employee>();
             string internalId = String.Concat(DateTime.Now.AddMonths(1).Year.ToString(), DateTime.Now.AddMonths(1).Month.ToString());
             
             employees =  await _scheduleRepository.GetSchedule(internalId);
@@ -35,14 +35,17 @@ namespace ScheduleCreator.EntityFramework.Services
         public async Task<bool> CreateSchedule(ObservableCollection<CalendarDateDTO> calendarDateDTO)
         {
             Dictionary<string, ICollection<Day>> employeeFullNameWorkingDays = new Dictionary<string, ICollection<Day>>();
+            EmployeeDTO employeeDTO;
             bool isSaved = false;
             string shift = "";
             bool isWorking = false;
 
-            foreach (CalendarDateDTO calendarDTO in calendarDateDTO)
+            for (int i = 0; i < calendarDateDTO.Count; i++)
             {
-                foreach (EmployeeDTO employeeDTO in calendarDTO.Employees)
+                for (int j = 0; j < calendarDateDTO[i].Employees.Count; j++)
                 {
+                    employeeDTO = calendarDateDTO[i].Employees[j];
+
                     if ((employeeDTO.Shift == null) || (employeeDTO.Shift == ""))
                         shift = "Free";
                     else
@@ -59,8 +62,7 @@ namespace ScheduleCreator.EntityFramework.Services
                             {
                                 Shift = shift,
                                 IsWorking = isWorking,
-                                //IsWorking = employeeDTO.IsWorking,
-                                WorkingDay = employeeDTO.Date
+                                WorkingDay = calendarDateDTO[i].Date
                             });
                     }
                     else
@@ -71,8 +73,7 @@ namespace ScheduleCreator.EntityFramework.Services
                                 {
                                     Shift = shift,
                                     IsWorking = isWorking,
-                                    //IsWorking = employeeDTO.IsWorking,
-                                    WorkingDay = employeeDTO.Date
+                                    WorkingDay = calendarDateDTO[i].Date
                                 }
                             });
                     }
@@ -83,6 +84,51 @@ namespace ScheduleCreator.EntityFramework.Services
             {
                 isSaved = await _weekService.AddWeeks(key.Key, key.Value);
             }
+
+            //foreach (CalendarDateDTO calendarDTO in calendarDateDTO)
+            //{
+            //    foreach (EmployeeDTO employeeDTO in calendarDTO.Employees)
+            //    {
+            //        if ((employeeDTO.Shift == null) || (employeeDTO.Shift == ""))
+            //            shift = "Free";
+            //        else
+            //            shift = employeeDTO.Shift;
+
+            //        if (employeeDTO.Day || employeeDTO.Swing || employeeDTO.Night)
+            //            isWorking = true;
+
+            //        if (employeeFullNameWorkingDays.ContainsKey(employeeDTO.FullName))
+            //        {
+
+            //            employeeFullNameWorkingDays[employeeDTO.FullName].Add(
+            //                new Day()
+            //                {
+            //                    Shift = shift,
+            //                    IsWorking = isWorking,
+            //                    //IsWorking = employeeDTO.IsWorking,
+            //                    WorkingDay = employeeDTO.Date
+            //                });
+            //        }
+            //        else
+            //        {
+            //            employeeFullNameWorkingDays.Add(employeeDTO.FullName,
+            //                new List<Day>() {
+            //                    new Day()
+            //                    {
+            //                        Shift = shift,
+            //                        IsWorking = isWorking,
+            //                        //IsWorking = employeeDTO.IsWorking,
+            //                        WorkingDay = employeeDTO.Date
+            //                    }
+            //                });
+            //        }
+            //    }
+            //}
+
+            //foreach (var key in employeeFullNameWorkingDays)
+            //{
+            //    isSaved = await _weekService.AddWeeks(key.Key, key.Value);
+            //}
 
             return isSaved;
         }

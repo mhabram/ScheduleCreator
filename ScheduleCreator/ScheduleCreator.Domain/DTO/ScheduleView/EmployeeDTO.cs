@@ -1,13 +1,12 @@
 ﻿using ScheduleCreator.Domain.DTO.Observable;
 using System;
-using System.Collections.Generic;
 
 namespace ScheduleCreator.Domain.DTO.ScheduleView
 {
     public class EmployeeDTO : ObservableObject
     {
+        public int EmployeeId { get; set; }
         public string FullName { get; set; }
-        public DateTime Date { get; set; }
         private bool _day;
         public bool Day
         {
@@ -48,5 +47,6 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
                 OnPropertyChanged(nameof(Shift));
             }
         }
+        public int CalendarDateDTOId{ get; set; }
     }
 }

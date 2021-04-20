@@ -73,31 +73,31 @@
                                             <DataTemplate>
                                                 <StackPanel HorizontalAlignment="Center">
                                                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="0 5 0 0">
-                                                        <TextBlock Text="{Binding FullName}" HorizontalAlignment="Center" FontSize="14"/>
-                                                        <TextBlock Text="{Binding Shift}" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold"/>
+                                                            <TextBlock Text="{Binding FullName}" HorizontalAlignment="Center" FontSize="14"/>
+                                                            <TextBlock Text="{Binding Shift}" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold"/>
                                                     </StackPanel>
                                                     <Border Padding="0" Margin="0">
                                                         <StackPanel Orientation="Horizontal"
-                                                                    VerticalAlignment="Center"
-                                                                    HorizontalAlignment="Center"
-                                                                    Margin="0">
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Center"
+                                                                Margin="0">
                                                             <ToggleButton IsChecked="{Binding Day}"
-                                                                          Command="{Binding DataContext.CalendarUpdateDayShiftCommand, RelativeSource={RelativeSource Mode=FindAncestor,
-                                                                          AncestorType=Grid, AncestorLevel=2}}"
-                                                                          CommandParameter="{Binding}"
-                                                                          Content="Day"/>
+                                                                        Command="{Binding DataContext.CalendarUpdateDayShiftCommand, RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                        AncestorType=Grid, AncestorLevel=2}}"
+                                                                        CommandParameter="{Binding}"
+                                                                        Content="Day"/>
 
                                                             <ToggleButton IsChecked="{Binding Swing}"
-                                                                          Command="{Binding DataContext.CalendarUpdateSwingShiftCommand, RelativeSource={RelativeSource Mode=FindAncestor,
-                                                                          AncestorType=Grid, AncestorLevel=2}}"
-                                                                          CommandParameter="{Binding}"
-                                                                          Content="Swing"/>
+                                                                        Command="{Binding DataContext.CalendarUpdateSwingShiftCommand, RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                        AncestorType=Grid, AncestorLevel=2}}"
+                                                                        CommandParameter="{Binding}"
+                                                                        Content="Swing"/>
 
                                                             <ToggleButton IsChecked="{Binding Night}"
-                                                                          Command="{Binding DataContext.CalendarUpdateNightShiftCommand, RelativeSource={RelativeSource Mode=FindAncestor,
-                                                                          AncestorType=Grid, AncestorLevel=2}}"
-                                                                          CommandParameter="{Binding}"
-                                                                          Content="Night"/>
+                                                                        Command="{Binding DataContext.CalendarUpdateNightShiftCommand, RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                        AncestorType=Grid, AncestorLevel=2}}"
+                                                                        CommandParameter="{Binding}"
+                                                                        Content="Night"/>
                                                         </StackPanel>
                                                     </Border>
                                                 </StackPanel>

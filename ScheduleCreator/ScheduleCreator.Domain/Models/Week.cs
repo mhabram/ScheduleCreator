@@ -16,6 +16,6 @@ namespace ScheduleCreator.Domain.Models
         [ForeignKey("EmployeeId")]
         public virtual Employee Employee { get; set; }
 
-        public virtual ICollection<Day> Days { get; set; }
+        public virtual IList<Day> Days { get; set; }
     }
 }

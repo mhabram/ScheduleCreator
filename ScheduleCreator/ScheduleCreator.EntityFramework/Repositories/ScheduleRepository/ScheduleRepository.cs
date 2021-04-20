@@ -18,9 +18,9 @@ namespace ScheduleCreator.EntityFramework.Repositories.ScheduleRepository
             _contextFactory = contextFactory;
         }
 
-        public async Task<ICollection<Employee>> GetSchedule(string internalId)
+        public async Task<IList<Employee>> GetSchedule(string internalId)
         {
-            ICollection<Employee> employees = new Collection<Employee>();
+            IList<Employee> employees = new List<Employee>();
 
             using ScheduleCreatorDbContext context = _contextFactory.CreateDbContext();
             

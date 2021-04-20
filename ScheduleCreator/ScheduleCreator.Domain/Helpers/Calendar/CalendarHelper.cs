@@ -169,7 +169,7 @@ namespace ScheduleCreator.Domain.Helpers.Calendar
         public Week GetWeek(List<DateTime> preferenceDays, List<DateTime> colleagueDays, int weeksDict, string shift, int workingDays = 0) // need to check if needed
         {
             Week week = new();
-            ICollection<Day> days = new Collection<Day>();
+            IList<Day> days = new List<Day>();
             DateTime currentDate = DateTime.Now.AddMonths(1);
             DateTime startMonth = currentDate.AddDays(-currentDate.Day + 1);
             DateTime dayToAdd;
