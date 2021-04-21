@@ -13,45 +13,53 @@ namespace ScheduleCreator.EntityFramework.Services
 {
     public class ScheduleService : IScheduleService
     {
-        private readonly IWeekService _weekService;
         private readonly IScheduleRepository _scheduleRepository;
 
-        public ScheduleService(IWeekService weekService, IScheduleRepository scheduleRepository)
+        public ScheduleService(IScheduleRepository scheduleRepository)
         {
-            _weekService = weekService;
             _scheduleRepository = scheduleRepository;
         }
 
         public async Task<IList<Employee>> GetSchedule()
         {
             IList<Employee> employees = new List<Employee>();
+            IList<Day> test = new List<Day>();
             string internalId = String.Concat(DateTime.Now.AddMonths(1).Year.ToString(), DateTime.Now.AddMonths(1).Month.ToString());
             
             employees =  await _scheduleRepository.GetSchedule(internalId);
+
+            for (int i = 0; i < employees.Count; i++)
+            {
+                employees[i].Days = employees[i].Days.OrderBy(o => o.WorkingDay).ToList();
+            }
 
             return employees;
         }
 
         public async Task<bool> CreateSchedule(ObservableCollection<CalendarDateDTO> calendarDateDTO)
         {
-            Dictionary<string, ICollection<Day>> employeeFullNameWorkingDays = new Dictionary<string, ICollection<Day>>();
+            Dictionary<string, List<Day>> employeeFullNameWorkingDays = new();
             EmployeeDTO employeeDTO;
             bool isSaved = false;
-            string shift = "";
             bool isWorking = false;
+            string shift;
+            string monthId = String.Concat(DateTime.Now.AddMonths(1).Year.ToString(), DateTime.Now.AddMonths(1).Month.ToString());
 
             for (int i = 0; i < calendarDateDTO.Count; i++)
             {
                 for (int j = 0; j < calendarDateDTO[i].Employees.Count; j++)
                 {
+                    shift = "Free";
                     employeeDTO = calendarDateDTO[i].Employees[j];
 
-                    if ((employeeDTO.Shift == null) || (employeeDTO.Shift == ""))
-                        shift = "Free";
-                    else
+                    //if ((employeeDTO.Shift == null) || (employeeDTO.Shift == ""))
+                    //    shift = "Free";
+                    //else
+                    if ((employeeDTO.Shift != null) && (employeeDTO.Shift != ""))
                         shift = employeeDTO.Shift;
 
-                    if (employeeDTO.Day || employeeDTO.Swing || employeeDTO.Night)
+                    //if (employeeDTO.Day || employeeDTO.Swing || employeeDTO.Night)
+                    if (shift != "Free")
                         isWorking = true;
 
                     if (employeeFullNameWorkingDays.ContainsKey(employeeDTO.FullName))
@@ -62,7 +70,8 @@ namespace ScheduleCreator.EntityFramework.Services
                             {
                                 Shift = shift,
                                 IsWorking = isWorking,
-                                WorkingDay = calendarDateDTO[i].Date
+                                WorkingDay = calendarDateDTO[i].Date,
+                                MonthId = monthId
                             });
                     }
                     else
@@ -73,7 +82,8 @@ namespace ScheduleCreator.EntityFramework.Services
                                 {
                                     Shift = shift,
                                     IsWorking = isWorking,
-                                    WorkingDay = calendarDateDTO[i].Date
+                                    WorkingDay = calendarDateDTO[i].Date,
+                                    MonthId = monthId
                                 }
                             });
                     }
@@ -82,53 +92,8 @@ namespace ScheduleCreator.EntityFramework.Services
 
             foreach (var key in employeeFullNameWorkingDays)
             {
-                isSaved = await _weekService.AddWeeks(key.Key, key.Value);
+                isSaved = await _scheduleRepository.AddEmployeeScheduleDays(key.Key.Split()[1].ToLower(), key.Value);
             }
-
-            //foreach (CalendarDateDTO calendarDTO in calendarDateDTO)
-            //{
-            //    foreach (EmployeeDTO employeeDTO in calendarDTO.Employees)
-            //    {
-            //        if ((employeeDTO.Shift == null) || (employeeDTO.Shift == ""))
-            //            shift = "Free";
-            //        else
-            //            shift = employeeDTO.Shift;
-
-            //        if (employeeDTO.Day || employeeDTO.Swing || employeeDTO.Night)
-            //            isWorking = true;
-
-            //        if (employeeFullNameWorkingDays.ContainsKey(employeeDTO.FullName))
-            //        {
-
-            //            employeeFullNameWorkingDays[employeeDTO.FullName].Add(
-            //                new Day()
-            //                {
-            //                    Shift = shift,
-            //                    IsWorking = isWorking,
-            //                    //IsWorking = employeeDTO.IsWorking,
-            //                    WorkingDay = employeeDTO.Date
-            //                });
-            //        }
-            //        else
-            //        {
-            //            employeeFullNameWorkingDays.Add(employeeDTO.FullName,
-            //                new List<Day>() {
-            //                    new Day()
-            //                    {
-            //                        Shift = shift,
-            //                        IsWorking = isWorking,
-            //                        //IsWorking = employeeDTO.IsWorking,
-            //                        WorkingDay = employeeDTO.Date
-            //                    }
-            //                });
-            //        }
-            //    }
-            //}
-
-            //foreach (var key in employeeFullNameWorkingDays)
-            //{
-            //    isSaved = await _weekService.AddWeeks(key.Key, key.Value);
-            //}
 
             return isSaved;
         }

@@ -13,10 +13,11 @@ namespace ScheduleCreator.WPF.ViewModels
 {
     public class ScheduleViewModel : ViewModelBase
     {
-        public ScheduleViewModel(IEmployeeService employeeService, IScheduleService scheduleService, IPreferenceService preferenceService)
+        public ScheduleViewModel(IEmployeeService employeeService,
+            IScheduleService scheduleService)
         {
-            GetCalendarEmployeeDetailsCommand = new GetCalendarEmployeeDetailsCommand(this, employeeService, scheduleService, preferenceService);
-            GenerateCSVFileCommand = new GenerateCSVFileCommand(this, scheduleService);
+            GetCalendarEmployeeDetailsCommand = new GetCalendarEmployeeDetailsCommand(this, employeeService, scheduleService);
+            GenerateCSVFileCommand = new GenerateCSVFileCommand(scheduleService);
             CalendarUpdateCommand = new CalendarUpdateCommand(this, scheduleService);
             CalendarUpdateDayShiftCommand = new RelayCommand<EmployeeDTO>(UpdateDayShift);
             CalendarUpdateSwingShiftCommand = new RelayCommand<EmployeeDTO>(UpdateSwingShift);
@@ -58,6 +59,7 @@ namespace ScheduleCreator.WPF.ViewModels
         private void UpdateDayShift(EmployeeDTO employeeDTO)
         {
             // need to add exception while employee is working 5 days in a row.
+            // need to add checking the next day if user add employee to next day and then back to previous.
             string shift = "Day";
             CalendarDateDTO calendarDateDTO = _calendarDates.ElementAt(employeeDTO.CalendarDateDTOId);
             int numnberOfEmployeesWorkingOnShift = CountEmployeesInWeekend(calendarDateDTO.Employees, shift);
@@ -105,7 +107,9 @@ namespace ScheduleCreator.WPF.ViewModels
                             employeeDTO.Shift = shift;
                             UpdateViewEmployee(employeeDTO);
                         }
-                        else
+
+                        if (((calendarDateDTO.Date.DayOfWeek.ToString() == "Saturday") || (calendarDateDTO.Date.DayOfWeek.ToString() == "Sunday")) &&
+                            (numnberOfEmployeesWorkingOnShift >= 1))
                             employeeDTO.Day = false;
                     }
                     else
@@ -161,7 +165,9 @@ namespace ScheduleCreator.WPF.ViewModels
                             employeeDTO.Shift = shift;
                             UpdateViewEmployee(employeeDTO);
                         }
-                        else
+
+                        if (((calendarDateDTO.Date.DayOfWeek.ToString() == "Saturday") || (calendarDateDTO.Date.DayOfWeek.ToString() == "Sunday")) &&
+                            (numnberOfEmployeesWorkingOnShift >= 1))
                             employeeDTO.Swing = false;
                     }
                     else
@@ -210,7 +216,9 @@ namespace ScheduleCreator.WPF.ViewModels
                             employeeDTO.Shift = shift;
                             UpdateViewEmployee(employeeDTO);
                         }
-                        else
+
+                        if (((calendarDateDTO.Date.DayOfWeek.ToString() == "Saturday") || (calendarDateDTO.Date.DayOfWeek.ToString() == "Sunday")) &&
+                            (numnberOfEmployeesWorkingOnShift >= 1))
                             employeeDTO.Night = false;
                     }
                     else
@@ -226,7 +234,7 @@ namespace ScheduleCreator.WPF.ViewModels
         {
             string lastName = employeeDTO.FullName.Split()[1];
             Preferences preferences = _preferences.Where(e => e.Employee.LastName == lastName).FirstOrDefault();
-            return preferences.Dates.Any(d => d.FreeDayChosen.Day == _calendarDates.ElementAt(employeeDTO.CalendarDateDTOId).Date.Day);
+            return preferences.PreferenceDays.Any(d => d.FreeDayChosen.Day == _calendarDates.ElementAt(employeeDTO.CalendarDateDTOId).Date.Day);
         }
 
         private int GetWorkingDays(EmployeeDTO employeeDTO)

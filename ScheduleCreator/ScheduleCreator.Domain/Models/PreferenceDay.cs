@@ -6,10 +6,10 @@ using System.Text;
 
 namespace ScheduleCreator.Domain.Models
 {
-    public class Date
+    public class PreferenceDay
     {
         [Key]
-        public int DateId { get; set; }
+        public int PreferenceDayId { get; set; }
         public DateTime FreeDayChosen { get; set; }
 
         public virtual Preferences Preferences { get; set; }

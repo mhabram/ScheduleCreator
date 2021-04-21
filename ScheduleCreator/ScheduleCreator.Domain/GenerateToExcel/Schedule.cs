@@ -3,21 +3,19 @@ using ScheduleCreator.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScheduleCreator.Domain.GenerateToExcel
 {
     public class Schedule
     {
-        private ICollection<Employee> Employees;
+        private IList<Employee> Employees;
 
         private int startRow = 2;
         private int startCol = 2;
         private XLWorkbook workbook;
         private IXLWorksheet worksheet;
 
-        public Schedule(ICollection<Employee> employees)
+        public Schedule(IList<Employee> employees)
         {
             Employees = employees;
         }
@@ -93,22 +91,19 @@ namespace ScheduleCreator.Domain.GenerateToExcel
 
                 // correcting Cells before loop
                 currentCol++;
-                foreach(Employee e in Employees) // col
+                for (int i = 0; i < Employees.Count; i++)
                 {
                     // correcting Rows
                     currentRow = startRow;
                     currentCol++;
 
-                    foreach (Week w in e.Weeks)
+                    for (int j = 0; j < Employees[i].Days.Count; j++)
                     {
-                        foreach (Day d in w.Days) // row
-                        {
-                            currentRow++;
-                            if (d.Shift == "Free")
-                                worksheet.Cell(currentRow, currentCol).Value = "";
-                            else
-                                worksheet.Cell(currentRow, currentCol).Value = d.Shift;
-                        }
+                        currentRow++;
+                        if (Employees[i].Days[j].Shift == "Free")
+                            worksheet.Cell(currentRow, currentCol).Value = "";
+                        else
+                            worksheet.Cell(currentRow, currentCol).Value = Employees[i].Days[j].Shift;
                     }
                 }
                 #endregion

@@ -16,6 +16,6 @@ namespace ScheduleCreator.Domain.Models
         public string InternalPreferenceId { get; set; }
 
         public virtual Employee Employee { get; set; }
-        public virtual ICollection<Date> Dates { get; set; } // change it to virtual later.
+        public virtual IList<PreferenceDay> PreferenceDays { get; set; }
     }
 }

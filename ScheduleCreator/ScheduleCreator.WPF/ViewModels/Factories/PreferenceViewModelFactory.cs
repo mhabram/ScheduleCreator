@@ -9,18 +9,20 @@ namespace ScheduleCreator.WPF.ViewModels.Factories
     {
         private readonly IPreferenceService _preferenceService;
         private readonly IEmployeeService _employeeService;
-        private readonly IDateService _dateService;
+        private readonly IPreferenceDayService _preferenceDayService;
 
-        public PreferenceViewModelFactory(IPreferenceService preferenceService, IDateService dateService, IEmployeeService employeeService)
+        public PreferenceViewModelFactory(IPreferenceService preferenceService,
+            IPreferenceDayService preferenceDayService,
+            IEmployeeService employeeService)
         {
             _preferenceService = preferenceService;
-            _dateService = dateService;
+            _preferenceDayService = preferenceDayService;
             _employeeService = employeeService;
         }
 
         public PreferenceViewModel CreateViewModel()
         {
-            return new PreferenceViewModel(_preferenceService, _employeeService, _dateService);
+            return new PreferenceViewModel(_preferenceService, _employeeService, _preferenceDayService);
         }
     }
 }

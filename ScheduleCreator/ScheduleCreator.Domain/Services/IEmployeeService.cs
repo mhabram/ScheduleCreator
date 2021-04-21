@@ -11,7 +11,6 @@ namespace ScheduleCreator.Domain.Services
     {
         Task<Employee> AddEmployee(string name, string lastName);
         Task<int> GetEmployee(string lastName);
-        Task<ObservableCollection<Employee>> GetDetails();
-        Task<Employee> SetWeek(Employee employee, Week week, byte d);
+        Task<IList<Employee>> GetDetails();
     }
 }

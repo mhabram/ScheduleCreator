@@ -11,7 +11,9 @@ namespace ScheduleCreator.WPF.ViewModels
 {
     public class PreferenceViewModel : ViewModelBase
     {
-        public PreferenceViewModel(IPreferenceService preferenceService, IEmployeeService employeeService, IDateService dateService)
+        public PreferenceViewModel(IPreferenceService preferenceService,
+            IEmployeeService employeeService,
+            IPreferenceDayService dateService)
         {
             AddPreferenceCommand = new AddPreferenceCommand(this, preferenceService, employeeService, dateService);
         }

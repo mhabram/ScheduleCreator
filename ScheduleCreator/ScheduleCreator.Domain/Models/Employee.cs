@@ -21,9 +21,7 @@ namespace ScheduleCreator.Domain.Models
 
         [ForeignKey("PreferencesId")]
         public virtual Preferences Preferences { get; set; }
-        
-        public virtual IList<Week> Weeks { get; set; }
 
-        public virtual IList<EmployeeSchedule> EmployeeSchedules { get; set; }
+        public virtual IList<Day> Days { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace ScheduleCreator.WPF.Commands
 
         public async void Execute(object parameter)
         {
-            _viewModel.Employees =  await _employeeService.GetDetails();
+            //_viewModel.Employees = await _employeeService.GetDetails();
         }
     }
 }

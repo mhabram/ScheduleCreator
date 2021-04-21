@@ -1,22 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ScheduleCreator.Domain.Models;
 using ScheduleCreator.Domain.Services;
 using ScheduleCreator.EntityFramework;
 using ScheduleCreator.EntityFramework.Repositories.DateRepository;
 using ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories;
 using ScheduleCreator.EntityFramework.Repositories.PreferenceRepository;
 using ScheduleCreator.EntityFramework.Repositories.ScheduleRepository;
-using ScheduleCreator.EntityFramework.Repositories.WeekRepository;
 using ScheduleCreator.EntityFramework.Services;
 using ScheduleCreator.WPF.State.Navigators;
 using ScheduleCreator.WPF.ViewModels;
 using ScheduleCreator.WPF.ViewModels.Factories;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ScheduleCreator.WPF
@@ -46,15 +39,13 @@ namespace ScheduleCreator.WPF
             //Services
             services.AddSingleton<IEmployeeService, EmployeeService>();
             services.AddSingleton<IPreferenceService, PreferenceService>();
-            services.AddSingleton<IDateService, DateService>();
+            services.AddSingleton<IPreferenceDayService, PreferenceDayService>();
             services.AddSingleton<IScheduleService, ScheduleService>();
-            services.AddSingleton<IWeekService, WeekService>();
 
-            //Repositories
+            //Repositoriess
             services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
             services.AddSingleton<IPreferenceRepository, PreferenceRepository>();
-            services.AddSingleton<IDateRepository, DateRepository>();
-            services.AddSingleton<IWeekRepository, WeekRepository>();
+            services.AddSingleton<IPreferenceDayRepository, PreferenceDayRepository>();
             services.AddSingleton<IScheduleRepository, ScheduleRepository>();
 
             //Factories

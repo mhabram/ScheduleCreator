@@ -28,18 +28,16 @@ namespace ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories
             }
         }
 
-        public async Task<IEnumerable<Employee>> GetDetails(string internalPreferenceId, string internalWeekId)
+        public async Task<IList<Employee>> GetDetails(string internalPreferenceId)
         {
             using (ScheduleCreatorDbContext context = _contextFactory.CreateDbContext())
             {
-                IEnumerable<Employee> employees = Enumerable.Empty<Employee>();
+                IList<Employee> employees = new List<Employee>();
 
                 employees = await context.Employees
                     .Include(p => p.Preferences)
-                    .ThenInclude(d => d.Dates)
+                    .ThenInclude(d => d.PreferenceDays)
                     .Where(p => p.Preferences.InternalPreferenceId == internalPreferenceId)
-                    .Include(w => w.Weeks.Where(id => id.InternalWeekId == internalWeekId))
-                    .ThenInclude(d => d.Days)
                     .ToListAsync();
 
                 return employees;
@@ -59,24 +57,24 @@ namespace ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories
             }
         }
 
-        public async Task<Employee> SetWeek(Employee emp, Week week, ICollection<Day> days)
-        {
-            using (ScheduleCreatorDbContext context = _contextFactory.CreateDbContext())
-            {
-                Employee employee = await context.Employees.SingleOrDefaultAsync(e => e.EmployeeId == emp.EmployeeId);
+        //public async Task<Employee> SetWeek(Employee emp, Week week, ICollection<Day> days)
+        //{
+        //    using (ScheduleCreatorDbContext context = _contextFactory.CreateDbContext())
+        //    {
+        //        Employee employee = await context.Employees.SingleOrDefaultAsync(e => e.EmployeeId == emp.EmployeeId);
                 
-                week.Employee = employee;
-                await context.Weeks.AddAsync(week);
-                foreach(Day d in days)
-                {
-                    d.Week = week;
-                    await context.Days.AddAsync(d);
-                }
+        //        week.Employee = employee;
+        //        await context.Weeks.AddAsync(week);
+        //        foreach(Day d in days)
+        //        {
+        //            d.Week = week;
+        //            await context.Days.AddAsync(d);
+        //        }
 
-                await context.SaveChangesAsync();
+        //        await context.SaveChangesAsync();
 
-                return employee;
-            }
-        }
+        //        return employee;
+        //    }
+        //}
     }
 }

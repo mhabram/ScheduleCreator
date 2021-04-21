@@ -2,8 +2,6 @@
 using ScheduleCreator.Domain.Services;
 using ScheduleCreator.WPF.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.Commands
@@ -13,14 +11,17 @@ namespace ScheduleCreator.WPF.Commands
         private readonly PreferenceViewModel _viewModel;
         private readonly IPreferenceService _preferenceService;
         private readonly IEmployeeService _employeeService;
-        private readonly IDateService _dateService;
+        private readonly IPreferenceDayService _preferenceDayService;
 
-        public AddPreferenceCommand(PreferenceViewModel viewModel, IPreferenceService preferenceService, IEmployeeService employeeService, IDateService dateService)
+        public AddPreferenceCommand(PreferenceViewModel viewModel,
+            IPreferenceService preferenceService,
+            IEmployeeService employeeService,
+            IPreferenceDayService preferenceDayService)
         {
             _viewModel = viewModel;
             _employeeService = employeeService;
             _preferenceService = preferenceService;
-            _dateService = dateService;
+            _preferenceDayService = preferenceDayService;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -39,9 +40,9 @@ namespace ScheduleCreator.WPF.Commands
                 if (employeId != -1)
                 {
                     Preferences prefernces = await _preferenceService.AddPreference(employeId, _viewModel.Holidays);
-                    await _dateService.AddDate(_viewModel.DayOff1, prefernces.PreferencesId);
-                    await _dateService.AddDate(_viewModel.DayOff2, prefernces.PreferencesId);
-                    await _dateService.AddDate(_viewModel.DayOff3, prefernces.PreferencesId);
+                    await _preferenceDayService.AddPreferenceDay(_viewModel.DayOff1, prefernces.PreferencesId);
+                    await _preferenceDayService.AddPreferenceDay(_viewModel.DayOff2, prefernces.PreferencesId);
+                    await _preferenceDayService.AddPreferenceDay(_viewModel.DayOff3, prefernces.PreferencesId);
 
                     System.Windows.MessageBox.Show("Preferences has been applied to the employee.");
                 }

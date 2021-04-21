@@ -14,8 +14,9 @@ namespace ScheduleCreator.Domain.Models
         public string Shift { get; set; }
         public bool IsWorking { get; set; }
         public DateTime WorkingDay { get; set; }
+        public string MonthId { get; set; }
 
-        [ForeignKey("WeekId")]
-        public virtual Week Week { get; set; }
+        [ForeignKey("EmployeeId")]
+        public virtual Employee Employee { get; set; }
     }
 }

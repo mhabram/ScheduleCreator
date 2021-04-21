@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace ScheduleCreator.Domain.Services
 {
-    public interface IDateService
+    public interface IPreferenceDayService
     {
-        Task<Date> AddDate(DateTime date, int preferencesId);
+        Task<PreferenceDay> AddPreferenceDay(DateTime date, int preferencesId);
     }
 }

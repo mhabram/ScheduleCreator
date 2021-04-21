@@ -15,12 +15,10 @@ namespace ScheduleCreator.WPF.Commands
 {
     class GenerateCSVFileCommand : ICommand
     {
-        private readonly ScheduleViewModel _viewModel;
         private readonly IScheduleService _scheduleService;
 
-        public GenerateCSVFileCommand(ScheduleViewModel viewModel, IScheduleService scheduleService)
+        public GenerateCSVFileCommand(IScheduleService scheduleService)
         {
-            _viewModel = viewModel;
             _scheduleService = scheduleService;
         }
 
@@ -33,9 +31,9 @@ namespace ScheduleCreator.WPF.Commands
 
         public async void Execute(object parameter)
         {
-            ICollection<Employee> employees = await _scheduleService.GetSchedule();
+            IList<Employee> employees = await _scheduleService.GetSchedule();
             bool isSaved = false;
-            Domain.GenerateToExcel.Schedule schedule = new Domain.GenerateToExcel.Schedule(employees);
+            Schedule schedule = new Schedule(employees);
             isSaved = schedule.Create(@"C:\Temp\Schedule.xlsx");
 
             if (isSaved)

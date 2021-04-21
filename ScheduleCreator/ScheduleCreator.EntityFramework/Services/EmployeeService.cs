@@ -30,15 +30,12 @@ namespace ScheduleCreator.EntityFramework.Services
             return await _employeeRepository.AddEmployee(employee);
         }
 
-        public async Task<ObservableCollection<Employee>> GetDetails()
+        public async Task<IList<Employee>> GetDetails()
         {
-            ObservableCollection<Employee> employees = new ObservableCollection<Employee>();
+            IList<Employee> employees = new List<Employee>();
             DateTime StartMonth = DateTime.Now.AddMonths(1).AddDays(-DateTime.Now.AddMonths(1).Day + 1);
             string internalPreferenceId = String.Concat(StartMonth.Year.ToString(), StartMonth.Month.ToString());
-            string internalWeekId = String.Concat(StartMonth.Year.ToString(), StartMonth.Month.ToString(), 5);
-
-            // to fix issue with the 28 days of February need to create another getDetails repository and add to if that will be checking if month has 4 or 5 weeks.
-            IEnumerable<Employee> employeeDetails = await _employeeRepository.GetDetails(internalPreferenceId, internalWeekId);
+            IList<Employee> employeeDetails = await _employeeRepository.GetDetails(internalPreferenceId);
 
             if (employeeDetails != null)
             {
@@ -58,21 +55,6 @@ namespace ScheduleCreator.EntityFramework.Services
             int employeId = await _employeeRepository.GetEmployee(lastName.ToLower());
 
             return employeId;
-        }
-
-        public async Task<Employee> SetWeek(Employee employee, Week week, byte d)
-        {
-            ICollection<Day> day = new Collection<Day>();
-            DateTime StartMonth = DateTime.Now.AddMonths(1).AddDays(-DateTime.Now.AddMonths(1).Day + 1);
-            string internalWeekId = String.Concat(StartMonth.Year.ToString(), StartMonth.Month.ToString(), d);
-
-            week.InternalWeekId = internalWeekId;
-            day = week.Days;
-
-
-            employee = await _employeeRepository.SetWeek(employee, week, day);
-
-            return employee;
         }
     }
 }

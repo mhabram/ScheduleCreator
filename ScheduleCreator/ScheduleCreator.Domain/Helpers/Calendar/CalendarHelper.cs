@@ -100,129 +100,129 @@ namespace ScheduleCreator.Domain.Helpers.Calendar
             return daysAfterMonday;
         }
 
-        public List<DateTime> ColleagueDays(Week weeks = null) // need to check if needs this methood.
-        {
-            List<DateTime> colleagueDays = new();
+        //public List<DateTime> ColleagueDays(Week weeks = null) // need to check if needs this methood.
+        //{
+        //    List<DateTime> colleagueDays = new();
 
-            if (weeks != null)
-            {
-                foreach (Day day in weeks.Days)
-                {
-                    colleagueDays.Add(day.WorkingDay.Date);
-                }
-                if (colleagueDays.Count < 7)
-                {
-                    for (int i = colleagueDays.Count; i < 7; i++)
-                    {
-                        colleagueDays.Add(DateTime.Now.AddMonths(-3).Date);
-                    }
-                }
-            }
-            else
-            {
-                for (int i = 0; i < 7; i++)
-                {
-                    colleagueDays.Add(DateTime.Now.AddMonths(-3).Date);
-                }
-            }
+        //    if (weeks != null)
+        //    {
+        //        foreach (Day day in weeks.Days)
+        //        {
+        //            colleagueDays.Add(day.WorkingDay.Date);
+        //        }
+        //        if (colleagueDays.Count < 7)
+        //        {
+        //            for (int i = colleagueDays.Count; i < 7; i++)
+        //            {
+        //                colleagueDays.Add(DateTime.Now.AddMonths(-3).Date);
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        for (int i = 0; i < 7; i++)
+        //        {
+        //            colleagueDays.Add(DateTime.Now.AddMonths(-3).Date);
+        //        }
+        //    }
 
-            return colleagueDays;
-        }
+        //    return colleagueDays;
+        //}
 
-        public List<DateTime> PreferenceDays(Preferences preferences) // need to check if this is usefull.
-        {
-            List<DateTime> preferenceDays = new();
+        //public List<DateTime> PreferenceDays(Preferences preferences) // need to check if this is usefull.
+        //{
+        //    List<DateTime> preferenceDays = new();
 
-            foreach (Date day in preferences.Dates)
-            {
-                preferenceDays.Add(day.FreeDayChosen.Date);
-            }
+        //    foreach (Date day in preferences.Dates)
+        //    {
+        //        preferenceDays.Add(day.FreeDayChosen.Date);
+        //    }
 
-            return preferenceDays;
-        }
-
-
-        public Week CheckWeek(Employee tempEmployee, Employee currentEmployee, int weeksDict, string shift, int workingDays = 0) // need to check if needed
-        {
-            Week week = new();
-            List<DateTime> colleagueDays = new();
-            List<DateTime> preferenceDays = PreferenceDays(currentEmployee.Preferences);
-
-            if ((tempEmployee.Weeks != null) && (tempEmployee.Weeks.Count > 0))
-                colleagueDays = ColleagueDays(tempEmployee.Weeks.ElementAt(0));
-            else
-                colleagueDays = ColleagueDays();
+        //    return preferenceDays;
+        //}
 
 
-            if (currentEmployee.Weeks.Count > 0)
-            {
-                week = GetWeek(preferenceDays, colleagueDays, weeksDict, shift, workingDays);
-            }
-            else
-            {
-                week = GetWeek(preferenceDays, colleagueDays, weeksDict, shift, workingDays);
-            }
+        //public Week CheckWeek(Employee tempEmployee, Employee currentEmployee, int weeksDict, string shift, int workingDays = 0) // need to check if needed
+        //{
+        //    Week week = new();
+        //    List<DateTime> colleagueDays = new();
+        //    List<DateTime> preferenceDays = PreferenceDays(currentEmployee.Preferences);
 
-            return week;
-        }
+        //    if ((tempEmployee.Weeks != null) && (tempEmployee.Weeks.Count > 0))
+        //        colleagueDays = ColleagueDays(tempEmployee.Weeks.ElementAt(0));
+        //    else
+        //        colleagueDays = ColleagueDays();
 
-        public Week GetWeek(List<DateTime> preferenceDays, List<DateTime> colleagueDays, int weeksDict, string shift, int workingDays = 0) // need to check if needed
-        {
-            Week week = new();
-            IList<Day> days = new List<Day>();
-            DateTime currentDate = DateTime.Now.AddMonths(1);
-            DateTime startMonth = currentDate.AddDays(-currentDate.Day + 1);
-            DateTime dayToAdd;
-            int d = 0;
 
-            if ((weeksDict - 7) > 0)
-                d = (weeksDict - 7);
+        //    if (currentEmployee.Weeks.Count > 0)
+        //    {
+        //        week = GetWeek(preferenceDays, colleagueDays, weeksDict, shift, workingDays);
+        //    }
+        //    else
+        //    {
+        //        week = GetWeek(preferenceDays, colleagueDays, weeksDict, shift, workingDays);
+        //    }
 
-            for (int day = d; day < weeksDict; day++)
-            {
-                if (workingDays < 5) // probably need to change it for 4 instead of 5
-                {
-                    dayToAdd = startMonth.AddDays(day).Date; // Hours has to be deleted from this. After that it will be working.
+        //    return week;
+        //}
 
-                    // Need to add condidtion that will not allow create shedule with (12.x) N and day after (13.x) D to be fixed in future. !!!
-                    if (shift == "Night")
-                    {
-                        if ((preferenceDays[0] != dayToAdd) && (preferenceDays[1] != dayToAdd))
-                        {
-                            if ((colleagueDays[0] != dayToAdd) && (colleagueDays[1] != dayToAdd) && (colleagueDays[2] != dayToAdd) &&
-                                (colleagueDays[3] != dayToAdd) && (colleagueDays[4] != dayToAdd)) // to be fixed while 2 or more people on the same shfit
-                            {
-                                days.Add(new Day()
-                                {
-                                    WorkingDay = dayToAdd,
-                                    Shift = shift
-                                });
-                                workingDays++;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if ((preferenceDays[0] != dayToAdd) && (preferenceDays[1] != dayToAdd))
-                        {
-                            if ((colleagueDays[0] != dayToAdd) && (colleagueDays[1] != dayToAdd) && (colleagueDays[2] != dayToAdd) &&
-                                (colleagueDays[3] != dayToAdd) && (colleagueDays[4] != dayToAdd)) // this has to be changed
-                            {
-                                days.Add(new Day()
-                                {
-                                    WorkingDay = dayToAdd,
-                                    Shift = shift
-                                });
-                                workingDays++;
-                            }
-                        }
-                    }
-                }
-            }
+        //public Week GetWeek(List<DateTime> preferenceDays, List<DateTime> colleagueDays, int weeksDict, string shift, int workingDays = 0) // need to check if needed
+        //{
+        //    Week week = new();
+        //    IList<Day> days = new List<Day>();
+        //    DateTime currentDate = DateTime.Now.AddMonths(1);
+        //    DateTime startMonth = currentDate.AddDays(-currentDate.Day + 1);
+        //    DateTime dayToAdd;
+        //    int d = 0;
 
-            week.Days = days;
+        //    if ((weeksDict - 7) > 0)
+        //        d = (weeksDict - 7);
 
-            return week;
-        }
+        //    for (int day = d; day < weeksDict; day++)
+        //    {
+        //        if (workingDays < 5) // probably need to change it for 4 instead of 5
+        //        {
+        //            dayToAdd = startMonth.AddDays(day).Date; // Hours has to be deleted from this. After that it will be working.
+
+        //            // Need to add condidtion that will not allow create shedule with (12.x) N and day after (13.x) D to be fixed in future. !!!
+        //            if (shift == "Night")
+        //            {
+        //                if ((preferenceDays[0] != dayToAdd) && (preferenceDays[1] != dayToAdd))
+        //                {
+        //                    if ((colleagueDays[0] != dayToAdd) && (colleagueDays[1] != dayToAdd) && (colleagueDays[2] != dayToAdd) &&
+        //                        (colleagueDays[3] != dayToAdd) && (colleagueDays[4] != dayToAdd)) // to be fixed while 2 or more people on the same shfit
+        //                    {
+        //                        days.Add(new Day()
+        //                        {
+        //                            WorkingDay = dayToAdd,
+        //                            Shift = shift
+        //                        });
+        //                        workingDays++;
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if ((preferenceDays[0] != dayToAdd) && (preferenceDays[1] != dayToAdd))
+        //                {
+        //                    if ((colleagueDays[0] != dayToAdd) && (colleagueDays[1] != dayToAdd) && (colleagueDays[2] != dayToAdd) &&
+        //                        (colleagueDays[3] != dayToAdd) && (colleagueDays[4] != dayToAdd)) // this has to be changed
+        //                    {
+        //                        days.Add(new Day()
+        //                        {
+        //                            WorkingDay = dayToAdd,
+        //                            Shift = shift
+        //                        });
+        //                        workingDays++;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    week.Days = days;
+
+        //    return week;
+        //}
     }
 }
