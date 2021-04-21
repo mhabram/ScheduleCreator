@@ -13,11 +13,11 @@ using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.Commands
 {
-    class GenerateCSVFileCommand : ICommand
+    class GenerateExcelFileCommand : ICommand
     {
         private readonly IScheduleService _scheduleService;
 
-        public GenerateCSVFileCommand(IScheduleService scheduleService)
+        public GenerateExcelFileCommand(IScheduleService scheduleService)
         {
             _scheduleService = scheduleService;
         }
@@ -37,7 +37,7 @@ namespace ScheduleCreator.WPF.Commands
             isSaved = schedule.Create(@"C:\Temp\Schedule.xlsx");
 
             if (isSaved)
-                MessageBox.Show("File xlsx has been created.");
+                MessageBox.Show("File xlsx created.");
             else
                 MessageBox.Show("File has not been created");
         }

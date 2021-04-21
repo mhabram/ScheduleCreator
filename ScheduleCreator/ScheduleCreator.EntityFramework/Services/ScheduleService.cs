@@ -30,6 +30,8 @@ namespace ScheduleCreator.EntityFramework.Services
 
             for (int i = 0; i < employees.Count; i++)
             {
+                employees[i].Name = employees[i].Name = String.Concat(employees[i].Name.First().ToString().ToUpper(), employees[i].Name.Substring(1).ToLower());
+                employees[i].LastName = employees[i].LastName = String.Concat(employees[i].LastName.First().ToString().ToUpper(), employees[i].LastName.Substring(1).ToLower());
                 employees[i].Days = employees[i].Days.OrderBy(o => o.WorkingDay).ToList();
             }
 
@@ -41,7 +43,7 @@ namespace ScheduleCreator.EntityFramework.Services
             Dictionary<string, List<Day>> employeeFullNameWorkingDays = new();
             EmployeeDTO employeeDTO;
             bool isSaved = false;
-            bool isWorking = false;
+            bool isWorking;
             string shift;
             string monthId = String.Concat(DateTime.Now.AddMonths(1).Year.ToString(), DateTime.Now.AddMonths(1).Month.ToString());
 
@@ -50,15 +52,12 @@ namespace ScheduleCreator.EntityFramework.Services
                 for (int j = 0; j < calendarDateDTO[i].Employees.Count; j++)
                 {
                     shift = "Free";
+                    isWorking = false;
                     employeeDTO = calendarDateDTO[i].Employees[j];
 
-                    //if ((employeeDTO.Shift == null) || (employeeDTO.Shift == ""))
-                    //    shift = "Free";
-                    //else
                     if ((employeeDTO.Shift != null) && (employeeDTO.Shift != ""))
                         shift = employeeDTO.Shift;
 
-                    //if (employeeDTO.Day || employeeDTO.Swing || employeeDTO.Night)
                     if (shift != "Free")
                         isWorking = true;
 

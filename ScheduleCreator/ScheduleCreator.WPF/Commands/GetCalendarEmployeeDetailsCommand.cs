@@ -6,10 +6,6 @@ using ScheduleCreator.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.Commands
@@ -57,53 +53,6 @@ namespace ScheduleCreator.WPF.Commands
             {
                 _viewModel.Preferences.Add(employees[i].Preferences);
             }
-            
-
-            //EmployeeViewDTO - working while data in database.
-            //for (int i = 0; i < employees.Count; i++)
-            //{
-            //    fullName = String.Concat(employees[i].Name, " ", employees[i].LastName);
-            //    freeWorkingDays = calendarHelper.WorkingDaysInMonth(employees[i].Preferences.FreeWorkingDays);
-                
-            //    for (int j = 0; j < employees[i].Days.Count; j++)
-            //    {
-            //        if (employees[i].Days[j].IsWorking == true)
-            //            freeWorkingDays--;
-            //    }
-
-            //    _viewModel.Employees.Add(new EmployeeViewDTO { FullName = fullName, WorkingDays = freeWorkingDays });
-            //}
-
-            //EmployeeViewDTO - working all the time
-            //for (int i = 0; i < employees.Count; i++)
-            //{
-            //    fullName = String.Concat(employees[i].Name, " ", employees[i].LastName);
-            //    freeWorkingDays = calendarHelper.WorkingDaysInMonth(employees[i].Preferences.FreeWorkingDays);
-            //    _viewModel.Employees.Add(new EmployeeViewDTO { FullName = fullName, WorkingDays = freeWorkingDays });
-            //}
-
-            //CalendarDates - working while data in database
-            
-            //for (int i = 0; i < calendarHelper.CalendarDate().Count; i++)
-            //{
-            //    tempEmployees = new();
-            //    for (int j = 0; j < employees.Count; j++)
-            //    {
-            //        fullName = String.Concat(employees[j].Name, " ", employees[j].LastName);
-
-            //        employees[j].Days
-
-            //        tempEmployees.Add(new EmployeeDTO()
-            //        {
-            //            EmployeeId = j,
-            //            FullName = fullName,
-            //            CalendarDateDTOId = i,
-            //            Swing
-            //        });
-            //    }
-            //}
-
-
         }
 
         private void InitialScheduleCreation(IList<Employee> employees, CalendarHelper calendarHelper)
@@ -143,12 +92,10 @@ namespace ScheduleCreator.WPF.Commands
             Dictionary<DateTime, ObservableCollection<EmployeeDTO>> dateEmployeeList = new();
             Employee employee;
             Day workDay;
-            bool day = false;
-            bool swing = false;
-            bool night = false;
+            bool day, swing, night;
             int freeWorkingDays;
             string fullName;
-            string shift = "";
+            string shift;
 
             for (int i = 0; i < employees.Count; i++)
             {
@@ -171,6 +118,11 @@ namespace ScheduleCreator.WPF.Commands
 
                 for (int j = 0; j < employee.Days.Count; j++)
                 {
+                    day = false;
+                    swing = false;
+                    night = false;
+                    shift = "";
+
                     workDay = employee.Days[j];
 
                     if (workDay.Shift == "Day")
@@ -183,7 +135,6 @@ namespace ScheduleCreator.WPF.Commands
                     {
                         swing = true;
                         shift = workDay.Shift;
-
                     }
 
                     if (workDay.Shift == "Night")

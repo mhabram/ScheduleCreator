@@ -17,7 +17,7 @@ namespace ScheduleCreator.WPF.ViewModels
             IScheduleService scheduleService)
         {
             GetCalendarEmployeeDetailsCommand = new GetCalendarEmployeeDetailsCommand(this, employeeService, scheduleService);
-            GenerateCSVFileCommand = new GenerateCSVFileCommand(scheduleService);
+            GenerateExcelFileCommand = new GenerateExcelFileCommand(scheduleService);
             CalendarUpdateCommand = new CalendarUpdateCommand(this, scheduleService);
             CalendarUpdateDayShiftCommand = new RelayCommand<EmployeeDTO>(UpdateDayShift);
             CalendarUpdateSwingShiftCommand = new RelayCommand<EmployeeDTO>(UpdateSwingShift);
@@ -115,10 +115,12 @@ namespace ScheduleCreator.WPF.ViewModels
                     else
                         employeeDTO.Day = false;
                 }
-
-                if ((employeeDTO.Shift == shift) && !employeeDTO.Day)
-                    employeeDTO.Shift = "";
             }
+            else
+                employeeDTO.Day = false;
+
+            if ((employeeDTO.Shift == shift) && !employeeDTO.Day)
+                employeeDTO.Shift = "";
         }
 
         private void UpdateSwingShift(EmployeeDTO employeeDTO)
@@ -173,10 +175,12 @@ namespace ScheduleCreator.WPF.ViewModels
                     else
                         employeeDTO.Swing = false;
                 }
-
-                if ((employeeDTO.Shift == shift) && !employeeDTO.Swing)
-                    employeeDTO.Shift = "";
             }
+            else
+                employeeDTO.Swing = false;
+            
+            if ((employeeDTO.Shift == shift) && !employeeDTO.Swing)
+                employeeDTO.Shift = "";
         }
 
         private void UpdateNightShift(EmployeeDTO employeeDTO)
@@ -224,10 +228,12 @@ namespace ScheduleCreator.WPF.ViewModels
                     else
                         employeeDTO.Night = false;
                 }
+                if ((employeeDTO.Shift == shift) && !employeeDTO.Night)
+                    employeeDTO.Shift = "";
             }
+            else
+                employeeDTO.Night = false;
 
-            if ((employeeDTO.Shift == shift) && !employeeDTO.Night)
-                employeeDTO.Shift = "";
         }
 
         private bool IsPreferenceDay(EmployeeDTO employeeDTO)
@@ -282,7 +288,7 @@ namespace ScheduleCreator.WPF.ViewModels
         }
 
         public ICommand GetCalendarEmployeeDetailsCommand { get; set; }
-        public ICommand GenerateCSVFileCommand { get; set; }
+        public ICommand GenerateExcelFileCommand { get; set; }
         public ICommand CalendarUpdateCommand { get; set; }
         public ICommand CalendarUpdateDayShiftCommand { get; private set; }
         public ICommand CalendarUpdateSwingShiftCommand { get; private set; }
