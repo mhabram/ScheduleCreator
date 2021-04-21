@@ -8,11 +8,6 @@ namespace ScheduleCreator.WPF.State.Navigators
 {
     public class Navigator : ObservableObject, INavigator
     {
-        public Navigator(IRootScheduleCreatorViewModelFactory viewModelFactory)
-        {
-            UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(this, viewModelFactory);
-        }
-
         private ViewModelBase _currentViewModel;
 
         public ViewModelBase CurrentViewModel
@@ -27,7 +22,5 @@ namespace ScheduleCreator.WPF.State.Navigators
                 OnPropertyChanged(nameof(CurrentViewModel));
             }
         }
-
-        public ICommand UpdateCurrentViewModelCommand { get; set; }
     }
 }
