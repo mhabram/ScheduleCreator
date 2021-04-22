@@ -49,12 +49,46 @@ namespace ScheduleCreator.WPF
             services.AddSingleton<IScheduleRepository, ScheduleRepository>();
 
             //Factories
-            services.AddSingleton<IRootScheduleCreatorViewModelFactory, RootScheduleCreatorViewModelFactory>();
-            services.AddSingleton<IScheduleCreatorViewModelFactory<HelpViewModel>, HelpViewModelFactory>();
-            services.AddSingleton<IScheduleCreatorViewModelFactory<PreferenceViewModel>, PreferenceViewModelFactory>();
-            services.AddSingleton<IScheduleCreatorViewModelFactory<CreateScheduleViewModel>, CreateScheduleViewModelFactory>();
-            services.AddSingleton<IScheduleCreatorViewModelFactory<EmployeeViewModel>, EmployeeViewModelFactory>();
-            services.AddSingleton<IScheduleCreatorViewModelFactory<ScheduleViewModel>, ScheduleViewModelFactory>();
+            services.AddSingleton<IScheduleCreatorViewModelFactory, ScheduleCreatorViewModelFactory>();
+            services.AddSingleton<PreferenceViewModel>();
+            services.AddSingleton<EmployeeViewModel>();
+            services.AddSingleton<ScheduleViewModel>();
+            //probably to delete
+            services.AddSingleton<HelpViewModel>();
+            services.AddSingleton<CreateScheduleViewModel>();
+
+            //Delegates
+            services.AddSingleton<CreateViewModel<PreferenceViewModel>>(services =>
+            {
+                return () => new PreferenceViewModel(
+                    services.GetRequiredService<IPreferenceService>(),
+                    services.GetRequiredService<IEmployeeService>(),
+                    services.GetRequiredService<IPreferenceDayService>()
+                    );
+            });
+
+            services.AddSingleton<CreateViewModel<EmployeeViewModel>>(services =>
+            {
+                return () => new EmployeeViewModel(services.GetRequiredService<IEmployeeService>());
+            });
+
+            services.AddSingleton<CreateViewModel<ScheduleViewModel>>(services =>
+            {
+                return () => new ScheduleViewModel(
+                    services.GetRequiredService<IEmployeeService>(),
+                    services.GetRequiredService<IScheduleService>()
+                    );
+            });
+
+            //probably to delete
+            services.AddSingleton<CreateViewModel<HelpViewModel>>(services =>
+            {
+                return () => services.GetRequiredService<HelpViewModel>();
+            });
+            services.AddSingleton<CreateViewModel<CreateScheduleViewModel>>(services => // this one can be refactored in future.
+            {
+                return () => services.GetRequiredService<CreateScheduleViewModel>();
+            });
 
             services.AddScoped<INavigator, Navigator>();
             services.AddScoped<MainViewModel>();

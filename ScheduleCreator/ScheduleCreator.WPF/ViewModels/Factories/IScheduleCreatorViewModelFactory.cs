@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ScheduleCreator.WPF.State.Navigators;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ScheduleCreator.WPF.ViewModels.Factories
 {
-    public interface IScheduleCreatorViewModelFactory<T> where T : ViewModelBase
+    public interface IScheduleCreatorViewModelFactory
     {
-        T CreateViewModel();
+        ViewModelBase CreateViewModel(ViewType viewType);
     }
 }

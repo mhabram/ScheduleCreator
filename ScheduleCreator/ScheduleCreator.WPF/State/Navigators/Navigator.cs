@@ -2,11 +2,12 @@
 using ScheduleCreator.WPF.Commands;
 using ScheduleCreator.WPF.ViewModels;
 using ScheduleCreator.WPF.ViewModels.Factories;
+using System;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.State.Navigators
 {
-    public class Navigator : ObservableObject, INavigator
+    public class Navigator : INavigator
     {
         private ViewModelBase _currentViewModel;
 
@@ -19,8 +20,10 @@ namespace ScheduleCreator.WPF.State.Navigators
             set
             {
                 _currentViewModel = value;
-                OnPropertyChanged(nameof(CurrentViewModel));
+                StateChanged?.Invoke();
             }
         }
+
+        public event Action StateChanged;
     }
 }
