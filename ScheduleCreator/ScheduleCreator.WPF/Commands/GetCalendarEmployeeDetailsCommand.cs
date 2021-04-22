@@ -6,11 +6,12 @@ using ScheduleCreator.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.Commands
 {
-    class GetCalendarEmployeeDetailsCommand : ICommand
+    class GetCalendarEmployeeDetailsCommand : AsyncCommandBase
     {
         private readonly ScheduleViewModel _viewModel;
         private readonly IEmployeeService _employeeService;
@@ -25,14 +26,7 @@ namespace ScheduleCreator.WPF.Commands
             _scheduleService = scheduleService;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public async void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         { 
             CalendarHelper calendarHelper = new();
             IList<Employee> employees = new List<Employee>();

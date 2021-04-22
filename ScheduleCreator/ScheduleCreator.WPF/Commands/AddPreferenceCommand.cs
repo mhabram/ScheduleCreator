@@ -2,11 +2,12 @@
 using ScheduleCreator.Domain.Services;
 using ScheduleCreator.WPF.ViewModels;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.Commands
 {
-    class AddPreferenceCommand : ICommand
+    class AddPreferenceCommand : AsyncCommandBase
     {
         private readonly PreferenceViewModel _viewModel;
         private readonly IPreferenceService _preferenceService;
@@ -24,14 +25,7 @@ namespace ScheduleCreator.WPF.Commands
             _preferenceDayService = preferenceDayService;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-        
-        public async void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             if (_viewModel.LastName != null)
             {

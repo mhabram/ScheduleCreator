@@ -3,11 +3,12 @@ using ScheduleCreator.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.Commands
 {
-    class GetEmployeeDetailsCommand : ICommand
+    class GetEmployeeDetailsCommand : AsyncCommandBase
     {
         private readonly CreateScheduleViewModel _viewModel;
         private readonly IEmployeeService _employeeService;
@@ -18,14 +19,7 @@ namespace ScheduleCreator.WPF.Commands
             _employeeService = employeeService;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public async void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             //_viewModel.Employees = await _employeeService.GetDetails();
         }

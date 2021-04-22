@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.Commands
 {
-    class RemoveEmployeesCommand : ICommand
+    class RemoveEmployeesCommand : AsyncCommandBase
     {
         private readonly CreateScheduleViewModel _viewModel;
 
@@ -15,14 +16,7 @@ namespace ScheduleCreator.WPF.Commands
             _viewModel = viewModel;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             if (_viewModel.SelectedEmployee != null)
                 _viewModel.Employees.Remove(_viewModel.SelectedEmployee);

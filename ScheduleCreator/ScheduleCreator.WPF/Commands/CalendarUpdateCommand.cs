@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.Commands
 {
-    class CalendarUpdateCommand : ICommand
+    class CalendarUpdateCommand : AsyncCommandBase
     {
         private readonly ScheduleViewModel _viewModel;
         private readonly IScheduleService _scheduleService;
@@ -22,14 +22,7 @@ namespace ScheduleCreator.WPF.Commands
             _scheduleService = scheduleService;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public async void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             bool isSaved = await _scheduleService.CreateSchedule(_viewModel.CalendarDates);
             if (isSaved)

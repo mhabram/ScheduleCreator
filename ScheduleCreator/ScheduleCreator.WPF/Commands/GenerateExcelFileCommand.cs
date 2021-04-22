@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.Commands
 {
-    class GenerateExcelFileCommand : ICommand
+    class GenerateExcelFileCommand : AsyncCommandBase
     {
         private readonly IScheduleService _scheduleService;
 
@@ -22,14 +22,7 @@ namespace ScheduleCreator.WPF.Commands
             _scheduleService = scheduleService;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public async void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             IList<Employee> employees = await _scheduleService.GetSchedule();
             bool isSaved = false;

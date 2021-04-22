@@ -7,11 +7,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.Commands
 {
-    class CreateScheduleCommand : ICommand
+    class CreateScheduleCommand : AsyncCommandBase
     {
         private readonly CreateScheduleViewModel _viewModel;
         private readonly IEmployeeService _employeeService;
@@ -24,15 +25,7 @@ namespace ScheduleCreator.WPF.Commands
             _employeeService = employeeService;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-
-        public async void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             //Employee tempEmployee = new Employee();
             //Random rand = new();
