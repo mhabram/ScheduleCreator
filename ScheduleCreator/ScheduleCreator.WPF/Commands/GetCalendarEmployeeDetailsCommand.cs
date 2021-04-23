@@ -36,7 +36,7 @@ namespace ScheduleCreator.WPF.Commands
                 employees = await _scheduleService.GetSchedule();
                 LoadDataSchedule(employees, calendarHelper);
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 employees = await _employeeService.GetDetails();
                 InitialScheduleCreation(employees, calendarHelper);

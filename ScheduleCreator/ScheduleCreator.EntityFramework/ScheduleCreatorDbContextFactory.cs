@@ -7,15 +7,14 @@ using System.Text;
 
 namespace ScheduleCreator.EntityFramework
 {
-    public class ScheduleCreatorDbContextFactory : IDesignTimeDbContextFactory<ScheduleCreatorDbContext>
+    public class ScheduleCreatorDbContextFactory
     {
-        public ScheduleCreatorDbContext CreateDbContext(string[] args = null)
+        public ScheduleCreatorDbContext CreateDbContext(string[] args = null) // this works
         {
-            DbContextOptionsBuilder<ScheduleCreatorDbContext> options = new DbContextOptionsBuilder<ScheduleCreatorDbContext>();
-            //options.UseSqlite($"Data Source = {_appHost.ContentRootPath}/ScheduleCreator.db");
-            options.UseSqlServer("Server=LAPTOP-9TI2U43D\\MSSQLSERVER01;Database=ScheduleCreator;Trusted_Connection=True;");
-
-            return new ScheduleCreatorDbContext(options.Options);
+            var optionsBuilder = new DbContextOptionsBuilder<ScheduleCreatorDbContext>();
+            optionsBuilder.UseSqlite("Data Source = C:\\Temp\\ScheduleCreator.db");
+         
+            return new ScheduleCreatorDbContext(optionsBuilder.Options);
         }
     }
 }

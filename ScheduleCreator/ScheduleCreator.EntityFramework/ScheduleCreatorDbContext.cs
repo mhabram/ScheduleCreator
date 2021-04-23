@@ -10,6 +10,6 @@ namespace ScheduleCreator.EntityFramework
         public DbSet<Preferences> Preferences { get; set; }
         public DbSet<Day> Days { get; set; }
 
-        public ScheduleCreatorDbContext(DbContextOptions options) : base(options) { }
+        public ScheduleCreatorDbContext(DbContextOptions<ScheduleCreatorDbContext> options) : base(options) { }
     }
 }

@@ -37,7 +37,7 @@
                          HorizontalAlignment="Left"
                          MinWidth="180"
                          MaxWidth="180"
-                         Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"/>
+                         Text="{Binding LastName}"/>
             </Grid>
 
             <Grid Grid.Row="1" Margin="0 5">
@@ -51,10 +51,9 @@
                          HorizontalAlignment="Left"
                          MinWidth="180"
                          MaxWidth="180"
-                         x:Name="Holiday"
-                         MaxLength="1"
-                         TextChanged="Holiday_TextChanged"
-                         Text="{Binding Holidays, UpdateSourceTrigger=PropertyChanged}"/>
+                         PreviewTextInput="NumberValidationTextBox"
+                         MaxLength="2"
+                         Text="{Binding Holidays}"/>
             </Grid>
 
 

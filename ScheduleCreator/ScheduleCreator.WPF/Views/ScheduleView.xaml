@@ -54,16 +54,16 @@
                             <ListViewItem>
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <TextBlock Text="{Binding Path=Date.Day}" FontSize="18" />
+                                        <TextBlock Text="{Binding Date.Day}" FontSize="18" />
                                         <TextBlock Text="/" FontSize="18" />
-                                        <TextBlock Text="{Binding Path=Date.Month}" FontSize="18" />
+                                        <TextBlock Text="{Binding Date.Month}" FontSize="18" />
                                         <TextBlock Text="/" FontSize="18" />
-                                        <TextBlock Text="{Binding Path=Date.Year}" FontSize="18" />
+                                        <TextBlock Text="{Binding Date.Year}" FontSize="18" />
                                     </StackPanel>
                                     <StackPanel HorizontalAlignment="Center">
-                                        <TextBlock Text="{Binding Path=Date.DayOfWeek}" FontSize="14"/>
+                                        <TextBlock Text="{Binding Date.DayOfWeek}" FontSize="14"/>
                                     </StackPanel>
-                                    <ListBox ItemsSource="{Binding Path=Employees}">
+                                    <ListBox ItemsSource="{Binding Employees}">
                                         <ListBox.Template>
                                             <ControlTemplate>
                                                 <ItemsPresenter />

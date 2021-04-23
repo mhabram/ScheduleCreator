@@ -24,9 +24,14 @@ namespace ScheduleCreator.WPF.Views
             InitializeComponent();
         }
 
-        private void Holiday_TextChanged(object sender, TextChangedEventArgs e)
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            Holiday.Text = Regex.Replace(Holiday.Text, "[^0-9]+", "");
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
+        //private void Holiday_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    Holiday.Text = Regex.Replace(Holiday.Text, "[^0-9]+", "");
+        //}
     }
 }
