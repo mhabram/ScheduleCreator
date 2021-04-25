@@ -2,8 +2,7 @@
 using ScheduleCreator.Domain.DTO.ScheduleView;
 using ScheduleCreator.Domain.Models;
 using ScheduleCreator.Domain.Services;
-using ScheduleCreator.WPF.Commands;
-using System;
+using ScheduleCreator.WPF.Commands.ScheduleViewModelCommands;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;

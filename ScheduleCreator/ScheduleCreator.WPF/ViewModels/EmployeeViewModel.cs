@@ -1,8 +1,5 @@
 ﻿using ScheduleCreator.Domain.Services;
-using ScheduleCreator.WPF.Commands;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using ScheduleCreator.WPF.Commands.EmployeeViewModelCommands;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.ViewModels

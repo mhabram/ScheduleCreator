@@ -1,10 +1,8 @@
-﻿using ScheduleCreator.Domain.Models;
+﻿using ScheduleCreator.Domain.DTO.PreferenceView;
 using ScheduleCreator.Domain.Services;
-using ScheduleCreator.WPF.Commands;
+using ScheduleCreator.WPF.Commands.PreferenceViewModelCommands;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.ViewModels
@@ -16,78 +14,90 @@ namespace ScheduleCreator.WPF.ViewModels
             IPreferenceDayService dateService)
         {
             AddPreferenceCommand = new AddPreferenceCommand(this, preferenceService, employeeService, dateService);
+            GetEmployeesCommand = new GetEmployeesCommand(this, employeeService);
+            GetEmployeePreferencesCommand = new GetEmployeePreferencesCommand(this, preferenceService);
         }
 
-        private DateTime _dayOff1 = DateTime.Now.AddMonths(1);
-        public DateTime DayOff1
+        private ObservableCollection<EmployeeDTO> _employees;
+        public ObservableCollection<EmployeeDTO> Employees
         {
-            get
-            {
-                return _dayOff1;
-            }
+            get { return _employees ??= new ObservableCollection<EmployeeDTO>(); }
             set
             {
-                _dayOff1 = value;
-                OnPropertyChanged(nameof(DayOff1));
-            }
-        }
-
-        private DateTime _dayOff2 = DateTime.Now.AddMonths(1);
-        public DateTime DayOff2
-        {
-            get
-            {
-                return _dayOff2;
-            }
-            set
-            {
-                _dayOff2 = value;
-                OnPropertyChanged(nameof(DayOff2));
-            }
-        }
-
-        private DateTime _dayOff3 = DateTime.Now.AddMonths(1);
-        public DateTime DayOff3
-        {
-            get
-            {
-                return _dayOff3;
-            }
-            set
-            {
-                _dayOff3 = value;
-                OnPropertyChanged(nameof(DayOff3));
-            }
-        }
-
-        public string _lastName;
-        public string LastName
-        {
-            get
-            {
-                return _lastName;
-            }
-            set
-            {
-                _lastName = value;
-                OnPropertyChanged(nameof(LastName));
+                _employees = value;
+                OnPropertyChanged(nameof(Employees));
             }
         }
 
         public sbyte _holidays;
         public sbyte Holidays
         {
-            get
-            {
-                return _holidays;
-            }
-            set
+            get { return _holidays; }
+            set 
             {
                 _holidays = value;
                 OnPropertyChanged(nameof(Holidays));
             }
         }
 
+        private EmployeeDTO _employee;
+        public EmployeeDTO Employee
+        {
+            get { return _employee; }
+            set
+            {
+                _employee = value;
+                GetEmployeePreferencesCommand.Execute(value);
+            }
+        }
+
+        private DateTime _dayOffOne = DateTime.Now.AddMonths(1);
+        public DateTime DayOffOne
+        {
+            get { return _dayOffOne; }
+            set
+            {
+                _dayOffOne = value;
+                OnPropertyChanged(nameof(DayOffOne));
+            }
+        }
+
+        private DateTime _dayOffTwo = DateTime.Now.AddMonths(1);
+        public DateTime DayOffTwo
+        {
+            get { return _dayOffTwo; }
+            set
+            {
+                _dayOffTwo = value;
+                OnPropertyChanged(nameof(DayOffTwo));
+            }
+        }
+
+        private DateTime _dayOffThree = DateTime.Now.AddMonths(1);
+        public DateTime DayOffThree
+        {
+            get { return _dayOffThree; }
+            set
+            {
+                _dayOffThree = value;
+                OnPropertyChanged(nameof(DayOffThree));
+            }
+        }
+
+        public MessageViewModel SuccessMessageViewModel { get; }
+        public string SuccessMessage
+        {
+            set => SuccessMessageViewModel.Message = value;
+        }
+
+        public MessageViewModel ErrorMessageViewModel { get; }
+        public string ErrorMessage
+        {
+            set => ErrorMessageViewModel.Message = value;
+        }
+
         public ICommand AddPreferenceCommand { get; set; }
+        public ICommand GetEmployeesCommand { get; set; }
+        public ICommand GetEmployeePreferencesCommand { get; set; }
     }
 }

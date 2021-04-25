@@ -9,6 +9,7 @@ namespace ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories
     public interface IEmployeeRepository
     {
         Task<Employee> AddEmployee(Employee employee);
+        Task<IList<Employee>> GetEmployees();
         Task<int> GetEmployee(string lastName);
         Task<IList<Employee>> GetDetails(string internalPreferenceId);
     }

@@ -56,5 +56,23 @@ namespace ScheduleCreator.EntityFramework.Services
 
             return employeId;
         }
+
+        public async Task<IList<Employee>> GetEmployees()
+        {
+            IList<Employee> employeesRepository = await _employeeRepository.GetEmployees();
+            List<Employee> employees = new();
+
+            if (employeesRepository != null)
+            {
+                foreach (Employee employee in employeesRepository)
+                {
+                    employee.Name = String.Concat(employee.Name.First().ToString().ToUpper(), employee.Name.Substring(1).ToLower());
+                    employee.LastName = String.Concat(employee.LastName.First().ToString().ToUpper(), employee.LastName.Substring(1).ToLower());
+                    employees.Add(employee);
+                }
+            }
+
+            return employees;
+        }
     }
 }

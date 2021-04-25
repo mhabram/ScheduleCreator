@@ -57,24 +57,10 @@ namespace ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories
             }
         }
 
-        //public async Task<Employee> SetWeek(Employee emp, Week week, ICollection<Day> days)
-        //{
-        //    using (ScheduleCreatorDbContext context = _contextFactory.CreateDbContext())
-        //    {
-        //        Employee employee = await context.Employees.SingleOrDefaultAsync(e => e.EmployeeId == emp.EmployeeId);
-                
-        //        week.Employee = employee;
-        //        await context.Weeks.AddAsync(week);
-        //        foreach(Day d in days)
-        //        {
-        //            d.Week = week;
-        //            await context.Days.AddAsync(d);
-        //        }
-
-        //        await context.SaveChangesAsync();
-
-        //        return employee;
-        //    }
-        //}
+        public async Task<IList<Employee>> GetEmployees()
+        {
+            using ScheduleCreatorDbContext context = _contextFactory.CreateDbContext();
+            return await context.Employees.ToListAsync();
+        }
     }
 }

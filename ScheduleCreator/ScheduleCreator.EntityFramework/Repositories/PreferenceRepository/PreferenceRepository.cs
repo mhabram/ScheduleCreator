@@ -18,27 +18,43 @@ namespace ScheduleCreator.EntityFramework.Repositories.PreferenceRepository
             _contextFactory = contextFactory;
         }
 
-        public async Task<Preferences> AddPreference(Preferences preferences, int employeId)
+        public async Task AddPreferences(int employeId, Preferences preferences)
         {
-            using (ScheduleCreatorDbContext context = _contextFactory.CreateDbContext())
-            {
-                Employee employee =  await context.Employees.FindAsync(employeId);
-                preferences.Employee = employee;
+            using ScheduleCreatorDbContext context = _contextFactory.CreateDbContext();
+            Employee employee = await context.Employees.FindAsync(employeId);
+            preferences.Employee = employee;
 
-
-                await context.Preferences.AddAsync(preferences);
-                await context.SaveChangesAsync();
-
-                return preferences;
-            }
+            await context.Preferences.AddAsync(preferences);
+            await context.SaveChangesAsync();
         }
 
-        public async Task<ICollection<Preferences>> GetPreferences(string internalPreferenceId)
+        public async Task UpdatePreferences(int preferenceId, IList<PreferenceDay> preferenceDays, sbyte holidays) // creating new database row instead of updating need to fix this.
+        {
+            using ScheduleCreatorDbContext context = _contextFactory.CreateDbContext();
+            Preferences pref = await context.Preferences
+                .Include(p => p.PreferenceDays)
+                .Where(p => p.PreferencesId == preferenceId)
+                .FirstOrDefaultAsync();
+
+            for (int i = 0; i < preferenceDays.Count; i++)
+            {
+                pref.PreferenceDays[i].FreeDayChosen = preferenceDays[i].FreeDayChosen;
+            }
+
+            pref.FreeWorkingDays = holidays;
+            context.Entry(pref);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<Preferences> GetPreferences(int employeId, string internalPreferenceId)
         {
             using ScheduleCreatorDbContext context = _contextFactory.CreateDbContext();
 
-            List<Preferences> preferences = await context.Preferences.Where(p => p.InternalPreferenceId == internalPreferenceId)
-                .ToListAsync();
+            Preferences preferences = await context.Preferences
+                .Where(p => p.InternalPreferenceId == internalPreferenceId)
+                .Where(e => e.Employee.EmployeeId == employeId)
+                .Include(d => d.PreferenceDays)
+                .FirstOrDefaultAsync();
 
             return preferences;
         }

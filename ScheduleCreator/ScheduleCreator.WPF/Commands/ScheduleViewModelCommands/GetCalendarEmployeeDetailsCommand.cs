@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace ScheduleCreator.WPF.Commands
+namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
 {
     class GetCalendarEmployeeDetailsCommand : AsyncCommandBase
     {

@@ -1,17 +1,11 @@
 ﻿using ScheduleCreator.Domain.GenerateToExcel;
-using ScheduleCreator.Domain.Helpers.Calendar;
 using ScheduleCreator.Domain.Models;
 using ScheduleCreator.Domain.Services;
-using ScheduleCreator.WPF.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
-namespace ScheduleCreator.WPF.Commands
+namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
 {
     class GenerateExcelFileCommand : AsyncCommandBase
     {

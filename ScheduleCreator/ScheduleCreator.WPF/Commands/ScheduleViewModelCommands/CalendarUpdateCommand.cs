@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace ScheduleCreator.WPF.Commands
+namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
 {
     class CalendarUpdateCommand : AsyncCommandBase
     {

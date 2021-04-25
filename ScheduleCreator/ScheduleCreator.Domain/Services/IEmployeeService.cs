@@ -10,7 +10,8 @@ namespace ScheduleCreator.Domain.Services
     public interface IEmployeeService
     {
         Task<Employee> AddEmployee(string name, string lastName);
+        Task<IList<Employee>> GetEmployees();
         Task<int> GetEmployee(string lastName);
-        Task<IList<Employee>> GetDetails();
+        Task<IList<Employee>> GetDetails(); // probably to delete
     }
 }
