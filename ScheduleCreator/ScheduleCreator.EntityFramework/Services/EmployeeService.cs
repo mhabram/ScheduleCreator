@@ -27,7 +27,11 @@ namespace ScheduleCreator.EntityFramework.Services
                 LastName = lastName.ToLower()
             };
 
-            return await _employeeRepository.AddEmployee(employee);
+            employee = await _employeeRepository.AddEmployee(employee);
+            employee.Name = String.Concat(employee.Name.First().ToString().ToUpper(), employee.Name.Substring(1).ToLower());
+            employee.LastName = String.Concat(employee.LastName.First().ToString().ToUpper(), employee.LastName.Substring(1).ToLower());
+
+            return employee;
         }
 
         public async Task<IList<Employee>> GetDetails()
@@ -73,6 +77,11 @@ namespace ScheduleCreator.EntityFramework.Services
             }
 
             return employees;
+        }
+
+        public async Task RemoveEmployee(Employee employee)
+        {
+            await _employeeRepository.RemoveEmployee(employee);
         }
     }
 }

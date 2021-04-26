@@ -10,12 +10,13 @@ namespace ScheduleCreator.WPF.ViewModels
     public class PreferenceViewModel : ViewModelBase
     {
         public PreferenceViewModel(IPreferenceService preferenceService,
-            IEmployeeService employeeService,
-            IPreferenceDayService dateService)
+            IEmployeeService employeeService)
         {
-            AddPreferenceCommand = new AddPreferenceCommand(this, preferenceService, employeeService, dateService);
+            AddPreferenceCommand = new AddPreferenceCommand(this, preferenceService);
             GetEmployeesCommand = new GetEmployeesCommand(this, employeeService);
             GetEmployeePreferencesCommand = new GetEmployeePreferencesCommand(this, preferenceService);
+            SuccessMessageViewModel = new MessageViewModel();
+            ErrorMessageViewModel = new MessageViewModel();
         }
 
         private ObservableCollection<EmployeeDTO> _employees;
@@ -29,17 +30,6 @@ namespace ScheduleCreator.WPF.ViewModels
             }
         }
 
-        public sbyte _holidays;
-        public sbyte Holidays
-        {
-            get { return _holidays; }
-            set 
-            {
-                _holidays = value;
-                OnPropertyChanged(nameof(Holidays));
-            }
-        }
-
         private EmployeeDTO _employee;
         public EmployeeDTO Employee
         {
@@ -48,6 +38,17 @@ namespace ScheduleCreator.WPF.ViewModels
             {
                 _employee = value;
                 GetEmployeePreferencesCommand.Execute(value);
+            }
+        }
+
+        public sbyte _holidays;
+        public sbyte Holidays
+        {
+            get { return _holidays; }
+            set 
+            {
+                _holidays = value;
+                OnPropertyChanged(nameof(Holidays));
             }
         }
 

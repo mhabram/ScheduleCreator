@@ -1,10 +1,7 @@
 ﻿using ScheduleCreator.Domain.Models;
 using ScheduleCreator.Domain.Services;
 using ScheduleCreator.WPF.Commands;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.ViewModels
@@ -14,7 +11,7 @@ namespace ScheduleCreator.WPF.ViewModels
         public CreateScheduleViewModel(IEmployeeService employeeService)
         {
             GetEmployeeDetailsCommand = new GetEmployeeDetailsCommand(this, employeeService);
-            RemoveEmployeesCommand = new RemoveEmployeesCommand(this);
+            //RemoveEmployeesCommand = new RemoveEmployeesCommand(this, employeeService);
             CreateScheduleCommand = new CreateScheduleCommand(this, employeeService);
         }
 

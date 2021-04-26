@@ -2,18 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ScheduleCreator.Domain.Services;
 using ScheduleCreator.EntityFramework;
-using ScheduleCreator.EntityFramework.Repositories.DateRepository;
-using ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories;
-using ScheduleCreator.EntityFramework.Repositories.PreferenceRepository;
-using ScheduleCreator.EntityFramework.Repositories.ScheduleRepository;
-using ScheduleCreator.EntityFramework.Services;
 using ScheduleCreator.WPF.HostBuilders;
-using ScheduleCreator.WPF.State.Navigators;
-using ScheduleCreator.WPF.ViewModels;
-using ScheduleCreator.WPF.ViewModels.Factories;
-using System;
 using System.Windows;
 
 namespace ScheduleCreator.WPF

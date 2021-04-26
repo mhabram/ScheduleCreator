@@ -11,7 +11,8 @@ namespace ScheduleCreator.Domain.Services
     {
         Task<Employee> AddEmployee(string name, string lastName);
         Task<IList<Employee>> GetEmployees();
+        Task<IList<Employee>> GetDetails();
         Task<int> GetEmployee(string lastName);
-        Task<IList<Employee>> GetDetails(); // probably to delete
+        Task RemoveEmployee(Employee employee);
     }
 }

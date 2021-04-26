@@ -1,10 +1,8 @@
 ﻿using ScheduleCreator.Domain.Models;
 using ScheduleCreator.Domain.Services;
-using ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories;
 using ScheduleCreator.EntityFramework.Repositories.PreferenceRepository;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ScheduleCreator.EntityFramework.Services
@@ -22,9 +20,10 @@ namespace ScheduleCreator.EntityFramework.Services
         {
             DateTime CurrentDate = DateTime.Now.AddMonths(1); // Adding 1 to cause we are creating schedule for the next month
             DateTime StartMonth = CurrentDate.AddDays(-CurrentDate.Day + 1); // Making the next month starting counting from 1
-            int DaysInMonth = DateTime.DaysInMonth(CurrentDate.Year, CurrentDate.Month);
             string internalPreferenceId = String.Concat(StartMonth.Year.ToString(), StartMonth.Month.ToString());
 
+            //---------------------------------------------------------------------
+            //int DaysInMonth = DateTime.DaysInMonth(CurrentDate.Year, CurrentDate.Month);
             //sbyte WeekDays = holidays; // this should be moved to GetPreferences().
             //int Day = DaysInMonth - 1;
             //for(sbyte i = 1; i <= DaysInMonth; i++)
@@ -36,6 +35,7 @@ namespace ScheduleCreator.EntityFramework.Services
             //    Day -= 1;
             //} 
             //sbyte FreeWorkingDays = (sbyte)(DaysInMonth - WeekDays);
+            //---------------------------------------------------------------------
 
             Preferences preferences = new Preferences
             {

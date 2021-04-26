@@ -24,6 +24,10 @@ namespace ScheduleCreator.WPF.Commands.PreferenceViewModelCommands
 
         public override async Task ExecuteAsync(object parametr)
         {
+            //Making status clear.
+            _viewModel.ErrorMessage = null;
+            _viewModel.SuccessMessage = null;
+
             try
             {
                 EmployeeDTO employeeDTO = (EmployeeDTO)parametr;

@@ -28,7 +28,7 @@ namespace ScheduleCreator.EntityFramework.Repositories.PreferenceRepository
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdatePreferences(int preferenceId, IList<PreferenceDay> preferenceDays, sbyte holidays) // creating new database row instead of updating need to fix this.
+        public async Task UpdatePreferences(int preferenceId, IList<PreferenceDay> preferenceDays, sbyte holidays)
         {
             using ScheduleCreatorDbContext context = _contextFactory.CreateDbContext();
             Preferences pref = await context.Preferences

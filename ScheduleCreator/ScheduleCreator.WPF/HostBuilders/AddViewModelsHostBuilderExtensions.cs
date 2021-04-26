@@ -45,10 +45,9 @@ namespace ScheduleCreator.WPF.HostBuilders
         private static PreferenceViewModel CreatePreferenceViewModel(IServiceProvider services)
         {
             return new PreferenceViewModel(
-                        services.GetRequiredService<IPreferenceService>(),
-                        services.GetRequiredService<IEmployeeService>(),
-                        services.GetRequiredService<IPreferenceDayService>()
-                        );
+                services.GetRequiredService<IPreferenceService>(),
+                services.GetRequiredService<IEmployeeService>()
+                );
         }
 
         private static EmployeeViewModel CreateEmployeeViewModel(IServiceProvider services)

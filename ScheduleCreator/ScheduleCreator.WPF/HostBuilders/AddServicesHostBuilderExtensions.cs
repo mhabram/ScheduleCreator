@@ -13,7 +13,6 @@ namespace ScheduleCreator.WPF.HostBuilders
             {
                 services.AddSingleton<IEmployeeService, EmployeeService>();
                 services.AddSingleton<IPreferenceService, PreferenceService>();
-                services.AddSingleton<IPreferenceDayService, PreferenceDayService>();
                 services.AddSingleton<IScheduleService, ScheduleService>();
             });
 

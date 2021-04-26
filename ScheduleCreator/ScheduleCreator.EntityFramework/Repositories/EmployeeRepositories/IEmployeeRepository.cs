@@ -10,7 +10,8 @@ namespace ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories
     {
         Task<Employee> AddEmployee(Employee employee);
         Task<IList<Employee>> GetEmployees();
-        Task<int> GetEmployee(string lastName);
         Task<IList<Employee>> GetDetails(string internalPreferenceId);
+        Task<int> GetEmployee(string lastName);
+        Task RemoveEmployee(Employee employee);
     }
 }

@@ -12,18 +12,12 @@ namespace ScheduleCreator.WPF.Commands.PreferenceViewModelCommands
     {
         private readonly PreferenceViewModel _viewModel;
         private readonly IPreferenceService _preferenceService;
-        private readonly IEmployeeService _employeeService;
-        private readonly IPreferenceDayService _preferenceDayService;
 
         public AddPreferenceCommand(PreferenceViewModel viewModel,
-            IPreferenceService preferenceService,
-            IEmployeeService employeeService,
-            IPreferenceDayService preferenceDayService)
+            IPreferenceService preferenceService)
         {
             _viewModel = viewModel;
-            _employeeService = employeeService;
             _preferenceService = preferenceService;
-            _preferenceDayService = preferenceDayService;
         }
 
         public override async Task ExecuteAsync(object parameter)
@@ -43,31 +37,21 @@ namespace ScheduleCreator.WPF.Commands.PreferenceViewModelCommands
             try
             {
                 if (_viewModel.Employee.Preferences != null)
+                {
                     await _preferenceService.UpdatePreferences(_viewModel.Employee.Id, preferenceDays, _viewModel.Holidays);
+                    _viewModel.SuccessMessage = "Preferences has been updated.";
+
+                }
                 else
                 {
                     await _preferenceService.AddPreferences(_viewModel.Employee.Id, preferenceDays, _viewModel.Holidays);
+                    _viewModel.SuccessMessage = "Preferences has been added.";
                 }
             }
             catch (Exception)
             {
-
+                _viewModel.ErrorMessage = "Please check if everything is correct. Couldn't add or update preferences.";
             }
-
-                    //System.Windows.MessageBox.Show("Preferences has been applied to the employee.");
-            //if (_viewModel.LastName != null)
-            //{
-            //    int employeId = await _employeeService.GetEmployee(_viewModel.LastName);
-                
-                //if (employeId != -1)
-                //{
-                    
-                //}
-            //    else
-            //        System.Windows.MessageBox.Show($"Employee {_viewModel.LastName} doesn't exists");
-            //}
-            //else
-            //    System.Windows.MessageBox.Show("Provide last name of the employee");
         }
     }
 }

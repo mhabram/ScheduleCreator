@@ -1,4 +1,5 @@
-﻿using ScheduleCreator.Domain.Services;
+﻿using ScheduleCreator.Domain.Models;
+using ScheduleCreator.Domain.Services;
 using ScheduleCreator.WPF.ViewModels;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,14 +19,21 @@ namespace ScheduleCreator.WPF.Commands.EmployeeViewModelCommands
 
         public override async Task ExecuteAsync(object parameter)
         {
+            Employee employee = new();
+
+            _viewModel.SuccessMessage = null;
+            _viewModel.ErrorMessage = null;
+            _viewModel.SuccessDeletedEmployee = null;
+            _viewModel.ErrorDeletedEmployee = null;
+
             if ((_viewModel.Name != null) || (_viewModel.LastName != null)) // has to be changed later probably min string size to 2 letters fix this.
             {
-                await _employeeService.AddEmployee(_viewModel.Name, _viewModel.LastName);
+                employee = await _employeeService.AddEmployee(_viewModel.Name, _viewModel.LastName);
+                _viewModel.Employees.Add(employee);
                 _viewModel.SuccessMessage = $"{_viewModel.Name} has been added."; // Singleton Sean #21 from ~13:30 catching specific error messages. tbd in future.
-                //MessageBox.Show($"{_viewModel.Name} has been added to database.");
             }
             else
-                MessageBox.Show("Can not add employee without name and lastname.");
+                _viewModel.ErrorMessage = "Can not add employee without name and lastname.";
         }
     }
 }
