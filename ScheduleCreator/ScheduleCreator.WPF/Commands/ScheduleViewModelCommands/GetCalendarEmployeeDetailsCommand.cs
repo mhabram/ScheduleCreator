@@ -52,6 +52,7 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
         private void InitialScheduleCreation(IList<Employee> employees, CalendarHelper calendarHelper)
         {
             ObservableCollection<EmployeeDTO> tempEmployees;
+            IList<DateTime> preferenceDays = new List<DateTime>();
             string fullName;
             int freeWorkingDays;
 
@@ -60,7 +61,18 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
             {
                 fullName = String.Concat(employees[i].Name, " ", employees[i].LastName);
                 freeWorkingDays = calendarHelper.WorkingDaysInMonth(employees[i].Preferences.FreeWorkingDays);
-                _viewModel.Employees.Add(new EmployeeViewDTO { FullName = fullName, WorkingDays = freeWorkingDays });
+                
+                for (int j = 0; j < employees[i].Preferences.PreferenceDays.Count; j++)
+                {
+                    preferenceDays.Add(employees[i].Preferences.PreferenceDays[j].FreeDayChosen);
+                }
+
+                _viewModel.Employees.Add(new EmployeeViewDTO
+                {
+                    FullName = fullName,
+                    WorkingDays = freeWorkingDays,
+                    PreferenceDays = preferenceDays
+                });
             }
 
             for (int i = 0; i < calendarHelper.CalendarDate().Count; i++)
@@ -84,6 +96,7 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
         private void LoadDataSchedule(IList<Employee> employees, CalendarHelper calendarHelper)
         {
             Dictionary<DateTime, ObservableCollection<EmployeeDTO>> dateEmployeeList = new();
+            IList<DateTime> preferenceDays = new List<DateTime>();
             Employee employee;
             Day workDay;
             bool day, swing, night;
@@ -102,7 +115,17 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
                         freeWorkingDays--;
                 }
 
-                _viewModel.Employees.Add(new EmployeeViewDTO { FullName = fullName, WorkingDays = freeWorkingDays });
+                for (int j = 0; j < employees[i].Preferences.PreferenceDays.Count; j++)
+                {
+                    preferenceDays.Add(employees[i].Preferences.PreferenceDays[j].FreeDayChosen);
+                }
+
+                _viewModel.Employees.Add(new EmployeeViewDTO
+                {
+                    FullName = fullName,
+                    WorkingDays = freeWorkingDays,
+                    PreferenceDays = preferenceDays
+                });
             }
 
             for (int i = 0; i < employees.Count; i++)

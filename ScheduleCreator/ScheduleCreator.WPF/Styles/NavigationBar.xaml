@@ -3,7 +3,7 @@
     <Style x:Key="NavBtn" TargetType="RadioButton">
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="Padding" Value="5"/>
-        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontSize" Value="22"/>
         <Setter Property="Background" Value="{StaticResource BrushPrimaryMedium}"/>
         <Setter Property="Template">
             <Setter.Value>

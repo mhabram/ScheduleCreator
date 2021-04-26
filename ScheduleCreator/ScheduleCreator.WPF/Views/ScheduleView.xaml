@@ -23,6 +23,8 @@
         <Style TargetType="ListBox" BasedOn="{StaticResource CalendarTileListBox}"/>
         <Style TargetType="ListBoxItem" BasedOn="{StaticResource CalendarTileListBoxItem}"/>
         <Style TargetType="Button" BasedOn="{StaticResource GeneralButton}"/>
+        <Style TargetType="Thumb" BasedOn="{StaticResource ScrollThumbs}"/>
+        <Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBar}"/>
     </UserControl.Resources>
     
     <Grid>
@@ -32,7 +34,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="0 10">
+        <Grid Grid.Row="0" Margin="0 5">
             <TextBlock FontSize="20" HorizontalAlignment="Center" Text="Schedule"/>
         </Grid>
 
@@ -112,7 +114,9 @@
                 </ListView>
             </Grid>
 
-            <ItemsControl Grid.Column="1" ItemsSource="{Binding Employees, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+            <ItemsControl Grid.Column="1"
+                          ItemsSource="{Binding Employees, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                          FontSize="15">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Margin="5" Orientation="Vertical"/>
@@ -120,15 +124,33 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin=" 5 5 0 0">
-                                <TextBlock Text="{Binding FullName}" FontWeight="Bold"/>
-                            </StackPanel>
+                        <StackPanel Margin="0 0 0 15">
+                            <TextBlock Text="{Binding FullName}"
+                                           FontWeight="Bold"/>
 
-                            <StackPanel Orientation="Horizontal" Margin=" 5 0 0 15">
+                            <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Working days left: "/>
                                 <TextBlock Text="{Binding WorkingDays}" />
                             </StackPanel>
+
+                            <TextBlock Text="Preferences:" HorizontalAlignment="Center" FontWeight="Bold"/>
+                            <ItemsControl ItemsSource="{Binding PreferenceDays}"
+                                          HorizontalAlignment="Center"
+                                          FontSize="14"
+                                          FontWeight="Bold"
+                                          Foreground="DarkRed">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Path=Date.Day}"/>
+                                            <TextBlock Text="/"/>
+                                            <TextBlock Text="{Binding Path=Date.Month}"/>
+                                            <TextBlock Text="/"/>
+                                            <TextBlock Text="{Binding Path=Date.Year}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
