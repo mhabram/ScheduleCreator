@@ -27,7 +27,6 @@ namespace ScheduleCreator.WPF.ViewModels
             set
             {
                 _employees = value;
-                //OnPropertyChanged(nameof(Employees));
             }
         }
 
@@ -49,6 +48,7 @@ namespace ScheduleCreator.WPF.ViewModels
             set
             {
                 _name = value;
+                OnPropertyChanged(nameof(Name));
             }
         }
 
@@ -60,6 +60,7 @@ namespace ScheduleCreator.WPF.ViewModels
             set
             {
                 _lastName = value;
+                OnPropertyChanged(nameof(LastName));
             }
         }
 
