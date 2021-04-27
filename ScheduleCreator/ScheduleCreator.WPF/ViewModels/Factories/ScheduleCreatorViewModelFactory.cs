@@ -41,7 +41,7 @@ namespace ScheduleCreator.WPF.ViewModels.Factories
                 case ViewType.Schedule:
                     return _createScheduleViewModel();
                 default:
-                    throw new ArgumentException("The ViewType doesn't have a ViewModel.", "viewType");
+                    throw new ArgumentException("The ViewType doesn't have a ViewModel.", nameof(viewType));
             }
         }
     }

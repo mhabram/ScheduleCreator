@@ -26,7 +26,7 @@ namespace ScheduleCreator.WPF.Commands.EmployeeViewModelCommands
             _viewModel.SuccessDeletedEmployee = null;
             _viewModel.ErrorDeletedEmployee = null;
 
-            if ((_viewModel.Name != null) && (_viewModel.LastName != null)) // has to be changed later probably min string size to 2 letters fix this.
+            if ((_viewModel.Name != null) || (_viewModel.LastName != null)) // has to be changed later probably min string size to 2 letters fix this.
             {
                 employee = await _employeeService.AddEmployee(_viewModel.Name, _viewModel.LastName);
                 _viewModel.Employees.Add(employee);

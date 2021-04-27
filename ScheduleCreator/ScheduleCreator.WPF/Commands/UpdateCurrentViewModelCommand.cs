@@ -1,17 +1,12 @@
-﻿using ScheduleCreator.Domain.Services;
-using ScheduleCreator.WPF.State.Navigators;
-using ScheduleCreator.WPF.ViewModels;
+﻿using ScheduleCreator.WPF.State.Navigators;
 using ScheduleCreator.WPF.ViewModels.Factories;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using static ScheduleCreator.WPF.State.Navigators.INavigator;
 
 namespace ScheduleCreator.WPF.Commands
 {
-    public class UpdateCurrentViewModelCommand : AsyncCommandBase
+    public class UpdateCurrentViewModelCommand : ICommand
     {
         private readonly INavigator _navigator;
         private readonly IScheduleCreatorViewModelFactory _viewModelFactory;
@@ -23,7 +18,14 @@ namespace ScheduleCreator.WPF.Commands
             _viewModelFactory = viewModelFactory;
         }
 
-        public override async Task ExecuteAsync(object parameter)
+        public event EventHandler CanExecuteChanged;
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        public void Execute(object parameter)
         {
             if (parameter is ViewType)
             {

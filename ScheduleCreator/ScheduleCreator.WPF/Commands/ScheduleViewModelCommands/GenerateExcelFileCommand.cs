@@ -22,9 +22,8 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
             try
             {
                 IList<Employee> employees = await _scheduleService.GetSchedule();
-                bool isSaved = false;
-                Schedule schedule = new Schedule(employees);
-                isSaved = schedule.Create(@"C:\Temp\Schedule.xlsx");
+                Schedule schedule = new(employees);
+                schedule.Create(@"C:\Temp\Schedule.xlsx");
 
                 MessageBox.Show("File xlsx created.");
             }

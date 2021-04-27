@@ -20,10 +20,9 @@ namespace ScheduleCreator.Domain.GenerateToExcel
             Employees = employees;
         }
 
-        public bool Create(string filePath)
+        public void Create(string filePath)
         {
             DateTime currentDate = DateTime.Now.AddMonths(1).AddDays(-DateTime.Now.AddMonths(1).Day + 1);
-            bool isSaved = true;
             int currentRow = startRow;
             int currentCol = startCol;
             string fullName = "";
@@ -116,12 +115,9 @@ namespace ScheduleCreator.Domain.GenerateToExcel
 
                 workbook.SaveAs(filePath);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                isSaved = false;
             }
-
-            return isSaved;
         }
     }
 }

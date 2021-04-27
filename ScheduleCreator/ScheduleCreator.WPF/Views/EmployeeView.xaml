@@ -78,7 +78,7 @@
                                        VerticalAlignment="Center"/>
                             <TextBox Grid.Column="1"
                                      Margin="20 0 0 0"
-                                     Text="{Binding Name}"/>
+                                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
                     </Grid>
 
@@ -91,7 +91,7 @@
                         <TextBlock Grid.Column="0" Text="LastName"/>
                         <TextBox Grid.Column="1"
                                  Margin="20 0 0 0"
-                                 Text="{Binding LastName}"/>
+                                 Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
 
                     <Button Grid.Row="2" Grid.Column="2"
