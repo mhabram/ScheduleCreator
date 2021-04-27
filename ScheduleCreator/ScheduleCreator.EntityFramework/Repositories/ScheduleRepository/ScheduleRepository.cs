@@ -18,21 +18,12 @@ namespace ScheduleCreator.EntityFramework.Repositories.ScheduleRepository
             _contextFactory = contextFactory;
         }
 
-        public async Task<bool> AddEmployeeScheduleDays(string lastName, List<Day> days)
+        public async Task AddEmployeeScheduleDays(string lastName, List<Day> days)
         {
-            using (ScheduleCreatorDbContext context = _contextFactory.CreateDbContext())
-            {
-                Employee employee = await context.Employees.SingleOrDefaultAsync(e => e.LastName == lastName.ToLower());
-
-                if (employee == null)
-                    return false;
-
-                employee.Days = days;
-
-                await context.SaveChangesAsync();
-
-                return true;
-            }
+            using ScheduleCreatorDbContext context = _contextFactory.CreateDbContext();
+            Employee employee = await context.Employees.SingleOrDefaultAsync(e => e.LastName == lastName.ToLower());
+            employee.Days = days;
+            await context.SaveChangesAsync();
         }
 
         public async Task<IList<Employee>> GetSchedule(string internalId)
@@ -47,9 +38,6 @@ namespace ScheduleCreator.EntityFramework.Repositories.ScheduleRepository
                 .ThenInclude(d => d.PreferenceDays)
                 .Where(i => i.Preferences.InternalPreferenceId == internalId)
                 .ToListAsync();
-
-            if (employees[0].Days.Count < 1)
-                throw new Exception("Empty Day list");
 
             return employees;
         }

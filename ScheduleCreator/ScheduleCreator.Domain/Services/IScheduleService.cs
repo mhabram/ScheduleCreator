@@ -11,7 +11,7 @@ namespace ScheduleCreator.Domain.Services
 {
     public interface IScheduleService
     {
-        Task<bool> CreateSchedule(ObservableCollection<CalendarDateDTO> calendarDateDTO);
+        Task CreateSchedule(ObservableCollection<CalendarDateDTO> calendarDateDTO);
         Task<IList<Employee>> GetSchedule();
     }
 }

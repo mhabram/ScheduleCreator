@@ -33,7 +33,10 @@ namespace ScheduleCreator.WPF.Commands.PreferenceViewModelCommands
             
             preferenceDay = new PreferenceDay() { FreeDayChosen = _viewModel.DayOffThree };
             preferenceDays.Add(preferenceDay);
-            
+
+            _viewModel.ErrorMessage = null;
+            _viewModel.SuccessMessage = null;
+
             try
             {
                 if (_viewModel.Employee.Preferences != null)

@@ -38,11 +38,10 @@ namespace ScheduleCreator.EntityFramework.Services
             return employees;
         }
 
-        public async Task<bool> CreateSchedule(ObservableCollection<CalendarDateDTO> calendarDateDTO)
+        public async Task CreateSchedule(ObservableCollection<CalendarDateDTO> calendarDateDTO)
         {
             Dictionary<string, List<Day>> employeeFullNameWorkingDays = new();
             EmployeeDTO employeeDTO;
-            bool isSaved = false;
             bool isWorking;
             string shift;
             string monthId = String.Concat(DateTime.Now.AddMonths(1).Year.ToString(), DateTime.Now.AddMonths(1).Month.ToString());
@@ -91,10 +90,9 @@ namespace ScheduleCreator.EntityFramework.Services
 
             foreach (var key in employeeFullNameWorkingDays)
             {
-                isSaved = await _scheduleRepository.AddEmployeeScheduleDays(key.Key.Split()[1].ToLower(), key.Value);
+                await _scheduleRepository.AddEmployeeScheduleDays(key.Key.Split()[1].ToLower(), key.Value);
             }
 
-            return isSaved;
         }
     }
 }

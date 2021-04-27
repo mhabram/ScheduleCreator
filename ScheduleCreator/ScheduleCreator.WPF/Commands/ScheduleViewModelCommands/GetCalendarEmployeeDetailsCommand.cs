@@ -52,13 +52,14 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
         private void InitialScheduleCreation(IList<Employee> employees, CalendarHelper calendarHelper)
         {
             ObservableCollection<EmployeeDTO> tempEmployees;
-            IList<DateTime> preferenceDays = new List<DateTime>();
+            IList<DateTime> preferenceDays;
             string fullName;
             int freeWorkingDays;
 
 
             for (int i = 0; i < employees.Count; i++)
             {
+                preferenceDays = new List<DateTime>();
                 fullName = String.Concat(employees[i].Name, " ", employees[i].LastName);
                 freeWorkingDays = calendarHelper.WorkingDaysInMonth(employees[i].Preferences.FreeWorkingDays);
                 
@@ -96,7 +97,7 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
         private void LoadDataSchedule(IList<Employee> employees, CalendarHelper calendarHelper)
         {
             Dictionary<DateTime, ObservableCollection<EmployeeDTO>> dateEmployeeList = new();
-            IList<DateTime> preferenceDays = new List<DateTime>();
+            IList<DateTime> preferenceDays;
             Employee employee;
             Day workDay;
             bool day, swing, night;
@@ -106,6 +107,7 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
 
             for (int i = 0; i < employees.Count; i++)
             {
+                preferenceDays = new List<DateTime>();
                 fullName = String.Concat(employees[i].Name, " ", employees[i].LastName);
                 freeWorkingDays = calendarHelper.WorkingDaysInMonth(employees[i].Preferences.FreeWorkingDays);
 

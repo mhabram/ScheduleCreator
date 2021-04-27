@@ -24,11 +24,15 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
 
         public override async Task ExecuteAsync(object parameter)
         {
-            bool isSaved = await _scheduleService.CreateSchedule(_viewModel.CalendarDates);
-            if (isSaved)
-                MessageBox.Show($"Schedule has been saved to the database.");
-            else
-                MessageBox.Show($"Schedule has not been saved to the database.");
+            try
+            {
+                await _scheduleService.CreateSchedule(_viewModel.CalendarDates);
+                MessageBox.Show("Schedule has been saved.");
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Schedule has not been saved to the database.");
+            }
         }
     }
 }
