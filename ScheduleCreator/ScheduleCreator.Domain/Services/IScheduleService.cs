@@ -13,5 +13,6 @@ namespace ScheduleCreator.Domain.Services
     {
         Task CreateSchedule(ObservableCollection<CalendarDateDTO> calendarDateDTO);
         Task<IList<Employee>> GetSchedule();
+        Task<Employee> GetEmployeeSchedule(int id);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using ScheduleCreator.Domain.DTO.Observable;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace ScheduleCreator.Domain.DTO.ScheduleView
@@ -17,6 +18,16 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
                 _workingDays = value;
                 OnPropertyChanged(nameof(WorkingDays));
             }
+        }
+
+        public int GetWorkingDays(string fullName)
+        {
+            int workingDays = 0;
+
+            if (FullName == fullName)
+                workingDays = WorkingDays;
+
+            return workingDays;
         }
     }
 }

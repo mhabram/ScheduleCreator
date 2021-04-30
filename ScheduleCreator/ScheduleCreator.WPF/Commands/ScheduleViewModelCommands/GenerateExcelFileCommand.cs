@@ -23,7 +23,7 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
             {
                 IList<Employee> employees = await _scheduleService.GetSchedule();
                 Schedule schedule = new(employees);
-                schedule.Create(@"C:\Temp\Schedule.xlsx");
+                schedule.Create(@"Desktop\Schedule.xlsx");
 
                 MessageBox.Show("File xlsx created.");
             }

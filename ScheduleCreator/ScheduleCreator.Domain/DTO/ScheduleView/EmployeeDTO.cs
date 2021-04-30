@@ -1,5 +1,9 @@
 ﻿using ScheduleCreator.Domain.DTO.Observable;
+using ScheduleCreator.Domain.Models;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace ScheduleCreator.Domain.DTO.ScheduleView
 {
@@ -48,5 +52,49 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
             }
         }
         public int CalendarDateDTOId{ get; set; }
+
+        public void UpdateEmployeeView(ObservableCollection<EmployeeViewDTO> employeeViewDTO)
+        {
+            bool isWorking = false;
+
+            if (Day || Swing || Night)
+                isWorking = true;
+
+            for (int i = 0; i < employeeViewDTO.Count; i++)
+            {
+                if ((FullName == employeeViewDTO[i].FullName) && isWorking)
+                {
+                    employeeViewDTO[i].WorkingDays--;
+                    break;
+                }
+
+                if ((FullName == employeeViewDTO[i].FullName) && !isWorking)
+                {
+                    employeeViewDTO[i].WorkingDays++;
+                    break;
+                }
+            }
+        }
+
+        public bool IsPreferenceDay(ObservableCollection<CalendarDateDTO> calendarDates, IList<Preferences> preferences)
+        {
+            string lastName = FullName.Split()[1];
+            Preferences pref = preferences.Where(e => e.Employee.LastName == lastName).FirstOrDefault();
+            return pref.PreferenceDays.Any(d => d.FreeDayChosen.Day == calendarDates.ElementAt(CalendarDateDTOId).Date.Day);
+        }
+
+        public int GetWorkingDays(ObservableCollection<EmployeeViewDTO> employeeViewDTO)
+        {
+            int workingDays = 0;
+
+            for (int i = 0; i < employeeViewDTO.Count; i++)
+            {
+                workingDays = employeeViewDTO[i].GetWorkingDays(FullName);
+                if (workingDays > 0)
+                    break;
+            }
+
+            return workingDays;
+        }
     }
 }

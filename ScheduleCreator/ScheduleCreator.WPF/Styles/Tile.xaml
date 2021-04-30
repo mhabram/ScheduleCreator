@@ -3,7 +3,7 @@
     <Style x:Key="CalendarTileListView" TargetType="ListView">
         <Setter Property="Background" Value="{StaticResource BrushSecondaryLight}"/>
         <Setter Property="Width" Value="1100"/>
-        <Setter Property="Height" Value="700"/>
+        <Setter Property="Height" Value="500"/>
         <Setter Property="Margin" Value="10"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>

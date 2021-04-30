@@ -6,7 +6,46 @@
              xmlns:local="clr-namespace:ScheduleCreator.WPF.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="Help"/>
+
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style TargetType="Grid">
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid Margin="50">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <StackPanel>
+                <TextBlock Text="1. Employee" FontSize="16" FontWeight="Bold"/>
+                <TextBlock Text="In the Employee tab you are able to add employees to the database."/>
+                <TextBlock Text="There are also employee list to check if all employees are in the database."/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <StackPanel>
+                <TextBlock Text="2. Preferences" FontSize="16" FontWeight="Bold"/>
+                <TextBlock Text="Preferences tab allow adding for existing employees in the database their preferences."/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <StackPanel>
+                <TextBlock Text="3. Schedule" FontSize="16" FontWeight="Bold"/>
+                <TextBlock Text="Schedule tab contains calendar with employees, employee preferences. In this tab schedule can be created."/>
+                <TextBlock Text="This tab is responsible for adding schedule to the database and generating xlsx file."/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

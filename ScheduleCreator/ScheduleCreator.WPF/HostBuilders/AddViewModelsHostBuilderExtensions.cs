@@ -19,23 +19,15 @@ namespace ScheduleCreator.WPF.HostBuilders
                 services.AddSingleton<EmployeeViewModel>();
                 services.AddSingleton<ScheduleViewModel>();
                 services.AddSingleton<MainViewModel>();
-                //probably to delete
                 services.AddSingleton<HelpViewModel>();
-                services.AddSingleton<CreateScheduleViewModel>();
 
                 //Delegates
                 services.AddSingleton<CreateViewModel<PreferenceViewModel>>(services => () => CreatePreferenceViewModel(services));
                 services.AddSingleton<CreateViewModel<EmployeeViewModel>>(services => () => CreateEmployeeViewModel(services));
                 services.AddSingleton<CreateViewModel<ScheduleViewModel>>(services => () => CreateScheduleViewModel(services));
-
-                //probably to delete
                 services.AddSingleton<CreateViewModel<HelpViewModel>>(services =>
                 {
                     return () => services.GetRequiredService<HelpViewModel>();
-                });
-                services.AddSingleton<CreateViewModel<CreateScheduleViewModel>>(services => // this one can be refactored in future.
-                {
-                    return () => services.GetRequiredService<CreateScheduleViewModel>();
                 });
             });
 

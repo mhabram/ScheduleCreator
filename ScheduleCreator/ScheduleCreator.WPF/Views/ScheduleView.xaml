@@ -77,8 +77,8 @@
                                             <DataTemplate>
                                                 <StackPanel HorizontalAlignment="Center">
                                                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="0 5 0 0">
-                                                            <TextBlock Text="{Binding FullName}" HorizontalAlignment="Center" FontSize="14"/>
-                                                            <TextBlock Text="{Binding Shift}" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold"/>
+                                                            <TextBlock Text="{Binding FullName}" HorizontalAlignment="Center" FontSize="12"/>
+                                                            <TextBlock Text="{Binding Shift}" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold"/>
                                                     </StackPanel>
                                                     <Border Padding="0" Margin="0">
                                                         <StackPanel Orientation="Horizontal"
@@ -117,7 +117,7 @@
 
             <ItemsControl Grid.Column="1"
                           ItemsSource="{Binding Employees, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                          FontSize="15">
+                          FontSize="13">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Margin="5" Orientation="Vertical"/>
@@ -134,24 +134,34 @@
                                 <TextBlock Text="{Binding WorkingDays}" />
                             </StackPanel>
 
-                            <TextBlock Text="Preferences:" HorizontalAlignment="Center" FontWeight="Bold"/>
-                            <ItemsControl ItemsSource="{Binding PreferenceDays}"
-                                          HorizontalAlignment="Center"
-                                          FontSize="12"
-                                          FontWeight="Bold"
-                                          Foreground="DarkRed">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Path=Date.Day}"/>
-                                            <TextBlock Text="/"/>
-                                            <TextBlock Text="{Binding Path=Date.Month}"/>
-                                            <TextBlock Text="/"/>
-                                            <TextBlock Text="{Binding Path=Date.Year}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Preferences:" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                                <ItemsControl ItemsSource="{Binding PreferenceDays}"
+                                              HorizontalAlignment="Center"
+                                              FontSize="12"
+                                              FontWeight="Bold"
+                                              Foreground="DarkRed">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Margin="5" Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="("/>
+                                                <TextBlock Text="{Binding Path=Date.Day}"/>
+                                                <TextBlock Text=")"/>
+                                                <!--<TextBlock Text="{Binding Path=Date.Day}"/>
+                                                <TextBlock Text="/"/>
+                                                <TextBlock Text="{Binding Path=Date.Month}"/>
+                                                <TextBlock Text="/"/>
+                                                <TextBlock Text="{Binding Path=Date.Year}"/>-->
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
                         </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
