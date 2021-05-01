@@ -29,7 +29,6 @@ namespace ScheduleCreator.WPF.Commands.EmployeeViewModelCommands
 
             try
             {
-                //Employee employee = _viewModel.Employee;
                 await _empoyeeService.RemoveEmployee(_viewModel.Employee);
                 _viewModel.Employees.Remove(_viewModel.Employee);
                 _viewModel.SuccessDeletedEmployee = "Employee has been deleted.";

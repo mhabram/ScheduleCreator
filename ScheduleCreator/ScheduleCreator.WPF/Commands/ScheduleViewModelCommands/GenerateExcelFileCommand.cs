@@ -19,11 +19,12 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
 
         public override async Task ExecuteAsync(object parameter)
         {
+            string filePath = String.Concat(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),"\\Schedule.xlsx");
             try
             {
                 IList<Employee> employees = await _scheduleService.GetSchedule();
                 Schedule schedule = new(employees);
-                schedule.Create(@"Desktop\Schedule.xlsx");
+                schedule.Create(filePath);
 
                 MessageBox.Show("File xlsx created.");
             }

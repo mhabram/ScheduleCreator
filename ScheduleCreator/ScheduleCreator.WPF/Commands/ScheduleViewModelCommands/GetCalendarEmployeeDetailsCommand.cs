@@ -232,30 +232,6 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
                                 });
                         }
                     }
-
-                    //ObservableCollection<EmployeeDTO> tempEmployees;
-                    //for (int j = 0; j < calendarHelper.CalendarDate().Count; j++)
-                    //{
-                    //    tempEmployees = new();
-                    //    for (int k = 0; k < employees.Count; k++)
-                    //    {
-                    //        fullName = String.Concat(employees[k].Name, " ", employees[k].LastName);
-
-                    //        tempEmployees.Add(new EmployeeDTO()
-                    //        {
-                    //            EmployeeId = k,
-                    //            FullName = fullName,
-                    //            CalendarDateDTOId = j,
-                    //        });
-                    //    }
-
-                    //    _viewModel.CalendarDates.Add(new CalendarDateDTO()
-                    //    {
-                    //        Id = j,
-                    //        Date = calendarHelper.CalendarDate()[j],
-                    //        Employees = tempEmployees
-                    //    });
-                    //}
                 }
             }
             AssignDataToCalendarDates(dateEmployeeList);

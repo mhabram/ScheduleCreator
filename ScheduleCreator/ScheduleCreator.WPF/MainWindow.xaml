@@ -10,8 +10,8 @@
         Title="Schedule Creator"
         MinHeight="450"
         MinWidth="800"
-        SizeToContent="WidthAndHeight"
-        WindowState="Maximized">
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

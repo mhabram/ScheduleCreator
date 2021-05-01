@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ScheduleCreator.EntityFramework;
 using ScheduleCreator.WPF.HostBuilders;
+using System;
 using System.Windows;
 
 namespace ScheduleCreator.WPF

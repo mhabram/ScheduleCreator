@@ -33,142 +33,130 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Margin="0 5">
             <TextBlock FontSize="20" HorizontalAlignment="Center" Text="Schedule"/>
         </Grid>
 
-        <Grid Grid.Row="1">
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-
-            <Grid>
-                <ListView ItemsSource="{Binding CalendarDates}">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" Width="1100"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ListViewItem>
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <TextBlock Text="{Binding Date.Day}" FontSize="18" />
-                                        <TextBlock Text="/" FontSize="18" />
-                                        <TextBlock Text="{Binding Date.Month}" FontSize="18" />
-                                        <TextBlock Text="/" FontSize="18" />
-                                        <TextBlock Text="{Binding Date.Year}" FontSize="18" />
-                                    </StackPanel>
-                                    <StackPanel HorizontalAlignment="Center">
-                                        <TextBlock Text="{Binding Date.DayOfWeek}" FontSize="14"/>
-                                    </StackPanel>
-                                    <ListBox ItemsSource="{Binding Employees}">
-                                        <ListBox.Template>
-                                            <ControlTemplate>
-                                                <ItemsPresenter />
-                                            </ControlTemplate>
-                                        </ListBox.Template>
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <StackPanel HorizontalAlignment="Center">
-                                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="0 5 0 0">
-                                                            <TextBlock Text="{Binding FullName}" HorizontalAlignment="Center" FontSize="12"/>
-                                                            <TextBlock Text="{Binding Shift}" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold"/>
-                                                    </StackPanel>
-                                                    <Border Padding="0" Margin="0">
-                                                        <StackPanel Orientation="Horizontal"
-                                                                VerticalAlignment="Center"
-                                                                HorizontalAlignment="Center"
-                                                                Margin="0">
-                                                            <ToggleButton IsChecked="{Binding Day}"
-                                                                        Command="{Binding DataContext.CalendarUpdateDayShiftCommand, RelativeSource={RelativeSource Mode=FindAncestor,
-                                                                        AncestorType=Grid, AncestorLevel=2}}"
-                                                                        CommandParameter="{Binding}"
-                                                                        Content="Day"/>
-
-                                                            <ToggleButton IsChecked="{Binding Swing}"
-                                                                        Command="{Binding DataContext.CalendarUpdateSwingShiftCommand, RelativeSource={RelativeSource Mode=FindAncestor,
-                                                                        AncestorType=Grid, AncestorLevel=2}}"
-                                                                        CommandParameter="{Binding}"
-                                                                        Content="Swing"/>
-
-                                                            <ToggleButton IsChecked="{Binding Night}"
-                                                                        Command="{Binding DataContext.CalendarUpdateNightShiftCommand, RelativeSource={RelativeSource Mode=FindAncestor,
-                                                                        AncestorType=Grid, AncestorLevel=2}}"
-                                                                        CommandParameter="{Binding}"
-                                                                        Content="Night"/>
-                                                        </StackPanel>
-                                                    </Border>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
-                                </StackPanel>
-                            </ListViewItem>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
-
-            <ItemsControl Grid.Column="1"
+        <ItemsControl Grid.Row="1"
                           ItemsSource="{Binding Employees, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                           FontSize="13">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Margin="5" Orientation="Vertical"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Margin="0 0 0 5">
-                            <TextBlock Text="{Binding FullName}"
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="0 0 0 5">
+                        <TextBlock Text="{Binding FullName}"
                                            FontWeight="Bold"/>
 
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Working days left: "/>
-                                <TextBlock Text="{Binding WorkingDays}" />
-                            </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Working days left: "/>
+                            <TextBlock Text="{Binding WorkingDays}" />
+                        </StackPanel>
 
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Preferences:" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
-                                <ItemsControl ItemsSource="{Binding PreferenceDays}"
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Preferences:" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                            <ItemsControl ItemsSource="{Binding PreferenceDays}"
                                               HorizontalAlignment="Center"
                                               FontSize="12"
                                               FontWeight="Bold"
                                               Foreground="DarkRed">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Margin="5" Orientation="Horizontal"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Margin="5" Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="("/>
+                                            <TextBlock Text="{Binding Path=Date.Day}"/>
+                                            <TextBlock Text=")"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        
+        <Grid Grid.Row="2">
+            <ListView ItemsSource="{Binding CalendarDates}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" Width="1550"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ListViewItem>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding Date.Day}" FontSize="18" />
+                                    <TextBlock Text="/" FontSize="18" />
+                                    <TextBlock Text="{Binding Date.Month}" FontSize="18" />
+                                    <TextBlock Text="/" FontSize="18" />
+                                    <TextBlock Text="{Binding Date.Year}" FontSize="18" />
+                                </StackPanel>
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding Date.DayOfWeek}" FontSize="14"/>
+                                </StackPanel>
+                                <ListBox ItemsSource="{Binding Employees}">
+                                    <ListBox.Template>
+                                        <ControlTemplate>
+                                            <ItemsPresenter />
+                                        </ControlTemplate>
+                                    </ListBox.Template>
+                                    <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="("/>
-                                                <TextBlock Text="{Binding Path=Date.Day}"/>
-                                                <TextBlock Text=")"/>
-                                                <!--<TextBlock Text="{Binding Path=Date.Day}"/>
-                                                <TextBlock Text="/"/>
-                                                <TextBlock Text="{Binding Path=Date.Month}"/>
-                                                <TextBlock Text="/"/>
-                                                <TextBlock Text="{Binding Path=Date.Year}"/>-->
+                                            <StackPanel HorizontalAlignment="Center">
+                                                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="0 5 0 0">
+                                                    <TextBlock Text="{Binding FullName}" HorizontalAlignment="Center" FontSize="12"/>
+                                                    <TextBlock Text="{Binding Shift}" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold"/>
+                                                </StackPanel>
+                                                <Border Padding="0" Margin="0">
+                                                    <StackPanel Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Center"
+                                                            Margin="0">
+                                                        <ToggleButton IsChecked="{Binding Day}"
+                                                                    Command="{Binding DataContext.CalendarUpdateDayShiftCommand, RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                    AncestorType=Grid, AncestorLevel=2}}"
+                                                                    CommandParameter="{Binding}"
+                                                                    Content="Day"/>
+
+                                                        <ToggleButton IsChecked="{Binding Swing}"
+                                                                    Command="{Binding DataContext.CalendarUpdateSwingShiftCommand, RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                    AncestorType=Grid, AncestorLevel=2}}"
+                                                                    CommandParameter="{Binding}"
+                                                                    Content="Swing"/>
+
+                                                        <ToggleButton IsChecked="{Binding Night}"
+                                                                    Command="{Binding DataContext.CalendarUpdateNightShiftCommand, RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                    AncestorType=Grid, AncestorLevel=2}}"
+                                                                    CommandParameter="{Binding}"
+                                                                    Content="Night"/>
+                                                    </StackPanel>
+                                                </Border>
                                             </StackPanel>
                                         </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
                             </StackPanel>
-                        </StackPanel>
+                        </ListViewItem>
                     </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
-        
-        <Grid Grid.Row="2" Margin="0 5 100 0" HorizontalAlignment="Right">
+
+        <Grid Grid.Row="3" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />

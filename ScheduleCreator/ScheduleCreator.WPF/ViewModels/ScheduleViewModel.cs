@@ -110,7 +110,10 @@ namespace ScheduleCreator.WPF.ViewModels
 
                         if (((calendarDateDTO.Date.DayOfWeek.ToString() == "Saturday") || (calendarDateDTO.Date.DayOfWeek.ToString() == "Sunday")) &&
                             (numnberOfEmployeesWorkingOnShift >= 1))
+                        {
+                            MessageBox.Show($"There is already employee working on {calendarDateDTO.Date.DayOfWeek.ToString()}.");
                             employeeDTO.Day = false;
+                        }
                     }
                     else
                     {
@@ -189,7 +192,10 @@ namespace ScheduleCreator.WPF.ViewModels
 
                         if (((calendarDateDTO.Date.DayOfWeek.ToString() == "Saturday") || (calendarDateDTO.Date.DayOfWeek.ToString() == "Sunday")) &&
                             (numnberOfEmployeesWorkingOnShift >= 1))
+                        {
+                            MessageBox.Show($"There is already employee working on {calendarDateDTO.Date.DayOfWeek.ToString()}.");
                             employeeDTO.Swing = false;
+                        }
                     }
                     else
                     {
@@ -262,7 +268,10 @@ namespace ScheduleCreator.WPF.ViewModels
 
                         if (((calendarDateDTO.Date.DayOfWeek.ToString() == "Saturday") || (calendarDateDTO.Date.DayOfWeek.ToString() == "Sunday")) &&
                             (numnberOfEmployeesWorkingOnShift >= 1))
+                        {
+                            MessageBox.Show($"There is already employee working on {calendarDateDTO.Date.DayOfWeek.ToString()}.");
                             employeeDTO.Night = false;
+                        }
                     }
                     else
                     {

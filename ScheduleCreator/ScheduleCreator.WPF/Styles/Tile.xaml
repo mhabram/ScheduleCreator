@@ -2,9 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style x:Key="CalendarTileListView" TargetType="ListView">
         <Setter Property="Background" Value="{StaticResource BrushSecondaryLight}"/>
-        <Setter Property="Width" Value="1100"/>
-        <Setter Property="Height" Value="500"/>
-        <Setter Property="Margin" Value="10"/>
+        <Setter Property="MaxWidth" Value="1520"/>
+        <Setter Property="Height" Value="585"/>
+        <Setter Property="Margin" Value="5"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
     </Style>

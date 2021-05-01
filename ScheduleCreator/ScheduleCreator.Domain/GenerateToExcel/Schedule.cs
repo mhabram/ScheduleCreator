@@ -113,7 +113,7 @@ namespace ScheduleCreator.Domain.GenerateToExcel
                 range.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
                 worksheet.Columns().AdjustToContents();
 
-                workbook.SaveAs(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments));
+                workbook.SaveAs(filePath);
             }
             catch (Exception)
             {

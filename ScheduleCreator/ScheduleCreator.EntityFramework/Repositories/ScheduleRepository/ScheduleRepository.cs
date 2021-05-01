@@ -29,6 +29,7 @@ namespace ScheduleCreator.EntityFramework.Repositories.ScheduleRepository
             Employee employee= await context.Employees
                 .Include(d => d.Days.Where(m => m.MonthId == internalId))
                 .FirstOrDefaultAsync(e => e.LastName == lastName);
+            employee.Days = employee.Days.OrderBy(o => o.WorkingDay).ToList();
 
             for (int i = 0; i < days.Count; i++)
             {
