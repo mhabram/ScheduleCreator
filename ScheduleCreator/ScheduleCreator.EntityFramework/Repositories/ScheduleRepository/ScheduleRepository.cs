@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ScheduleCreator.Domain.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,9 +29,6 @@ namespace ScheduleCreator.EntityFramework.Repositories.ScheduleRepository
             Employee employee= await context.Employees
                 .Include(d => d.Days.Where(m => m.MonthId == internalId))
                 .FirstOrDefaultAsync(e => e.LastName == lastName);
-
-            //if (employee.Days.Count == 0)
-            //    throw new Exception();
 
             for (int i = 0; i < days.Count; i++)
             {

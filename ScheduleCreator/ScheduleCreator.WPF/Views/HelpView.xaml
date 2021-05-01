@@ -28,23 +28,60 @@
         <Grid Grid.Row="0">
             <StackPanel>
                 <TextBlock Text="1. Employee" FontSize="16" FontWeight="Bold"/>
-                <TextBlock Text="In the Employee tab you are able to add employees to the database."/>
-                <TextBlock Text="There are also employee list to check if all employees are in the database."/>
+                <TextBlock TextWrapping="Wrap">
+                    After opening Employee tab on the first scene we can see a form to add a new employee.
+                    Without employees added to the database, we will not be able to create a schedule.
+                    Once we add a wrong employee or someone leaves the company there is also a button to remove the employee.
+                </TextBlock>
             </StackPanel>
         </Grid>
 
         <Grid Grid.Row="1">
             <StackPanel>
                 <TextBlock Text="2. Preferences" FontSize="16" FontWeight="Bold"/>
-                <TextBlock Text="Preferences tab allow adding for existing employees in the database their preferences."/>
+                <TextBlock TextWrapping="Wrap">
+                    Before opening this tab we need to add employee.
+                    ScheduleCreator is using SQLite database and works fully synced.
+                    Therefore as long as there is no employee in the database we cannot add preferences.
+                </TextBlock>
+                <TextBlock/>
+                <TextBlock TextWrapping="Wrap">
+                    For the textbox Holidays we should add number of the free days that employee needs.
+                    By default application is adding to the user number of free weekend days depends on a number of days.
+                    The next three fields allow adding preferred days.
+                    If employee want to have only 1 or 2 preferred days we can assign all of the fields with the same day.
+                    Updating preferred day is as simple as adding.
+                    We can change the preferred day for the employee we want and clicking add button.
+                </TextBlock>
             </StackPanel>
         </Grid>
 
         <Grid Grid.Row="2">
             <StackPanel>
                 <TextBlock Text="3. Schedule" FontSize="16" FontWeight="Bold"/>
-                <TextBlock Text="Schedule tab contains calendar with employees, employee preferences. In this tab schedule can be created."/>
-                <TextBlock Text="This tab is responsible for adding schedule to the database and generating xlsx file."/>
+                <TextBlock TextWrapping="Wrap">
+                    Schedule tab is the one that allows us to create a schedule.
+                    It will be empty unless there is an employee with preferences.
+                    There is also a list of employees and their preferences.
+                    It should help in the creation of the schedule.
+                    After saving the schedule to the database we can leave the application and get back later.
+                    It will sync with the database and we will be able to continue creating a schedule.
+                </TextBlock>
+                <TextBlock/>
+                <TextBlock TextWrapping="Wrap">
+                    Update Database button is adding employees with the selected working days to the database.
+                    Generate Excel File button is generating excel file with already saved to the database schedule.
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+        
+        <Grid Grid.Row="3">
+            <StackPanel>
+                <TextBlock Text="3. How to use app" FontSize="16" FontWeight="Bold"/>
+                <TextBlock Text="1. Add employee"/>
+                <TextBlock Text="2. Add preferences"/>
+                <TextBlock Text="3. Select working days and add to the database"/>
+                <TextBlock Text="4. Generate Excel file"/>
             </StackPanel>
         </Grid>
     </Grid>

@@ -60,7 +60,12 @@ namespace ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories
         public async Task RemoveEmployee(Employee employee)
         {
             using ScheduleCreatorDbContext context = _contextFactory.CreateDbContext();
-            context.Employees.Remove(employee);
+            employee = await context.Employees
+                .Include(p => p.Preferences)
+                .Include(d => d.Days)
+                .SingleOrDefaultAsync(e => e.EmployeeId == employee.EmployeeId);
+
+            context.Remove(employee);
             await context.SaveChangesAsync();
         }
     }
