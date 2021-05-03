@@ -28,7 +28,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Margin="0 10">
-            <TextBlock FontSize="20" HorizontalAlignment="Center" Text="User preferences"/>
+            <TextBlock FontSize="20" HorizontalAlignment="Center" Text="Preferences"/>
         </Grid>
         
         <Grid Grid.Row="1">

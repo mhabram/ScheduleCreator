@@ -1,9 +1,5 @@
-﻿using ScheduleCreator.Domain.DTO.Observable;
-using ScheduleCreator.WPF.Commands;
-using ScheduleCreator.WPF.ViewModels;
-using ScheduleCreator.WPF.ViewModels.Factories;
+﻿using ScheduleCreator.WPF.ViewModels;
 using System;
-using System.Windows.Input;
 
 namespace ScheduleCreator.WPF.State.Navigators
 {

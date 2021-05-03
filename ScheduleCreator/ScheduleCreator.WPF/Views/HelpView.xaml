@@ -23,9 +23,12 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <TextBlock Grid.Row="0" Text="Help" FontSize="20" HorizontalAlignment="Center"/>
+
+        <Grid Grid.Row="1">
             <StackPanel>
                 <TextBlock Text="1. Employee" FontSize="16" FontWeight="Bold"/>
                 <TextBlock TextWrapping="Wrap">
@@ -36,7 +39,7 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <StackPanel>
                 <TextBlock Text="2. Preferences" FontSize="16" FontWeight="Bold"/>
                 <TextBlock TextWrapping="Wrap">
@@ -56,7 +59,7 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             <StackPanel>
                 <TextBlock Text="3. Schedule" FontSize="16" FontWeight="Bold"/>
                 <TextBlock TextWrapping="Wrap">
@@ -75,7 +78,7 @@
             </StackPanel>
         </Grid>
         
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="4">
             <StackPanel>
                 <TextBlock Text="3. How to use app" FontSize="16" FontWeight="Bold"/>
                 <TextBlock Text="1. Add employee"/>

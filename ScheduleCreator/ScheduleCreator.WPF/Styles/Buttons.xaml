@@ -18,7 +18,7 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="Background" Value="{StaticResource BrushSecondaryMedium}" TargetName="ToggleMain"/>
+                            <Setter Property="Background" Value="{StaticResource BrushTileSecondaryMedium}" TargetName="ToggleMain"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -28,7 +28,7 @@
             <EventTrigger RoutedEvent="MouseEnter">
                 <BeginStoryboard>
                     <Storyboard>
-                        <ColorAnimation To="{StaticResource ColorSecondaryLight}" Duration="0:0:0.1"
+                        <ColorAnimation To="{StaticResource ColorTileSecondaryLight}" Duration="0:0:0.1"
                                         Storyboard.TargetProperty="Background.Color"/>
                     </Storyboard>
                 </BeginStoryboard>

@@ -31,7 +31,10 @@ namespace ScheduleCreator.WPF.Commands
             {
                 ViewType viewType = (ViewType)parameter;
 
-                _navigator.CurrentViewModel = _viewModelFactory.CreateViewModel(viewType);
+                if (_navigator.CurrentViewModel == _viewModelFactory.CreateViewModel(viewType))
+                    return;
+                else
+                    _navigator.CurrentViewModel = _viewModelFactory.CreateViewModel(viewType);
             }
         }
     }

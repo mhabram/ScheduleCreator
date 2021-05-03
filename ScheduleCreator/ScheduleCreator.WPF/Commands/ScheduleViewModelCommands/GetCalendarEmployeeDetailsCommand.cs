@@ -34,7 +34,7 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
             try
             {
                 employees = await _scheduleService.GetSchedule();
-                LoadDataSchedule(employees, calendarHelper);
+                await LoadDataSchedule(employees, calendarHelper);
             }
             catch(Exception)
             {
@@ -133,7 +133,6 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
 
             for (int i = 0; i < employees.Count; i++)
             {
-                //employee = employees[i];
                 employee = await _scheduleService.GetEmployeeSchedule(employees[i].EmployeeId); // temp
                 fullName = String.Concat(employee.Name, " ", employee.LastName);
 

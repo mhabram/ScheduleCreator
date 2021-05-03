@@ -8,7 +8,12 @@
     <Color x:Key="ColorSecondaryDark">#001734</Color>
     <Color x:Key="ColorSecondaryMedium">#1d3d5e</Color>
     <Color x:Key="ColorSecondaryLight">#4c678b</Color>
-    
+
+    <Color x:Key="ColorTilePrimaryLight">#807e7e</Color>
+    <Color x:Key="ColorTilePrimaryDark">#565454</Color>
+    <Color x:Key="ColorTileSecondaryLight">#b1afaf</Color>
+    <Color x:Key="ColorTileSecondaryMedium">#828080</Color>
+
     <!--Brushes-->
     <SolidColorBrush x:Key="BrushPrimaryDark" Color="{StaticResource ColorPrimaryDark}"/>
     <SolidColorBrush x:Key="BrushPrimaryMedium" Color="{StaticResource ColorPrimaryMedium}"/>
@@ -16,5 +21,10 @@
     <SolidColorBrush x:Key="BrushSecondaryDark" Color="{StaticResource ColorSecondaryDark}"/>
     <SolidColorBrush x:Key="BrushSecondaryMedium" Color="{StaticResource ColorSecondaryMedium}"/>
     <SolidColorBrush x:Key="BrushSecondaryLight" Color="{StaticResource ColorSecondaryLight}"/>
+
+    <SolidColorBrush x:Key="BrushTilePrimaryDark" Color="{StaticResource ColorTilePrimaryDark}"/>
+    <SolidColorBrush x:Key="BrushTilePrimaryLight" Color="{StaticResource ColorTilePrimaryLight}"/>
+    <SolidColorBrush x:Key="BrushTileSecondaryLight" Color="{StaticResource ColorTileSecondaryLight}"/>
+    <SolidColorBrush x:Key="BrushTileSecondaryMedium" Color="{StaticResource ColorTileSecondaryMedium}"/>
 
 </ResourceDictionary>

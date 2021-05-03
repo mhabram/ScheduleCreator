@@ -111,7 +111,7 @@ namespace ScheduleCreator.WPF.ViewModels
                         if (((calendarDateDTO.Date.DayOfWeek.ToString() == "Saturday") || (calendarDateDTO.Date.DayOfWeek.ToString() == "Sunday")) &&
                             (numnberOfEmployeesWorkingOnShift >= 1))
                         {
-                            MessageBox.Show($"There is already employee working on {calendarDateDTO.Date.DayOfWeek.ToString()}.");
+                            MessageBox.Show($"There is already employee working on {calendarDateDTO.Date.DayOfWeek.ToString()}'s {shift}.");
                             employeeDTO.Day = false;
                         }
                     }
@@ -119,7 +119,7 @@ namespace ScheduleCreator.WPF.ViewModels
                     {
                         MessageBox.Show($"This day is the employee's preference day. ({calendarDateDTO.Date.Day}/{calendarDateDTO.Date.Month}/{calendarDateDTO.Date.Year})");
                         employeeDTO.Shift = shift;
-                        employeeDTO.UpdateEmployeeView(_employees);
+                        employeeDTO.UpdateEmployeeView(_employees); // need to fix this (it is assigning employee to the weekend day while there is already someone working)
                     }
                     //employeeDTO.Day = false;
                 }
@@ -193,7 +193,7 @@ namespace ScheduleCreator.WPF.ViewModels
                         if (((calendarDateDTO.Date.DayOfWeek.ToString() == "Saturday") || (calendarDateDTO.Date.DayOfWeek.ToString() == "Sunday")) &&
                             (numnberOfEmployeesWorkingOnShift >= 1))
                         {
-                            MessageBox.Show($"There is already employee working on {calendarDateDTO.Date.DayOfWeek.ToString()}.");
+                            MessageBox.Show($"There is already employee working on {calendarDateDTO.Date.DayOfWeek.ToString()}'s {shift}.");
                             employeeDTO.Swing = false;
                         }
                     }
@@ -269,7 +269,7 @@ namespace ScheduleCreator.WPF.ViewModels
                         if (((calendarDateDTO.Date.DayOfWeek.ToString() == "Saturday") || (calendarDateDTO.Date.DayOfWeek.ToString() == "Sunday")) &&
                             (numnberOfEmployeesWorkingOnShift >= 1))
                         {
-                            MessageBox.Show($"There is already employee working on {calendarDateDTO.Date.DayOfWeek.ToString()}.");
+                            MessageBox.Show($"There is already employee working on {calendarDateDTO.Date.DayOfWeek.ToString()}'s {shift}.");
                             employeeDTO.Night = false;
                         }
                     }
@@ -278,7 +278,6 @@ namespace ScheduleCreator.WPF.ViewModels
                         MessageBox.Show($"This day is the employee's preference day. ({calendarDateDTO.Date.Day}/{calendarDateDTO.Date.Month}/{calendarDateDTO.Date.Year})");
                         employeeDTO.Shift = shift;
                     }
-                    //employeeDTO.Night = false;
                 }
             }
             else

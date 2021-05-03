@@ -19,6 +19,10 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter Property="Background" Value="{StaticResource BrushPrimaryLight}" TargetName="gridMain"/>
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter Property="IsEnabled" Value="True"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
