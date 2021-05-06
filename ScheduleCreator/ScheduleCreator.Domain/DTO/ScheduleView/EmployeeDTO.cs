@@ -53,6 +53,27 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
         }
         public int CalendarDateDTOId{ get; set; }
 
+        public void CorrectShift()
+        {
+            switch (Shift)
+            {
+                case "Day":
+                    Swing = false;
+                    Night = false;
+                    break;
+                case "Swing":
+                    Day = false;
+                    Night = false;
+                    break;
+                case "Night":
+                    Day = false;
+                    Swing = false;
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public void UpdateEmployeeView(ObservableCollection<EmployeeViewDTO> employeeViewDTO)
         {
             bool isWorking = false;

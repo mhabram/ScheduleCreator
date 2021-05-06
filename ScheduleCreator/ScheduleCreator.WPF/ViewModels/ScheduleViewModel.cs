@@ -63,31 +63,35 @@ namespace ScheduleCreator.WPF.ViewModels
             int numnberOfEmployeesWorkingOnShift = CountEmployeesInWeekend(calendarDateDTO.Employees, shift);
             int workingDays = employeeDTO.GetWorkingDays(_employees);
             EmployeeDTO employeePreviousDay = new();
+
             if (employeeDTO.Day || employeeDTO.Swing || employeeDTO.Night)
                 employeeDTO.Day = WorkDaysInRow(employeeDTO);
 
-            if (employeeDTO.CalendarDateDTOId > 0)
-                employeePreviousDay = _calendarDates.ElementAt(employeeDTO.CalendarDateDTOId - 1).Employees.Where(e => e.FullName == employeeDTO.FullName).FirstOrDefault();
 
             if (workingDays > 0)
             {
-                if (employeeDTO.Swing) // Swing shift is selected for employee
+                employeeDTO.CorrectShift();
+
+                if (employeeDTO.CalendarDateDTOId > 0)
                 {
-                    employeeDTO.Day = false;
-                    employeeDTO.Night = false;
+                    employeePreviousDay = _calendarDates
+                        .ElementAt(employeeDTO.CalendarDateDTOId - 1)
+                        .Employees
+                        .Where(e => e.FullName == employeeDTO.FullName)
+                        .FirstOrDefault();
+                    
+                    switch (employeePreviousDay.Shift)
+                    {
+                        case "Night":
+                            employeeDTO.Day = false;
+                            break;
+                        case "Swing":
+                            employeeDTO.Day = false;
+                            break;
+                        default:
+                            break;
+                    }
                 }
-
-                if (employeeDTO.Night) // Night shift is selected for emploee
-                {
-                    employeeDTO.Day = false;
-                    employeeDTO.Swing = false;
-                }
-
-                if (employeePreviousDay.Shift == "Night") // No break between shifts
-                    employeeDTO.Day = false;
-                if (employeePreviousDay.Shift == "Swing") // Only 8 hours break between shifts
-                    employeeDTO.Day = false;
-
 
                 if (employeeDTO.Day)
                 {
@@ -141,36 +145,34 @@ namespace ScheduleCreator.WPF.ViewModels
             int workingDays = employeeDTO.GetWorkingDays(_employees);
             EmployeeDTO employeePreviousDay = new();
             EmployeeDTO employeeNextDay = new();
+            
             if (employeeDTO.Day || employeeDTO.Swing || employeeDTO.Night)
                 employeeDTO.Swing = WorkDaysInRow(employeeDTO);
 
-            employeeNextDay = _calendarDates.ElementAt(employeeDTO.CalendarDateDTOId + 1)
-                .Employees.Where(e => e.FullName == employeeDTO.FullName)
-                .FirstOrDefault();
-            if (employeeDTO.CalendarDateDTOId > 0)
-                employeePreviousDay = _calendarDates.ElementAt(employeeDTO.CalendarDateDTOId - 1)
-                    .Employees.Where(e => e.FullName == employeeDTO.FullName)
-                    .FirstOrDefault();
-
             if (workingDays > 0)
             {
-                if (employeeNextDay.Shift == "Day") // Only 8 hours break between shifts
-                    employeeDTO.Swing = false;
-
-                if (employeeDTO.Day) // Day shift is selected
+                employeeDTO.CorrectShift();
+                
+                if (employeeDTO.CalendarDateDTOId > 0)
                 {
-                    employeeDTO.Swing = false;
-                    employeeDTO.Night = false;
+                    employeePreviousDay = _calendarDates
+                        .ElementAt(employeeDTO.CalendarDateDTOId - 1)
+                        .Employees
+                        .Where(e => e.FullName == employeeDTO.FullName)
+                        .FirstOrDefault();
+                
+                    if (employeePreviousDay.Shift == "Night")
+                        employeeDTO.Swing = false;
                 }
 
-                if (employeeDTO.Night) // Night shift is selected
-                {
+                employeeNextDay = _calendarDates
+                    .ElementAt(employeeDTO.CalendarDateDTOId + 1)
+                    .Employees
+                    .Where(e => e.FullName == employeeDTO.FullName)
+                    .FirstOrDefault();
+                if (employeeNextDay.Shift == "Day")
                     employeeDTO.Swing = false;
-                    employeeDTO.Day = false;
-                }
 
-                if (employeePreviousDay.Shift == "Night") // Only 8 hours break between shifts
-                    employeeDTO.Swing = false;
 
                 if (employeeDTO.Swing)
                 {
@@ -221,31 +223,34 @@ namespace ScheduleCreator.WPF.ViewModels
             int numnberOfEmployeesWorkingOnShift = CountEmployeesInWeekend(calendarDateDTO.Employees, shift);
             int workingDays = employeeDTO.GetWorkingDays(_employees);
             EmployeeDTO employeeNextDay = new();
+
             if (employeeDTO.Day || employeeDTO.Swing || employeeDTO.Night)
                 employeeDTO.Night = WorkDaysInRow(employeeDTO);
 
-            employeeNextDay = _calendarDates.ElementAt(employeeDTO.CalendarDateDTOId + 1)
-                .Employees.Where(e => e.FullName == employeeDTO.FullName)
-                .FirstOrDefault();
-
             if (workingDays > 0)
             {
+                employeeDTO.CorrectShift();
+
+                employeeNextDay = _calendarDates
+                    .ElementAt(employeeDTO.CalendarDateDTOId + 1)
+                    .Employees
+                    .Where(e => e.FullName == employeeDTO.FullName)
+                    .FirstOrDefault();
+                switch (employeeNextDay.Shift)
+                {
+                    case "Day":
+                        employeeDTO.Night = false;
+                        break;
+                    case "Swing":
+                        employeeDTO.Night = false;
+                        break;
+                    default:
+                        break;
+                }
                 if (employeeNextDay.Shift == "Day") // No break between shifts
                     employeeDTO.Night = false;
                 if (employeeNextDay.Shift == "Swing") // Only 8 hours break between shifts
                     employeeDTO.Night = false;
-
-                if (employeeDTO.Day) // Day shift is seleced
-                {
-                    employeeDTO.Night = false;
-                    employeeDTO.Swing = false;
-                }
-
-                if (employeeDTO.Swing) // Swing shift is seleced
-                {
-                    employeeDTO.Night = false;
-                    employeeDTO.Day = false;
-                }
 
                 if (employeeDTO.Night)
                 {
