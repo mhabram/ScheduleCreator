@@ -9,7 +9,6 @@ namespace ScheduleCreator.WPF.State.Navigators
     public enum ViewType
     {
         Preference,
-        CreateSchedule,
         Schedule,
         Employee,
         Help

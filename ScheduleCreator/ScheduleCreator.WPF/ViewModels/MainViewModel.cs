@@ -23,6 +23,7 @@ namespace ScheduleCreator.WPF.ViewModels
             _navigator.StateChanged += NavigatorStateChanged;
 
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(_navigator, _viewModelFactory);
+            UpdateCurrentViewModelCommand.Execute(ViewType.Help);
         }
 
         private void NavigatorStateChanged()

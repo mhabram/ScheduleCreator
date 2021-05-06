@@ -4,6 +4,9 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+	<AssemblyName>Schedule Creator</AssemblyName>
+	<ApplicationIcon>calendar-icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +22,7 @@
 		<NoWarn>NU1701</NoWarn>
 	</PackageReference>
   </ItemGroup>
-
+	
   <ItemGroup>
     <ProjectReference Include="..\ScheduleCreator.Domain\ScheduleCreator.Domain.csproj" />
     <ProjectReference Include="..\ScheduleCreator.EntityFramework\ScheduleCreator.EntityFramework.csproj" />

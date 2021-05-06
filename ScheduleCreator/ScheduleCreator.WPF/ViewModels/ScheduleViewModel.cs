@@ -85,7 +85,6 @@ namespace ScheduleCreator.WPF.ViewModels
 
                 if (employeePreviousDay.Shift == "Night") // No break between shifts
                     employeeDTO.Day = false;
-
                 if (employeePreviousDay.Shift == "Swing") // Only 8 hours break between shifts
                     employeeDTO.Day = false;
 
@@ -233,7 +232,6 @@ namespace ScheduleCreator.WPF.ViewModels
             {
                 if (employeeNextDay.Shift == "Day") // No break between shifts
                     employeeDTO.Night = false;
-
                 if (employeeNextDay.Shift == "Swing") // Only 8 hours break between shifts
                     employeeDTO.Night = false;
 
