@@ -74,6 +74,14 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
             }
         }
 
+        public void UpdateEmployee(string shift, bool isWorking)
+        {
+            if (isWorking)
+                Shift = shift;
+            if ((Shift == shift) && !isWorking)
+                Shift = "";
+        }
+
         public void UpdateEmployeeView(ObservableCollection<EmployeeViewDTO> employeeViewDTO)
         {
             bool isWorking = false;
