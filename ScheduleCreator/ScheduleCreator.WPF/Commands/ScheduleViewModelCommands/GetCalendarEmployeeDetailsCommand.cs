@@ -6,6 +6,7 @@ using ScheduleCreator.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -16,14 +17,17 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
         private readonly ScheduleViewModel _viewModel;
         private readonly IEmployeeService _employeeService;
         private readonly IScheduleService _scheduleService;
+        private readonly IPreferenceService _preferenceService;
 
         public GetCalendarEmployeeDetailsCommand(ScheduleViewModel viewModel,
             IEmployeeService employeeService,
-            IScheduleService scheduleService)
+            IScheduleService scheduleService,
+            IPreferenceService preferenceService)
         {
             _viewModel = viewModel;
             _employeeService = employeeService;
             _scheduleService = scheduleService;
+            _preferenceService = preferenceService;
         }
 
         public override async Task ExecuteAsync(object parameter)
@@ -31,207 +35,105 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
             CalendarHelper calendarHelper = new();
             IList<Employee> employees = new List<Employee>();
 
+
+            
             try
             {
-                employees = await _scheduleService.GetSchedule();
-                await LoadDataSchedule(employees, calendarHelper);
-            }
-            catch(Exception)
-            {
+                await GetPreferences();
                 employees = await _employeeService.GetDetails();
-                InitialScheduleCreation(employees, calendarHelper);
+                await LoadDataSchedule(employees, calendarHelper);
+                GetEmployeeViewDTO(employees);
             }
+            catch(Exception) { }
 
-            //Preferences
-            for (int i = 0; i < employees.Count; i++)
+        }
+
+        private void GetEmployeeViewDTO(IList<Employee> employees)
+        {
+            for (int i = 0; i < _viewModel.CalendarDates[0].Employees.Count; i++)
             {
-                _viewModel.Preferences.Add(employees[i].Preferences);
+                EmployeeViewDTO employeeViewDTO = new();
+                List<DateTime> preferenceDays = new();
+                EmployeeDTO employeeDTO = _viewModel.CalendarDates[0].Employees[i];
+                string lastName = employeeDTO.FullName.Split()[1];
+                string fullName = String.Concat(employees[i].Name, " ", employees[i].LastName);
+                PreferencesDTO pref = _viewModel.Preferences.Where(e => e.LastName == lastName.ToLower()).FirstOrDefault();
+
+                for (int j = 0; j < pref.PreferenceDays.Count; j++)
+                {
+                    preferenceDays.Add(pref.PreferenceDays[j].FreeDayChosen);
+                }
+
+                employeeViewDTO.PreferenceDays = preferenceDays;
+                employeeViewDTO.FullName = fullName;
+                employeeViewDTO.SetStartingWorkingDays(pref);
+                _viewModel.Employees.Add(employeeViewDTO);
+
+                for (int j = 0; j < _viewModel.CalendarDates.Count; j++)
+                {
+                    _viewModel.CalendarDates[j].UpdateEmployeeView(_viewModel.Employees[i]);
+                }
             }
         }
 
-        private void InitialScheduleCreation(IList<Employee> employees, CalendarHelper calendarHelper)
+        private async Task GetPreferences()
         {
-            ObservableCollection<EmployeeDTO> tempEmployees;
-            IList<DateTime> preferenceDays;
-            string fullName;
-            int freeWorkingDays;
-
-
-            for (int i = 0; i < employees.Count; i++)
+            try
             {
-                preferenceDays = new List<DateTime>();
-                fullName = String.Concat(employees[i].Name, " ", employees[i].LastName);
-                freeWorkingDays = calendarHelper.WorkingDaysInMonth(employees[i].Preferences.FreeWorkingDays);
-                
-                for (int j = 0; j < employees[i].Preferences.PreferenceDays.Count; j++)
-                {
-                    preferenceDays.Add(employees[i].Preferences.PreferenceDays[j].FreeDayChosen);
-                }
-
-                _viewModel.Employees.Add(new EmployeeViewDTO
-                {
-                    FullName = fullName,
-                    WorkingDays = freeWorkingDays,
-                    PreferenceDays = preferenceDays
-                });
+                _viewModel.Preferences = await _preferenceService.GetPreferences();
             }
-
-            for (int i = 0; i < calendarHelper.CalendarDate().Count; i++)
-            {
-                tempEmployees = new();
-                for (int j = 0; j < employees.Count; j++)
-                {
-                    fullName = String.Concat(employees[j].Name, " ", employees[j].LastName);
-
-                    tempEmployees.Add(new EmployeeDTO()
-                    {
-                        EmployeeId = j,
-                        FullName = fullName,
-                        CalendarDateDTOId = i,
-                    });
-                }
-                _viewModel.CalendarDates.Add(new CalendarDateDTO() { Id = i, Date = calendarHelper.CalendarDate()[i], Employees = tempEmployees });
-            }
+            catch (Exception) {}
         }
 
         private async Task LoadDataSchedule(IList<Employee> employees, CalendarHelper calendarHelper)
         {
             Dictionary<DateTime, ObservableCollection<EmployeeDTO>> dateEmployeeList = new();
-            IList<DateTime> preferenceDays;
             Collection<DateTime> calendar = calendarHelper.CalendarDate();
+            EmployeeDTO employeeDTO;
             Employee employee;
             Day workDay;
-            bool day, swing, night;
-            int freeWorkingDays;
             string fullName;
             string shift;
 
             for (int i = 0; i < employees.Count; i++)
             {
-                preferenceDays = new List<DateTime>();
                 fullName = String.Concat(employees[i].Name, " ", employees[i].LastName);
-                freeWorkingDays = calendarHelper.WorkingDaysInMonth(employees[i].Preferences.FreeWorkingDays);
-
-                for (int j = 0; j < employees[i].Days.Count; j++)
+                try
                 {
-                    if (employees[i].Days[j].IsWorking == true)
-                        freeWorkingDays--;
-                }
-
-                for (int j = 0; j < employees[i].Preferences.PreferenceDays.Count; j++)
-                {
-                    preferenceDays.Add(employees[i].Preferences.PreferenceDays[j].FreeDayChosen);
-                }
-
-                _viewModel.Employees.Add(new EmployeeViewDTO
-                {
-                    FullName = fullName,
-                    WorkingDays = freeWorkingDays,
-                    PreferenceDays = preferenceDays
-                });
-            }
-
-            for (int i = 0; i < employees.Count; i++)
-            {
-                employee = await _scheduleService.GetEmployeeSchedule(employees[i].EmployeeId); // temp
-                fullName = String.Concat(employee.Name, " ", employee.LastName);
-
-                if (employee.Days.Count > 0)
-                {
-                    for (int j = 0; j < employee.Days.Count; j++)
+                    employee = await _scheduleService.GetEmployeeSchedule(employees[i].EmployeeId);
+                    if (employee.Days.Count > 0)
                     {
-                        day = false;
-                        swing = false;
-                        night = false;
-                        shift = "";
-
-                        workDay = employee.Days[j];
-                        if (workDay.Shift == "Day")
-                            day = true;
-                        if (workDay.Shift == "Swing")
-                            swing = true;
-                        if (workDay.Shift == "Night")
-                            night = true;
-                        if (workDay.Shift != "Free")
+                        for (int j = 0; j < employee.Days.Count; j++)
+                        {
+                            workDay = employee.Days[j];
                             shift = workDay.Shift;
+                            employeeDTO = new EmployeeDTO(j, i, fullName, shift);
 
-
-                        if (dateEmployeeList.ContainsKey(workDay.WorkingDay.Date))
-                        {
-                            dateEmployeeList[workDay.WorkingDay.Date].Add(
-                                new EmployeeDTO()
-                                {
-                                    CalendarDateDTOId = j,
-                                    EmployeeId = i,
-                                    FullName = fullName,
-                                    Shift = shift,
-                                    Day = day,
-                                    Swing = swing,
-                                    Night = night
-                                });
-
-                        }
-                        else
-                        {
-                            dateEmployeeList.Add(workDay.WorkingDay.Date,
-                                new ObservableCollection<EmployeeDTO>()
-                                {
-                                    new EmployeeDTO()
-                                    {
-                                        CalendarDateDTOId = j,
-                                        EmployeeId = i,
-                                        FullName = fullName,
-                                        Shift = shift,
-                                        Day = day,
-                                        Swing = swing,
-                                        Night = night
-                                    }
-                                });
+                            if (dateEmployeeList.ContainsKey(workDay.WorkingDay.Date))
+                                dateEmployeeList[workDay.WorkingDay.Date].Add(employeeDTO);
+                            else
+                                dateEmployeeList.Add(workDay.WorkingDay.Date, new ObservableCollection<EmployeeDTO>() { employeeDTO });
                         }
                     }
-                }
-                else
-                {
-                    for (int j = 0; j < calendar.Count; j++)
+                    else
                     {
-                        workDay = new Day()
+                        for (int j = 0; j < calendar.Count; j++)
                         {
-                            WorkingDay = calendar[j].Date.Date,
-                            IsWorking = false
-                        };
+                            employeeDTO = new EmployeeDTO(j, i, fullName);
+                            workDay = new Day()
+                            {
+                                WorkingDay = calendar[j].Date.Date,
+                                IsWorking = false
+                            };
 
-                        if (dateEmployeeList.ContainsKey(workDay.WorkingDay.Date.Date))
-                        {
-                            dateEmployeeList[workDay.WorkingDay.Date].Add(
-                                new EmployeeDTO()
-                                {
-                                    CalendarDateDTOId = j,
-                                    EmployeeId = i,
-                                    FullName = fullName,
-                                    Day = false,
-                                    Swing = false,
-                                    Night = false
-                                });
-
-                        }
-                        else
-                        {
-                            dateEmployeeList.Add(workDay.WorkingDay.Date.Date,
-                                new ObservableCollection<EmployeeDTO>()
-                                {
-                                    new EmployeeDTO()
-                                    {
-                                        CalendarDateDTOId = j,
-                                        EmployeeId = i,
-                                        FullName = fullName,
-                                        Day = false,
-                                        Swing = false,
-                                        Night = false
-                                    }
-                                });
+                            if (dateEmployeeList.ContainsKey(workDay.WorkingDay.Date.Date))
+                                dateEmployeeList[workDay.WorkingDay.Date].Add(employeeDTO);
+                            else
+                                dateEmployeeList.Add(workDay.WorkingDay.Date.Date, new ObservableCollection<EmployeeDTO>() { employeeDTO });
                         }
                     }
                 }
+                catch (Exception) { }
             }
             AssignDataToCalendarDates(dateEmployeeList);
         }

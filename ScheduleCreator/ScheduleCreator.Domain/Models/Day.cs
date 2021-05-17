@@ -18,5 +18,16 @@ namespace ScheduleCreator.Domain.Models
 
         [ForeignKey("EmployeeId")]
         public virtual Employee Employee { get; set; }
+
+        public Day() { }
+        public Day(string shift, DateTime workingDay, string monthId)
+        {
+            Shift = shift;
+            IsWorking = false;
+            if (shift != "Free")
+                IsWorking = true;
+            WorkingDay = workingDay;
+            MonthId = monthId;
+        }
     }
 }

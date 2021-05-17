@@ -40,8 +40,8 @@ namespace ScheduleCreator.EntityFramework.Services
         public async Task CreateSchedule(ObservableCollection<CalendarDateDTO> calendarDateDTO)
         {
             Dictionary<string, List<Day>> employeeFullNameWorkingDays = new();
+            Day day;
             EmployeeDTO employeeDTO;
-            bool isWorking;
             string shift;
             string monthId = String.Concat(DateTime.Now.AddMonths(1).Year.ToString(), DateTime.Now.AddMonths(1).Month.ToString());
 
@@ -50,40 +50,17 @@ namespace ScheduleCreator.EntityFramework.Services
                 for (int j = 0; j < calendarDateDTO[i].Employees.Count; j++)
                 {
                     shift = "Free";
-                    isWorking = false;
                     employeeDTO = calendarDateDTO[i].Employees[j];
 
                     if ((employeeDTO.Shift != null) && (employeeDTO.Shift != ""))
                         shift = employeeDTO.Shift;
 
-                    if (shift != "Free")
-                        isWorking = true;
+                    day = new Day(shift, calendarDateDTO[i].Date, monthId);
 
                     if (employeeFullNameWorkingDays.ContainsKey(employeeDTO.FullName))
-                    {
-
-                        employeeFullNameWorkingDays[employeeDTO.FullName].Add(
-                            new Day()
-                            {
-                                Shift = shift,
-                                IsWorking = isWorking,
-                                WorkingDay = calendarDateDTO[i].Date,
-                                MonthId = monthId
-                            });
-                    }
+                        employeeFullNameWorkingDays[employeeDTO.FullName].Add(day);
                     else
-                    {
-                        employeeFullNameWorkingDays.Add(employeeDTO.FullName,
-                            new List<Day>() {
-                                new Day()
-                                {
-                                    Shift = shift,
-                                    IsWorking = isWorking,
-                                    WorkingDay = calendarDateDTO[i].Date,
-                                    MonthId = monthId
-                                }
-                            });
-                    }
+                        employeeFullNameWorkingDays.Add(employeeDTO.FullName, new List<Day>() { day });
                 }
             }
 

@@ -11,5 +11,6 @@ namespace ScheduleCreator.EntityFramework.Repositories.PreferenceRepository
         Task AddPreferences(int employeId, Preferences preferences);
         Task UpdatePreferences(int preferenceId, IList<PreferenceDay> preferenceDays, sbyte holidays);
         Task<Preferences> GetPreferences(int employeId, string internalPreferenceId);
+        Task<List<Preferences>> GetPreferences(string internalPreferenceId);
     }
 }

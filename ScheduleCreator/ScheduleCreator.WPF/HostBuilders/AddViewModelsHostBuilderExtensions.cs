@@ -51,7 +51,8 @@ namespace ScheduleCreator.WPF.HostBuilders
         {
             return new ScheduleViewModel(
                         services.GetRequiredService<IEmployeeService>(),
-                        services.GetRequiredService<IScheduleService>()
+                        services.GetRequiredService<IScheduleService>(),
+                        services.GetRequiredService<IPreferenceService>()
                         );
         }
     }

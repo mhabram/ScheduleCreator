@@ -1,4 +1,5 @@
-﻿using ScheduleCreator.Domain.Models;
+﻿using ScheduleCreator.Domain.DTO.ScheduleView;
+using ScheduleCreator.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,5 +12,6 @@ namespace ScheduleCreator.Domain.Services
         Task AddPreferences(int employeId, IList<PreferenceDay> preferenceDays, sbyte holidays);
         Task UpdatePreferences(int preferenceId, IList<PreferenceDay> preferenceDays, sbyte holidays);
         Task<Preferences> GetPreferences(int employeId);
+        Task<List<PreferencesDTO>> GetPreferences();
     }
 }

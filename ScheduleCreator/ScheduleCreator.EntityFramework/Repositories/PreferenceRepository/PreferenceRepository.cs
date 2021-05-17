@@ -58,5 +58,18 @@ namespace ScheduleCreator.EntityFramework.Repositories.PreferenceRepository
 
             return preferences;
         }
+
+        public async Task<List<Preferences>> GetPreferences(string internalPreferenceId)
+        {
+            using ScheduleCreatorDbContext context = _contextFactory.CreateDbContext();
+
+            List<Preferences> preferences = await context.Preferences
+                .Where(p => p.InternalPreferenceId == internalPreferenceId)
+                .Include(d => d.PreferenceDays)
+                .Include(e => e.Employee)
+                .ToListAsync();
+
+            return preferences;
+        }
     }
 }

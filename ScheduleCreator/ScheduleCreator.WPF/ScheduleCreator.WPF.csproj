@@ -1,10 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <!--<OutputType>WinExe</OutputType>-->
+    <!--<TargetFramework>net5.0-windows</TargetFramework>-->
+	<OutputType>WinExe</OutputType>
+	<TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+	  
 	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <PublishSingleFile>true</PublishSingleFile>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PlatformTarget>x64</PlatformTarget>
+	  
 	<AssemblyName>Schedule Creator</AssemblyName>
 	<ApplicationIcon>calendar-icon.ico</ApplicationIcon>
   </PropertyGroup>

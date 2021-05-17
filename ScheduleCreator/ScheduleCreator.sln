@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScheduleCreator.Domain", "S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScheduleCreator.EntityFramework", "ScheduleCreator.EntityFramework\ScheduleCreator.EntityFramework.csproj", "{6AAB8663-656A-4975-8CE0-473B374C5A83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScheduleCreator.WPF", "ScheduleCreator.WPF\ScheduleCreator.WPF.csproj", "{F44EFDE5-06C8-4447-A696-9F571750901B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScheduleCreator.WPF", "ScheduleCreator.WPF\ScheduleCreator.WPF.csproj", "{F44EFDE5-06C8-4447-A696-9F571750901B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,16 +17,16 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{1D266A0C-C9A3-48E2-A021-4445D66B6708}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1D266A0C-C9A3-48E2-A021-4445D66B6708}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1D266A0C-C9A3-48E2-A021-4445D66B6708}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1D266A0C-C9A3-48E2-A021-4445D66B6708}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D266A0C-C9A3-48E2-A021-4445D66B6708}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D266A0C-C9A3-48E2-A021-4445D66B6708}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{6AAB8663-656A-4975-8CE0-473B374C5A83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6AAB8663-656A-4975-8CE0-473B374C5A83}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6AAB8663-656A-4975-8CE0-473B374C5A83}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6AAB8663-656A-4975-8CE0-473B374C5A83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AAB8663-656A-4975-8CE0-473B374C5A83}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AAB8663-656A-4975-8CE0-473B374C5A83}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{F44EFDE5-06C8-4447-A696-9F571750901B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F44EFDE5-06C8-4447-A696-9F571750901B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F44EFDE5-06C8-4447-A696-9F571750901B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F44EFDE5-06C8-4447-A696-9F571750901B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F44EFDE5-06C8-4447-A696-9F571750901B}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{F44EFDE5-06C8-4447-A696-9F571750901B}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

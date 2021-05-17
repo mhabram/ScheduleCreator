@@ -53,6 +53,37 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
         }
         public int CalendarDateDTOId{ get; set; }
 
+        public EmployeeDTO(){ }
+        public EmployeeDTO(int calendarId, int employeeId, string fullName, string shift = "")
+        {
+            CalendarDateDTOId = calendarId;
+            EmployeeId = employeeId;
+            FullName = fullName;
+            Day = false;
+            Swing = false;
+            Night = false;
+
+            if (shift == "Free")
+                Shift = "";
+            else
+                Shift = shift;
+
+            switch (shift)
+            {
+                case "Day":
+                    Day = true;
+                    break;
+                case "Swing":
+                    Swing = true;
+                    break;
+                case "Night":
+                    Night = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public void CorrectShift()
         {
             switch (Shift)
@@ -82,33 +113,27 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
                 Shift = "";
         }
 
-        public void UpdateEmployeeView(ObservableCollection<EmployeeViewDTO> employeeViewDTO)
+        public void UpdateEmployeeView(ObservableCollection<CalendarDateDTO> calendarDateDTO,
+            ObservableCollection<EmployeeViewDTO> employeeViewDTO,
+            IList<PreferencesDTO> preferences)
         {
-            bool isWorking = false;
-
-            if (Day || Swing || Night)
-                isWorking = true;
+            string lastName = FullName.Split()[1];
+            PreferencesDTO pref = preferences.Where(e => e.LastName == lastName.ToLower()).FirstOrDefault();
 
             for (int i = 0; i < employeeViewDTO.Count; i++)
             {
-                if ((FullName == employeeViewDTO[i].FullName) && isWorking)
+                employeeViewDTO[i].SetStartingWorkingDays(pref);
+                for (int j = 0; j < calendarDateDTO.Count; j++)
                 {
-                    employeeViewDTO[i].WorkingDays--;
-                    break;
-                }
-
-                if ((FullName == employeeViewDTO[i].FullName) && !isWorking)
-                {
-                    employeeViewDTO[i].WorkingDays++;
-                    break;
+                    calendarDateDTO[j].UpdateEmployeeView(employeeViewDTO[i]);
                 }
             }
         }
 
-        public bool IsPreferenceDay(ObservableCollection<CalendarDateDTO> calendarDates, IList<Preferences> preferences)
+        public bool IsPreferenceDay(ObservableCollection<CalendarDateDTO> calendarDates, IList<PreferencesDTO> preferences)
         {
             string lastName = FullName.Split()[1];
-            Preferences pref = preferences.Where(e => e.Employee.LastName == lastName).FirstOrDefault();
+            PreferencesDTO pref = preferences.Where(e => e.LastName == lastName.ToLower()).FirstOrDefault();
             return pref.PreferenceDays.Any(d => d.FreeDayChosen.Day == calendarDates.ElementAt(CalendarDateDTOId).Date.Day);
         }
 
@@ -119,11 +144,25 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
             for (int i = 0; i < employeeViewDTO.Count; i++)
             {
                 workingDays = employeeViewDTO[i].GetWorkingDays(FullName);
-                if (workingDays > 0)
+                if (workingDays >= 0)
                     break;
             }
 
             return workingDays;
+        }
+
+        public bool IsAssigned()
+        {
+            bool isAssigned = false;
+
+            if (Day)
+                isAssigned = true;
+            if (Swing)
+                isAssigned = true;
+            if (Night)
+                isAssigned = true;
+
+            return isAssigned;
         }
     }
 }

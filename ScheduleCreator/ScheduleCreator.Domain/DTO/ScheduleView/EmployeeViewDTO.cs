@@ -1,4 +1,6 @@
 ﻿using ScheduleCreator.Domain.DTO.Observable;
+using ScheduleCreator.Domain.Helpers.Calendar;
+using ScheduleCreator.Domain.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,14 +22,30 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
             }
         }
 
+        public EmployeeViewDTO()
+        {
+
+        }
+
+        public void SetWorkingDays()
+        {
+
+        }
+
         public int GetWorkingDays(string fullName)
         {
-            int workingDays = 0;
+            int workingDays = -1;
 
             if (FullName == fullName)
                 workingDays = WorkingDays;
 
             return workingDays;
+        }
+
+        public void SetStartingWorkingDays(PreferencesDTO preferences)
+        {
+            CalendarHelper calendarHelper = new();
+            WorkingDays = calendarHelper.WorkingDaysInMonth(preferences.FreeWorkingDays);
         }
     }
 }

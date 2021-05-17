@@ -160,6 +160,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
             
             <Button Grid.Column="0"
@@ -173,6 +174,12 @@
                     Width="150"
                     Content="Update Database"
                     Command="{Binding CalendarUpdateCommand}"/>
+
+            <Button Grid.Column="3"
+                    Margin="5 0 5 0"
+                    Width="150"
+                    Content="Shuffle"
+                    Command="{Binding RandomSplitCommand}"/>
         </Grid>
     </Grid>
 </UserControl>

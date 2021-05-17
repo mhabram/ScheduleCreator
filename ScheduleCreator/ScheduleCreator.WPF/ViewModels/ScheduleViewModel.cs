@@ -14,14 +14,17 @@ namespace ScheduleCreator.WPF.ViewModels
     public class ScheduleViewModel : ViewModelBase
     {
         public ScheduleViewModel(IEmployeeService employeeService,
-            IScheduleService scheduleService)
+            IScheduleService scheduleService,
+            IPreferenceService preferenceService)
         {
-            GetCalendarEmployeeDetailsCommand = new GetCalendarEmployeeDetailsCommand(this, employeeService, scheduleService);
+            GetCalendarEmployeeDetailsCommand = new GetCalendarEmployeeDetailsCommand(this, employeeService, scheduleService, preferenceService);
             GenerateExcelFileCommand = new GenerateExcelFileCommand(scheduleService);
             CalendarUpdateCommand = new CalendarUpdateCommand(this, scheduleService);
             CalendarUpdateDayShiftCommand = new RelayCommand<EmployeeDTO>(UpdateDayShift);
             CalendarUpdateSwingShiftCommand = new RelayCommand<EmployeeDTO>(UpdateSwingShift);
             CalendarUpdateNightShiftCommand = new RelayCommand<EmployeeDTO>(UpdateNightShift);
+
+            RandomSplitCommand = new RandomSplitCommand(this);
         }
 
         private ObservableCollection<CalendarDateDTO> _calendarDates;
@@ -46,10 +49,10 @@ namespace ScheduleCreator.WPF.ViewModels
             }
         }
 
-        private List<Preferences> _preferences;
-        public List<Preferences> Preferences
+        private List<PreferencesDTO> _preferences;
+        public List<PreferencesDTO> Preferences
         {
-            get { return _preferences ??= new List<Preferences>(); }
+            get { return _preferences ??= new List<PreferencesDTO>(); }
             set
             {
                 _preferences = value;
@@ -66,9 +69,6 @@ namespace ScheduleCreator.WPF.ViewModels
 
             if (employeeDTO.Day || employeeDTO.Swing || employeeDTO.Night)
                 employeeDTO.Day = WorkDaysInRow(employeeDTO);
-
-            if (workingDays == 0)
-                employeeDTO.Day = false;
 
             employeeDTO.CorrectShift();
 
@@ -102,8 +102,14 @@ namespace ScheduleCreator.WPF.ViewModels
                 employeeDTO.Day = false;
             }
 
+            if (numberOfEmployeesWorkingOnShift >= 3)
+                employeeDTO.Day = false;
+
+            if (workingDays == 0)
+                employeeDTO.Day = false;
+
             employeeDTO.UpdateEmployee(shift, employeeDTO.Day);
-            employeeDTO.UpdateEmployeeView(_employees);
+            employeeDTO.UpdateEmployeeView(_calendarDates, _employees, _preferences); //This should be done only after assign or unassign
         }
 
         private void UpdateSwingShift(EmployeeDTO employeeDTO)
@@ -112,14 +118,11 @@ namespace ScheduleCreator.WPF.ViewModels
             CalendarDateDTO calendarDateDTO = _calendarDates.ElementAt(employeeDTO.CalendarDateDTOId);
             int numberOfEmployeesWorkingOnShift = CountEmployeesInWeekend(calendarDateDTO.Employees, shift);
             int workingDays = employeeDTO.GetWorkingDays(_employees);
-            EmployeeDTO employeeNextDay = _calendarDates.ElementAt(employeeDTO.CalendarDateDTOId + 1).Employees.Where(e => e.FullName == employeeDTO.FullName).FirstOrDefault();
+            EmployeeDTO employeeNextDay = new();
             EmployeeDTO employeePreviousDay = new();
             
             if (employeeDTO.Day || employeeDTO.Swing || employeeDTO.Night)
                 employeeDTO.Swing = WorkDaysInRow(employeeDTO);
-
-            if (workingDays == 0)
-                employeeDTO.Swing = false;
 
             employeeDTO.CorrectShift();
                 
@@ -135,8 +138,16 @@ namespace ScheduleCreator.WPF.ViewModels
                     employeeDTO.Swing = false;
             }
 
-            if (employeeNextDay.Shift == "Day")
-                employeeDTO.Swing = false;
+            if (employeeDTO.CalendarDateDTOId < (_calendarDates.Last().Id - 1))
+            {
+                employeeNextDay = _calendarDates.ElementAt(employeeDTO.CalendarDateDTOId + 1)
+                    .Employees
+                    .Where(e => e.FullName == employeeDTO.FullName)
+                    .FirstOrDefault();
+                if (employeeNextDay.Shift == "Day")
+                    employeeDTO.Swing = false;
+            }
+
 
             if (employeeDTO.IsPreferenceDay(_calendarDates, _preferences))
                 MessageBox.Show($"This day is the employee's preference day.");
@@ -147,8 +158,14 @@ namespace ScheduleCreator.WPF.ViewModels
                 employeeDTO.Swing = false;
             }
 
+            if (numberOfEmployeesWorkingOnShift >= 2)
+                employeeDTO.Swing = false;
+
+            if (workingDays == 0)
+                employeeDTO.Swing = false;
+
             employeeDTO.UpdateEmployee(shift, employeeDTO.Swing);
-            employeeDTO.UpdateEmployeeView(_employees);
+            employeeDTO.UpdateEmployeeView(_calendarDates, _employees, _preferences);
         }
 
         private void UpdateNightShift(EmployeeDTO employeeDTO)
@@ -157,27 +174,34 @@ namespace ScheduleCreator.WPF.ViewModels
             CalendarDateDTO calendarDateDTO = _calendarDates.ElementAt(employeeDTO.CalendarDateDTOId);
             int numberOfEmployeesWorkingOnShift = CountEmployeesInWeekend(calendarDateDTO.Employees, shift);
             int workingDays = employeeDTO.GetWorkingDays(_employees);
-            EmployeeDTO employeeNextDay = _calendarDates.ElementAt(employeeDTO.CalendarDateDTOId + 1).Employees.Where(e => e.FullName == employeeDTO.FullName).FirstOrDefault();
+            EmployeeDTO employeeNextDay = new();
 
             if (employeeDTO.Day || employeeDTO.Swing || employeeDTO.Night)
                 employeeDTO.Night = WorkDaysInRow(employeeDTO);
 
-            if (workingDays == 0)
-                employeeDTO.Night = false;
-
             employeeDTO.CorrectShift();
 
-            switch (employeeNextDay.Shift)
+            if (employeeDTO.CalendarDateDTOId < (_calendarDates.Last().Id - 1))
             {
-                case "Day":
-                    employeeDTO.Night = false;
-                    break;
-                case "Swing":
-                    employeeDTO.Night = false;
-                    break;
-                default:
-                    break;
+                employeeNextDay = _calendarDates.ElementAt(employeeDTO.CalendarDateDTOId + 1)
+                    .Employees
+                    .Where(e => e.FullName == employeeDTO.FullName)
+                    .FirstOrDefault();
+
+                switch (employeeNextDay.Shift)
+                {
+                    case "Day":
+                        employeeDTO.Night = false;
+                        break;
+                    case "Swing":
+                        employeeDTO.Night = false;
+                        break;
+                    default:
+                        break;
+                }
+
             }
+
 
             if (employeeDTO.IsPreferenceDay(_calendarDates, _preferences))
                 MessageBox.Show($"This day is the employee's preference day.");
@@ -188,8 +212,14 @@ namespace ScheduleCreator.WPF.ViewModels
                 employeeDTO.Night = false;
             }
 
+            if (numberOfEmployeesWorkingOnShift >= 1)
+                employeeDTO.Night = false;
+
+            if (workingDays == 0)
+                employeeDTO.Night = false;
+
             employeeDTO.UpdateEmployee(shift, employeeDTO.Night);
-            employeeDTO.UpdateEmployeeView(_employees);
+            employeeDTO.UpdateEmployeeView(_calendarDates, _employees, _preferences);
         }
 
         private int CountEmployeesInWeekend(Collection<EmployeeDTO> employees, string shift)
@@ -201,7 +231,6 @@ namespace ScheduleCreator.WPF.ViewModels
                 if (employees[i].Shift == shift)
                 {
                     numberOfEmployeesWorkingOnShift++;
-                    break;
                 }
             }
 
@@ -266,5 +295,7 @@ namespace ScheduleCreator.WPF.ViewModels
         public ICommand CalendarUpdateDayShiftCommand { get; private set; }
         public ICommand CalendarUpdateSwingShiftCommand { get; private set; }
         public ICommand CalendarUpdateNightShiftCommand { get; private set; }
+
+        public ICommand RandomSplitCommand { get; set; }
     }
 }

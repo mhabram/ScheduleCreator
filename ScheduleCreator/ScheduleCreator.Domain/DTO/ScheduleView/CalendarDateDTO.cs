@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ScheduleCreator.Domain.Models;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace ScheduleCreator.Domain.DTO.ScheduleView
@@ -26,6 +28,15 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
             }
 
             return isWeekend;
+        }
+
+        public void UpdateEmployeeView(EmployeeViewDTO employeeViewDTO)
+        {
+            for (int i = 0; i < Employees.Count; i++)
+            {
+                if (Employees[i].IsAssigned() && Employees[i].FullName == employeeViewDTO.FullName)
+                    employeeViewDTO.WorkingDays--;
+            }
         }
     }
 }
