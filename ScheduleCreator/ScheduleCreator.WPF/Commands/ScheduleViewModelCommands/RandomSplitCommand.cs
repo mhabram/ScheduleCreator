@@ -55,40 +55,51 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
                 switch (randomShift)
                 {
                     case Shift.Day:
-                        employee.Day = true;
                         for (int i = 0; i < random.Next(min, max); i++)
                         {
+                            employee.Day = true;
                             _viewModel.CalendarUpdateDayShiftCommand.Execute(employee);
                             employee.CalendarDateDTOId++;
                             if (employee.CalendarDateDTOId > (_viewModel.CalendarDates.Count - 1))
                                 break;
+                            if (!employee.IsAssigned() && randomShift.ToString() != "Swing")
+                            {
+                                min -= i;
+                                max -= i;
+                                goto case Shift.Swing;
+                            }
                         }
                         break;
                     case Shift.Swing:
-                        employee.Swing = true;
                         for (int i = 0; i < random.Next(min, max); i++)
                         {
+                            employee.Swing = true;
                             _viewModel.CalendarUpdateSwingShiftCommand.Execute(employee);
                             employee.CalendarDateDTOId++;
                             if (employee.CalendarDateDTOId > (_viewModel.CalendarDates.Count - 1))
                                 break;
+                            if (!employee.IsAssigned() && randomShift.ToString() != "Night")
+                            {
+                                min -= i;
+                                max -= i;
+                                goto case Shift.Night;
+                            }
                         }
                         break;
                     case Shift.Night:
-                        employee.Night = true;
                         for (int i = 0; i < random.Next(min, max); i++)
                         {
+                            employee.Night = true;
                             _viewModel.CalendarUpdateNightShiftCommand.Execute(employee);
                             employee.CalendarDateDTOId++;
                             if (employee.CalendarDateDTOId > (_viewModel.CalendarDates.Count - 1))
                                 break;
-                            //if (employee.IsAssigned())
-                            //{
-                            //    break;
-                            //    //min = 0;
-                            //    //max = 0;
-                            //    //goto case Shift.Day;
-                            //}
+                            if (!employee.IsAssigned() && randomShift.ToString() != "Day")
+                            {
+                                min -= i;
+                                max -= i;
+                                goto case Shift.Day;
+                            }
                         }
                         break;
                     default:
