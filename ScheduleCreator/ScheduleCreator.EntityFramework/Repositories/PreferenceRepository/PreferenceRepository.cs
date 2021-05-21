@@ -34,6 +34,7 @@ namespace ScheduleCreator.EntityFramework.Repositories.PreferenceRepository
             Preferences pref = await context.Preferences
                 .Include(p => p.PreferenceDays)
                 .Where(p => p.PreferencesId == preferenceId)
+                .Include(e => e.Employee)
                 .FirstOrDefaultAsync();
 
             for (int i = 0; i < preferenceDays.Count; i++)

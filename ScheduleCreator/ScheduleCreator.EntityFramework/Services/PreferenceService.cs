@@ -31,9 +31,10 @@ namespace ScheduleCreator.EntityFramework.Services
             await _preferenceRepository.AddPreferences(employeId, preferences);
         }
 
-        public async Task UpdatePreferences(int preferenceId, IList<PreferenceDay> preferences, sbyte holidays)
+        public async Task UpdatePreferences(int employeeId, IList<PreferenceDay> preferences, sbyte holidays)
         {
-            await _preferenceRepository.UpdatePreferences(preferenceId, preferences, holidays);
+            Preferences pref =  await GetPreferences(employeeId);
+            await _preferenceRepository.UpdatePreferences(pref.PreferencesId, preferences, holidays);
         }
 
         public async Task<Preferences> GetPreferences(int employeId)

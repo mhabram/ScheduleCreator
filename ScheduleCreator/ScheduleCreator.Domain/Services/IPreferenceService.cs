@@ -10,7 +10,7 @@ namespace ScheduleCreator.Domain.Services
     public interface IPreferenceService
     {
         Task AddPreferences(int employeId, IList<PreferenceDay> preferenceDays, sbyte holidays);
-        Task UpdatePreferences(int preferenceId, IList<PreferenceDay> preferenceDays, sbyte holidays);
+        Task UpdatePreferences(int employeeId, IList<PreferenceDay> preferenceDays, sbyte holidays);
         Task<Preferences> GetPreferences(int employeId);
         Task<List<PreferencesDTO>> GetPreferences();
     }

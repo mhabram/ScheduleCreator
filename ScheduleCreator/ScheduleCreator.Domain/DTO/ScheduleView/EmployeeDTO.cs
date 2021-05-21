@@ -122,10 +122,14 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
 
             for (int i = 0; i < employeeViewDTO.Count; i++)
             {
-                employeeViewDTO[i].SetStartingWorkingDays(pref);
-                for (int j = 0; j < calendarDateDTO.Count; j++)
+                if (employeeViewDTO[i].FullName == FullName)
                 {
-                    calendarDateDTO[j].UpdateEmployeeView(employeeViewDTO[i]);
+                    employeeViewDTO[i].SetStartingWorkingDays(pref);
+                    for (int j = 0; j < calendarDateDTO.Count; j++)
+                    {
+                        calendarDateDTO[j].UpdateEmployeeView(employeeViewDTO[i]);
+                    }
+
                 }
             }
         }
@@ -143,9 +147,11 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
 
             for (int i = 0; i < employeeViewDTO.Count; i++)
             {
-                workingDays = employeeViewDTO[i].GetWorkingDays(FullName);
-                if (workingDays >= 0)
+                if (employeeViewDTO[i].CheckEmployee(FullName))
+                {
+                    workingDays = employeeViewDTO[i].WorkingDays;
                     break;
+                }
             }
 
             return workingDays;

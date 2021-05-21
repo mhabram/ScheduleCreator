@@ -28,7 +28,6 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
         {
             Random random = new();
             CalendarDateDTO calendarDate;
-            EmployeeDTO employee;
 
             for (int i = 0; i < _viewModel.CalendarDates.Count; i++)
             {
@@ -36,70 +35,65 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
 
                 for (int j = 0; j < calendarDate.Employees.Count; j++)
                 {
-                    employee = calendarDate.Employees[j];
-
-                    RandomShift(random, employee);
+                    RandomShift(random, i, j);
                 }
             }
         }
 
-        private void RandomShift(Random random, EmployeeDTO employee)
+        private void RandomShift(Random random, int calendarIndex, int employeeIndex)
         {
             Array values = Enum.GetValues(typeof(Shift));
+            EmployeeDTO employee = _viewModel.CalendarDates[calendarIndex].Employees[employeeIndex];
             Shift randomShift = (Shift)values.GetValue(random.Next(values.Length));
-            int min = 1;
-            int max = 5;
-
+            int randomNumber = random.Next(1, 4); //default (1, 4)
+            int index = 0;
             if (!employee.IsAssigned())
             {
                 switch (randomShift)
                 {
                     case Shift.Day:
-                        for (int i = 0; i < random.Next(min, max); i++)
+                        while (index < randomNumber)
                         {
                             employee.Day = true;
                             _viewModel.CalendarUpdateDayShiftCommand.Execute(employee);
-                            employee.CalendarDateDTOId++;
-                            if (employee.CalendarDateDTOId > (_viewModel.CalendarDates.Count - 1))
-                                break;
                             if (!employee.IsAssigned() && randomShift.ToString() != "Swing")
                             {
-                                min -= i;
-                                max -= i;
+                                employee.Shift = "";
                                 goto case Shift.Swing;
                             }
+                            employee = _viewModel.CalendarDates[++index].Employees[employeeIndex];
+                            if (employee.CalendarDateDTOId > (_viewModel.CalendarDates.Count - 1))
+                                break;
                         }
                         break;
                     case Shift.Swing:
-                        for (int i = 0; i < random.Next(min, max); i++)
+                        while (index < randomNumber)
                         {
                             employee.Swing = true;
                             _viewModel.CalendarUpdateSwingShiftCommand.Execute(employee);
-                            employee.CalendarDateDTOId++;
-                            if (employee.CalendarDateDTOId > (_viewModel.CalendarDates.Count - 1))
-                                break;
                             if (!employee.IsAssigned() && randomShift.ToString() != "Night")
                             {
-                                min -= i;
-                                max -= i;
+                                employee.Shift = "";
                                 goto case Shift.Night;
                             }
+                            employee = _viewModel.CalendarDates[++index].Employees[employeeIndex];
+                            if (employee.CalendarDateDTOId > (_viewModel.CalendarDates.Count - 1))
+                                break;
                         }
                         break;
                     case Shift.Night:
-                        for (int i = 0; i < random.Next(min, max); i++)
+                        while (index < randomNumber)
                         {
                             employee.Night = true;
                             _viewModel.CalendarUpdateNightShiftCommand.Execute(employee);
-                            employee.CalendarDateDTOId++;
-                            if (employee.CalendarDateDTOId > (_viewModel.CalendarDates.Count - 1))
-                                break;
                             if (!employee.IsAssigned() && randomShift.ToString() != "Day")
                             {
-                                min -= i;
-                                max -= i;
+                                employee.Shift = "";
                                 goto case Shift.Day;
                             }
+                            employee = _viewModel.CalendarDates[++index].Employees[employeeIndex];
+                            if (employee.CalendarDateDTOId > (_viewModel.CalendarDates.Count - 1))
+                                break;
                         }
                         break;
                     default:

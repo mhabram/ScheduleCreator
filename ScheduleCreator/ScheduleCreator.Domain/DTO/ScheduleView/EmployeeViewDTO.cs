@@ -27,25 +27,19 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
 
         }
 
-        public void SetWorkingDays()
+        public bool CheckEmployee(string fullName)
         {
-
-        }
-
-        public int GetWorkingDays(string fullName)
-        {
-            int workingDays = -1;
-
+            bool isCorrect = false;
             if (FullName == fullName)
-                workingDays = WorkingDays;
-
-            return workingDays;
+                isCorrect = true;
+            return isCorrect;
         }
 
         public void SetStartingWorkingDays(PreferencesDTO preferences)
         {
             CalendarHelper calendarHelper = new();
             WorkingDays = calendarHelper.WorkingDaysInMonth(preferences.FreeWorkingDays);
+            WorkingDays -= preferences.FreeWorkingDays;
         }
     }
 }

@@ -64,6 +64,7 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
                     preferenceDays.Add(pref.PreferenceDays[j].FreeDayChosen);
                 }
 
+
                 employeeViewDTO.PreferenceDays = preferenceDays;
                 employeeViewDTO.FullName = fullName;
                 employeeViewDTO.SetStartingWorkingDays(pref);
@@ -73,6 +74,7 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
                 {
                     _viewModel.CalendarDates[j].UpdateEmployeeView(_viewModel.Employees[i]);
                 }
+                employeeViewDTO.FullName = fullName;
             }
         }
 

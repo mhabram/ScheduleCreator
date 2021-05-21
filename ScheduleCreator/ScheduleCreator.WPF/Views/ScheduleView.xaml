@@ -18,6 +18,8 @@
     </i:Interaction.Triggers>
 
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
         <Style TargetType="ToggleButton" BasedOn="{StaticResource ShiftBtn}"/>
         <Style TargetType="ListView" BasedOn="{StaticResource CalendarTileListView}"/>
         <Style TargetType="ListViewItem" BasedOn="{StaticResource CalendarTileListViewItem}"/>
@@ -40,52 +42,74 @@
             <TextBlock FontSize="20" HorizontalAlignment="Center" Text="Schedule"/>
         </Grid>
 
-        <ItemsControl Grid.Row="1"
-                          ItemsSource="{Binding Employees, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                          FontSize="13">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Margin="0 0 0 5">
-                        <TextBlock Text="{Binding FullName}"
-                                           FontWeight="Bold"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <ItemsControl Grid.Column="0"
+                              ItemsSource="{Binding Employees, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                              FontSize="13"
+                              Margin="10 0 0 0"
+                              HorizontalAlignment="Left">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0 0 0 5">
+                            <TextBlock Text="{Binding FullName}"
+                                               FontWeight="Bold"/>
 
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Working days left: "/>
-                            <TextBlock Text="{Binding WorkingDays}" />
-                        </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Working days left: "/>
+                                <TextBlock Text="{Binding WorkingDays}" />
+                            </StackPanel>
 
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Preferences:" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
-                            <ItemsControl ItemsSource="{Binding PreferenceDays}"
-                                              HorizontalAlignment="Center"
-                                              FontSize="12"
-                                              FontWeight="Bold"
-                                              Foreground="DarkRed">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Margin="5" Orientation="Horizontal"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="("/>
-                                            <TextBlock Text="{Binding Path=Date.Day}"/>
-                                            <TextBlock Text=")"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Preferences:" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                                <ItemsControl ItemsSource="{Binding PreferenceDays}"
+                                                  HorizontalAlignment="Center"
+                                                  FontSize="12"
+                                                  FontWeight="Bold"
+                                                  Foreground="DarkRed">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Margin="5" Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="("/>
+                                                <TextBlock Text="{Binding Path=Date.Day}"/>
+                                                <TextBlock Text=")"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            
+            <TextBlock Grid.Column="1"/>
+            
+            
+            <TextBlock Grid.Column="2" Margin="0 10 20 0"
+                               DataContext="{Binding ErrorMessageViewModel}"
+                               Text="{Binding Message}"
+                               Foreground="DarkRed"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Right"
+                               Visibility="{Binding HasMessage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </Grid>
         
         <Grid Grid.Row="2">
             <ListView ItemsSource="{Binding CalendarDates}">
@@ -178,7 +202,7 @@
             <Button Grid.Column="3"
                     Margin="5 0 5 0"
                     Width="150"
-                    Content="Shuffle"
+                    Content="Random Schedule"
                     Command="{Binding RandomSplitCommand}"/>
         </Grid>
     </Grid>

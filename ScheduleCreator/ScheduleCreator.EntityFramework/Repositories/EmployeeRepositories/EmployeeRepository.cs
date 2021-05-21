@@ -62,9 +62,19 @@ namespace ScheduleCreator.EntityFramework.Repositories.EmployeeRepositories
             using ScheduleCreatorDbContext context = _contextFactory.CreateDbContext();
             employee = await context.Employees
                 .Include(p => p.Preferences)
+                .ThenInclude(pd => pd.PreferenceDays)
                 .Include(d => d.Days)
                 .SingleOrDefaultAsync(e => e.EmployeeId == employee.EmployeeId);
 
+            for (int i = 0; i < employee.Preferences.PreferenceDays.Count; i++)
+            {
+                context.PreferenceDays.Remove(employee.Preferences.PreferenceDays[i]);
+            }
+            context.Preferences.Remove(employee.Preferences);
+            for (int i = 0; i < employee.Days.Count; i++)
+            {
+                context.Days.Remove(employee.Days[i]);
+            }
             context.Remove(employee);
             await context.SaveChangesAsync();
         }
