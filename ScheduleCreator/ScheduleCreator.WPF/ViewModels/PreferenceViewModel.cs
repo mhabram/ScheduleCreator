@@ -52,6 +52,28 @@ namespace ScheduleCreator.WPF.ViewModels
             }
         }
 
+        private DateTime _from = DateTime.Now.AddMonths(1);
+        public DateTime From
+        {
+            get { return _from; }
+            set
+            {
+                _from = value;
+                OnPropertyChanged(nameof(From));
+            }
+        }
+
+        private DateTime _to = DateTime.Now.AddMonths(1);
+        public DateTime To
+        {
+            get { return _to; }
+            set
+            {
+                _to = value;
+                OnPropertyChanged(nameof(To));
+            }
+        }
+
         private DateTime _dayOffOne = DateTime.Now.AddMonths(1);
         public DateTime DayOffOne
         {

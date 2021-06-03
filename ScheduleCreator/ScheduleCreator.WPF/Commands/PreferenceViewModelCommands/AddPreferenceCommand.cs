@@ -39,15 +39,26 @@ namespace ScheduleCreator.WPF.Commands.PreferenceViewModelCommands
 
             try
             {
+                //need to add exception if employee is null 
                 if (_viewModel.Employee.Preferences != null)
                 {
-                    await _preferenceService.UpdatePreferences(_viewModel.Employee.Id, preferenceDays, _viewModel.Holidays);
+                    await _preferenceService.UpdatePreferences(
+                        _viewModel.Employee.Id,
+                        preferenceDays,
+                        _viewModel.From,
+                        _viewModel.To,
+                        _viewModel.Holidays);
                     _viewModel.SuccessMessage = "Preferences has been updated.";
 
                 }
                 else
                 {
-                    await _preferenceService.AddPreferences(_viewModel.Employee.Id, preferenceDays, _viewModel.Holidays);
+                    await _preferenceService.AddPreferences(
+                        _viewModel.Employee.Id,
+                        preferenceDays,
+                        _viewModel.From,
+                        _viewModel.To,
+                        _viewModel.Holidays);
                     _viewModel.SuccessMessage = "Preferences has been added.";
                 }
             }

@@ -45,6 +45,8 @@ namespace ScheduleCreator.WPF.Commands.PreferenceViewModelCommands
                     _viewModel.DayOffTwo = preferenceDay[1].FreeDayChosen;
                     _viewModel.DayOffThree = preferenceDay[2].FreeDayChosen;
                     _viewModel.Holidays = preferences.FreeWorkingDays;
+                    _viewModel.From = preferences.From;
+                    _viewModel.To = preferences.To;
                     _viewModel.Employee.Preferences = new Preferences() { PreferencesId = preferences.PreferencesId };
                 }
                 else
@@ -53,6 +55,8 @@ namespace ScheduleCreator.WPF.Commands.PreferenceViewModelCommands
                     _viewModel.DayOffTwo = DateTime.Now.AddMonths(1);
                     _viewModel.DayOffThree = DateTime.Now.AddMonths(1);
                     _viewModel.Holidays = 0;
+                    _viewModel.From = DateTime.Now.AddMonths(1);
+                    _viewModel.To = DateTime.Now.AddMonths(1);
 
                     _viewModel.ErrorMessage = "This user do not have choosen preferences yet.";
                 }

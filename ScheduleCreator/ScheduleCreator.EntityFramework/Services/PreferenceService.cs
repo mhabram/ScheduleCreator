@@ -19,11 +19,13 @@ namespace ScheduleCreator.EntityFramework.Services
             _preferenceRepository = preferenceRepository;
         }
 
-        public async Task AddPreferences(int employeId, IList<PreferenceDay> preferenceDays, sbyte holidays)
+        public async Task AddPreferences(int employeId, IList<PreferenceDay> preferenceDays, DateTime from, DateTime to, sbyte holidays)
         {
-            Preferences preferences = new Preferences
+            Preferences preferences = new()
             {
                 FreeWorkingDays = holidays,
+                From = from,
+                To = to,
                 InternalPreferenceId = internalPreferenceId,
                 PreferenceDays = preferenceDays
             };
@@ -31,7 +33,7 @@ namespace ScheduleCreator.EntityFramework.Services
             await _preferenceRepository.AddPreferences(employeId, preferences);
         }
 
-        public async Task UpdatePreferences(int employeeId, IList<PreferenceDay> preferences, sbyte holidays)
+        public async Task UpdatePreferences(int employeeId, IList<PreferenceDay> preferences, DateTime from, DateTime to, sbyte holidays)
         {
             Preferences pref =  await GetPreferences(employeeId);
             await _preferenceRepository.UpdatePreferences(pref.PreferencesId, preferences, holidays);
