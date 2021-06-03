@@ -73,9 +73,17 @@ namespace ScheduleCreator.WPF.ViewModels
             int numberOfEmployeesWorkingOnShift = CountEmployeesInWeekend(calendarDateDTO.Employees, shift);
             int workingDays = employeeDTO.GetWorkingDays(_employees);
             EmployeeDTO employeePreviousDay = new();
+            ErrorMessage = "";
 
-            employeeDTO.Day = WorkDaysInRow(employeeDTO);
             employeeDTO.CorrectShift();
+            if (!WorkDaysInRow(employeeDTO))
+            {
+                ErrorMessage = "Employee is working 5 days in a row.";
+                employeeDTO.Day = false;
+            }
+
+            if (employeeDTO.Shift != "")
+                employeeDTO.Day = false;
 
             if (employeeDTO.CalendarDateDTOId > 0)
             {
@@ -88,9 +96,11 @@ namespace ScheduleCreator.WPF.ViewModels
                 switch (employeePreviousDay.Shift)
                 {
                     case "Night":
+                        ErrorMessage = "Not enough break between shifts.";
                         employeeDTO.Day = false;
                         break;
                     case "Swing":
+                        ErrorMessage = "Not enough break between shifts.";
                         employeeDTO.Day = false;
                         break;
                     default:
@@ -98,7 +108,7 @@ namespace ScheduleCreator.WPF.ViewModels
                 }
             }
 
-            if (employeeDTO.IsPreferenceDay(_calendarDates, _preferences))
+            if (employeeDTO.IsPreferenceDay(_calendarDates, _preferences) && employeeDTO.Day)
                 ErrorMessage = "This day is the employee's preference day.";
 
             if (calendarDateDTO.IsWeekend() && numberOfEmployeesWorkingOnShift >= 1 && employeeDTO.Day)
@@ -107,16 +117,20 @@ namespace ScheduleCreator.WPF.ViewModels
                 employeeDTO.Day = false;
             }
 
-            if (numberOfEmployeesWorkingOnShift >= 3)
+            if ((numberOfEmployeesWorkingOnShift >= 3) && employeeDTO.Day)
+            {
+                ErrorMessage = "There are enough employees on shift.";
                 employeeDTO.Day = false;
+            }
 
-            if (workingDays == 0)
+            if ((workingDays == 0) && employeeDTO.Day)
+            {
+                ErrorMessage = "All working days has been assigned for this employee.";
                 employeeDTO.Day = false;
+            }
 
             employeeDTO.UpdateEmployee(shift, employeeDTO.Day);
             employeeDTO.UpdateEmployeeView(_calendarDates, _employees, _preferences);
-            if (employeeDTO.Day)
-                ErrorMessage = "";
         }
 
         private void UpdateSwingShift(EmployeeDTO employeeDTO)
@@ -127,10 +141,18 @@ namespace ScheduleCreator.WPF.ViewModels
             int workingDays = employeeDTO.GetWorkingDays(_employees);
             EmployeeDTO employeeNextDay = new();
             EmployeeDTO employeePreviousDay = new();
+            ErrorMessage = "";
             
-            employeeDTO.Swing = WorkDaysInRow(employeeDTO);
             employeeDTO.CorrectShift();
-                
+            if (!WorkDaysInRow(employeeDTO))
+            {
+                ErrorMessage = "Employee is working 5 days in a row.";
+                employeeDTO.Swing = false;
+            }
+
+            if (employeeDTO.Shift != "")
+                employeeDTO.Swing = false;
+
             if (employeeDTO.CalendarDateDTOId > 0)
             {
                 employeePreviousDay = _calendarDates
@@ -140,7 +162,10 @@ namespace ScheduleCreator.WPF.ViewModels
                     .FirstOrDefault();
                 
                 if (employeePreviousDay.Shift == "Night")
+                {
+                    ErrorMessage = "Not enough break between shifts.";
                     employeeDTO.Swing = false;
+                }
             }
 
             if (employeeDTO.CalendarDateDTOId < (_calendarDates.Last().Id - 1))
@@ -150,11 +175,13 @@ namespace ScheduleCreator.WPF.ViewModels
                     .Where(e => e.FullName == employeeDTO.FullName)
                     .FirstOrDefault();
                 if (employeeNextDay.Shift == "Day")
+                {
+                    ErrorMessage = "Not enough break between shifts.";
                     employeeDTO.Swing = false;
+                }
             }
 
-
-            if (employeeDTO.IsPreferenceDay(_calendarDates, _preferences))
+            if (employeeDTO.IsPreferenceDay(_calendarDates, _preferences) && employeeDTO.Swing)
                 ErrorMessage = "This day is the employee's preference day.";
 
             if (calendarDateDTO.IsWeekend() && numberOfEmployeesWorkingOnShift >= 1 && employeeDTO.Swing)
@@ -163,16 +190,20 @@ namespace ScheduleCreator.WPF.ViewModels
                 employeeDTO.Swing = false;
             }
 
-            if (numberOfEmployeesWorkingOnShift >= 2)
+            if ((numberOfEmployeesWorkingOnShift >= 2) && employeeDTO.Swing)
+            {
+                ErrorMessage = "There are enough employees on shift.";
                 employeeDTO.Swing = false;
+            }
 
-            if (workingDays == 0)
+            if ((workingDays == 0) && employeeDTO.Swing)
+            {
+                ErrorMessage = "All working days has been assigned for this employee.";
                 employeeDTO.Swing = false;
+            }
 
             employeeDTO.UpdateEmployee(shift, employeeDTO.Swing);
             employeeDTO.UpdateEmployeeView(_calendarDates, _employees, _preferences);
-            if (employeeDTO.Swing)
-                ErrorMessage = "";
         }
 
         private void UpdateNightShift(EmployeeDTO employeeDTO)
@@ -182,9 +213,17 @@ namespace ScheduleCreator.WPF.ViewModels
             int numberOfEmployeesWorkingOnShift = CountEmployeesInWeekend(calendarDateDTO.Employees, shift);
             int workingDays = employeeDTO.GetWorkingDays(_employees);
             EmployeeDTO employeeNextDay = new();
+            ErrorMessage = "";
 
-            employeeDTO.Night = WorkDaysInRow(employeeDTO);
             employeeDTO.CorrectShift();
+            if (!WorkDaysInRow(employeeDTO))
+            {
+                ErrorMessage = "Employee is working 5 days in a row.";
+                employeeDTO.Night = false;
+            }
+
+            if (employeeDTO.Shift != "")
+                employeeDTO.Night = false;
 
             if (employeeDTO.CalendarDateDTOId < (_calendarDates.Last().Id - 1))
             {
@@ -196,9 +235,11 @@ namespace ScheduleCreator.WPF.ViewModels
                 switch (employeeNextDay.Shift)
                 {
                     case "Day":
+                        ErrorMessage = "Not enough break between shifts.";
                         employeeDTO.Night = false;
                         break;
                     case "Swing":
+                        ErrorMessage = "Not enough break between shifts.";
                         employeeDTO.Night = false;
                         break;
                     default:
@@ -207,8 +248,7 @@ namespace ScheduleCreator.WPF.ViewModels
 
             }
 
-
-            if (employeeDTO.IsPreferenceDay(_calendarDates, _preferences))
+            if (employeeDTO.IsPreferenceDay(_calendarDates, _preferences) && employeeDTO.Night)
                 ErrorMessage = "This day is the employee's preference day.";
 
             if (calendarDateDTO.IsWeekend() && numberOfEmployeesWorkingOnShift >= 1 && employeeDTO.Night)
@@ -217,16 +257,20 @@ namespace ScheduleCreator.WPF.ViewModels
                 employeeDTO.Night = false;
             }
 
-            if (numberOfEmployeesWorkingOnShift >= 1)
+            if ((numberOfEmployeesWorkingOnShift >= 1) && employeeDTO.Night)
+            {
+                ErrorMessage = "There are enough employees on shift.";
                 employeeDTO.Night = false;
+            }
 
-            if (workingDays == 0)
+            if ((workingDays == 0) && employeeDTO.Night)
+            {
+                ErrorMessage = "All working days has been assigned for this employee.";
                 employeeDTO.Night = false;
+            }
 
             employeeDTO.UpdateEmployee(shift, employeeDTO.Night);
             employeeDTO.UpdateEmployeeView(_calendarDates, _employees, _preferences);
-            if (employeeDTO.Night)
-                ErrorMessage = "";
         }
 
         private int CountEmployeesInWeekend(Collection<EmployeeDTO> employees, string shift)
