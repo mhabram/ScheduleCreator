@@ -1,4 +1,5 @@
 ﻿using ScheduleCreator.Domain.DTO.Observable;
+using ScheduleCreator.Domain.Helpers.Calendar;
 using ScheduleCreator.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -84,6 +85,16 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
             }
         }
 
+        private string LastName()
+        {
+            return FullName.Split()[1];
+        }
+
+        private PreferencesDTO PrefDTO(IList<PreferencesDTO> preferences)
+        {
+            return preferences.Where(e => e.LastName == LastName().ToLower()).FirstOrDefault();
+        }
+
         public void CorrectShift()
         {
             switch (Shift)
@@ -113,32 +124,36 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
                 Shift = "";
         }
 
-        public void UpdateEmployeeView(ObservableCollection<CalendarDateDTO> calendarDateDTO,
+        public int UpdateEmployeeView(ObservableCollection<CalendarDateDTO> calendarDateDTO,
             ObservableCollection<EmployeeViewDTO> employeeViewDTO,
             IList<PreferencesDTO> preferences)
         {
-            string lastName = FullName.Split()[1];
-            PreferencesDTO pref = preferences.Where(e => e.LastName == lastName.ToLower()).FirstOrDefault();
+            int workingDays = 0;
 
             for (int i = 0; i < employeeViewDTO.Count; i++)
             {
                 if (employeeViewDTO[i].FullName == FullName)
-                {
-                    employeeViewDTO[i].SetStartingWorkingDays(pref);
-                    for (int j = 0; j < calendarDateDTO.Count; j++)
-                    {
-                        calendarDateDTO[j].UpdateEmployeeView(employeeViewDTO[i]);
-                    }
-
-                }
+                    workingDays = employeeViewDTO[i].UpdateEmployeeView(PrefDTO(preferences), calendarDateDTO);
             }
+            return workingDays;
         }
 
         public bool IsPreferenceDay(ObservableCollection<CalendarDateDTO> calendarDates, IList<PreferencesDTO> preferences)
         {
-            string lastName = FullName.Split()[1];
-            PreferencesDTO pref = preferences.Where(e => e.LastName == lastName.ToLower()).FirstOrDefault();
+            PreferencesDTO pref = PrefDTO(preferences);
             return pref.PreferenceDays.Any(d => d.FreeDayChosen.Day == calendarDates.ElementAt(CalendarDateDTOId).Date.Day);
+        }
+
+        public bool IsHolidayDay(ObservableCollection<CalendarDateDTO> calendarDates, IList<PreferencesDTO> preferences)
+        {
+            int calendarDateDay = calendarDates.ElementAt(CalendarDateDTOId).Date.Day;
+            bool isHoliday = false;
+
+            PreferencesDTO pref = PrefDTO(preferences);
+            if ((pref.From.Day <= calendarDateDay) && (pref.To.Day >= calendarDateDay))
+                isHoliday = true;
+
+            return isHoliday;
         }
 
         public int GetWorkingDays(ObservableCollection<EmployeeViewDTO> employeeViewDTO)

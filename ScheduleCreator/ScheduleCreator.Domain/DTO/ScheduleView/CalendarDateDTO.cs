@@ -30,13 +30,15 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
             return isWeekend;
         }
 
-        public void UpdateEmployeeView(EmployeeViewDTO employeeViewDTO)
+        public bool UpdateEmployeeView(string fullName)
         {
+            bool isAssigned = false;
             for (int i = 0; i < Employees.Count; i++)
             {
-                if (Employees[i].IsAssigned() && Employees[i].FullName == employeeViewDTO.FullName)
-                    employeeViewDTO.WorkingDays--;
+                if ((Employees[i].FullName == fullName) && (Employees[i].IsAssigned()))
+                    isAssigned = true;
             }
+            return isAssigned;
         }
     }
 }

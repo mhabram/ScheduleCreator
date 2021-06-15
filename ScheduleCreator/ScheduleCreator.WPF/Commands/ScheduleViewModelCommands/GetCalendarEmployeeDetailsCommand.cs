@@ -35,17 +35,14 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
             CalendarHelper calendarHelper = new();
             IList<Employee> employees = new List<Employee>();
 
-
-            
             try
             {
-                await GetPreferences();
+                _viewModel.Preferences = await _preferenceService.GetPreferences();
                 employees = await _employeeService.GetDetails();
                 await LoadDataSchedule(employees, calendarHelper);
                 GetEmployeeViewDTO(employees);
             }
             catch(Exception) { }
-
         }
 
         private void GetEmployeeViewDTO(IList<Employee> employees)
@@ -54,6 +51,7 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
             {
                 EmployeeViewDTO employeeViewDTO = new();
                 List<DateTime> preferenceDays = new();
+                CalendarHelper calendarHelper = new();
                 EmployeeDTO employeeDTO = _viewModel.CalendarDates[0].Employees[i];
                 string lastName = employeeDTO.FullName.Split()[1];
                 string fullName = String.Concat(employees[i].Name, " ", employees[i].LastName);
@@ -64,27 +62,17 @@ namespace ScheduleCreator.WPF.Commands.ScheduleViewModelCommands
                     preferenceDays.Add(pref.PreferenceDays[j].FreeDayChosen);
                 }
 
-
                 employeeViewDTO.PreferenceDays = preferenceDays;
                 employeeViewDTO.FullName = fullName;
-                employeeViewDTO.SetStartingWorkingDays(pref);
+                employeeViewDTO.WorkingDays = calendarHelper.WorkingDaysInMonth() - pref.FreeWorkingDays;
                 _viewModel.Employees.Add(employeeViewDTO);
 
-                for (int j = 0; j < _viewModel.CalendarDates.Count; j++)
-                {
-                    _viewModel.CalendarDates[j].UpdateEmployeeView(_viewModel.Employees[i]);
-                }
-                employeeViewDTO.FullName = fullName;
+                //for (int j = 0; j < _viewModel.CalendarDates.Count; j++)
+                //{
+                //    _viewModel.CalendarDates[j].UpdateEmployeeView(_viewModel.Employees[i]);
+                //}
+                //employeeViewDTO.FullName = fullName;
             }
-        }
-
-        private async Task GetPreferences()
-        {
-            try
-            {
-                _viewModel.Preferences = await _preferenceService.GetPreferences();
-            }
-            catch (Exception) {}
         }
 
         private async Task LoadDataSchedule(IList<Employee> employees, CalendarHelper calendarHelper)

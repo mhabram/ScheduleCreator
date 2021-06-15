@@ -19,121 +19,104 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Style TargetType="Button" BasedOn="{StaticResource GeneralButton}"/>
+
+        <Style TargetType="DatePickerTextBox">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <TextBox IsEnabled="False"
+                                 VerticalAlignment="Center"
+                                 Height="30"
+                                 Text="{Binding Path=SelectedDate, StringFormat='dd/MMM', RelativeSource={RelativeSource AncestorType=DatePicker}}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <Grid Grid.IsSharedSizeScope="True" Margin="20" HorizontalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="0 10">
-            <TextBlock FontSize="20" HorizontalAlignment="Center" Text="Preferences"/>
-        </Grid>
-        
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
 
-            <ComboBox Grid.Row="0"
-                      ItemsSource="{Binding Employees}"
-                      DisplayMemberPath="FullName"
-                      SelectedItem="{Binding Employee}"
-                      IsSynchronizedWithCurrentItem="True"/>
-
-            <Grid Grid.Row="1" Margin="0 5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Label" Width="auto"/>
-                    <ColumnDefinition Width="250"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0" Text="Holidays"
-                           VerticalAlignment="Center"/>
-                <TextBox Grid.Column="1" Margin="20 0 0 0"
-                         HorizontalAlignment="Left"
-                         MinWidth="180"
-                         MaxWidth="180"
-                         PreviewTextInput="NumberValidationTextBox"
-                         MaxLength="2"
-                         Height="30"
-                         Text="{Binding Holidays}"/>
-            </Grid>
-
-
-            <Grid Grid.Row="2" Margin="0 5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Label" Width="auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0" Text="Free day"
-                           VerticalAlignment="Center"/>
-                <DatePicker Grid.Column="1" Height="30"
-                            HorizontalAlignment="Left"
-                            VerticalContentAlignment="Center"
-                            SelectedDateFormat="Long"
-                            MinWidth="180"
-                            MaxWidth="180"
-                            Margin="20 0 0 0"
-                            Language="en-US"
-                            Name="FreeDay1"
-                            SelectedDate="{Binding DayOffOne}">
-                </DatePicker>
-            </Grid>
-
-            <Grid Grid.Row="3" Margin="0 5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Label" Width="auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0" Text="Free day"
-                           VerticalAlignment="Center"/>
-                <DatePicker Grid.Column="1" Height="30"
-                            HorizontalAlignment="Left"
-                            VerticalContentAlignment="Center"
-                            SelectedDateFormat="Long"
-                            MinWidth="180"
-                            MaxWidth="180"
-                            Margin="20 0 0 0"
-                            Language="en-US"
-                            Name="FreeDay2"
-                            SelectedDate="{Binding DayOffTwo}">
-                </DatePicker>
-            </Grid>
-
-            <Grid Grid.Row="4" Margin="0 5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Label" Width="auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0" Text="Free day"
-                           VerticalAlignment="Center"/>
-                <DatePicker Grid.Column="1" Height="30"
-                            VerticalContentAlignment="Center"
-                            HorizontalAlignment="Left"
-                            SelectedDateFormat="Long"
-                            MinWidth="180"
-                            MaxWidth="180"
-                            Margin="20 0 0 0"
-                            Language="en-US"
-                            Name="FreeDay3"
-                            SelectedDate="{Binding DayOffThree}">
-                </DatePicker>
-            </Grid>
-
-            <GroupBox Grid.Row="5" Header="Holiday">
-                <Grid>
+            <GroupBox Grid.Column="0" Header="Preferences" Margin="20">
+                <Grid Margin="20">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <ComboBox Grid.Row="0"
+                              ItemsSource="{Binding Employees}"
+                              DisplayMemberPath="FullName"
+                              SelectedItem="{Binding Employee}"
+                              IsSynchronizedWithCurrentItem="True"/>
+
+                    <Grid Grid.Row="1" Margin="0 5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="Label" Width="auto"/>
+                            <ColumnDefinition Width="250"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="A day off"
+                                   VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1" Margin="20 0 0 0"
+                                 HorizontalAlignment="Left"
+                                 VerticalContentAlignment="Center"
+                                 MinWidth="180"
+                                 MaxWidth="180"
+                                 PreviewTextInput="NumberValidationTextBox"
+                                 MaxLength="2"
+                                 Height="30"
+                                 Text="{Binding Holidays}"/>
+                    </Grid>
+
+                    <ItemsControl Grid.Row="2"
+                                  ItemsSource="{Binding PreferenceDays}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0 5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition SharedSizeGroup="Label" Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Text="Free day"
+                                               VerticalAlignment="Center"/>
+
+                                    <DatePicker Name="PreferenceDatePicker" Grid.Column="1"
+                                                Width="80"
+                                                Language="en-NZ"
+                                                SelectedDate="{Binding Path=Value,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                                SelectedDateFormat="Long"/>
+
+                                    <TextBlock Grid.Column="2"
+                                               Margin="20 0 0 0"
+                                               VerticalAlignment="Center"
+                                               Width="150"
+                                               Text="{Binding ElementName=PreferenceDatePicker, Path=Text}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Grid.Column="1" Header="Holiday" Margin="20">
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
@@ -142,74 +125,112 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition SharedSizeGroup="Label" Width="auto"/>
                             <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                     
                         <TextBlock Grid.Column="0" Text="From"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
-                        <DatePicker Grid.Column="1" Height="30"
-                                VerticalContentAlignment="Center"
-                                HorizontalAlignment="Right"
-                                SelectedDateFormat="Long"
-                                MinWidth="180"
-                                MaxWidth="180"
-                                Margin="20 0 0 0"
-                                Language="en-US"
-                                Name="From"
-                                SelectedDate="{Binding From}">
-                        </DatePicker>
+
+                        <DatePicker Name="FromDatePicker" Grid.Column="1"
+                                    Width="80"
+                                    Language="en-NZ"
+                                    SelectedDate="{Binding Path=From, NotifyOnSourceUpdated=True,
+                                    UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue=''}"
+                                    SelectedDateFormat="Long"/>
+
+                        <TextBlock Grid.Column="2"
+                                   Margin="20 0 0 0"
+                                   VerticalAlignment="Center"
+                                   Width="150"
+                                   Text="{Binding ElementName=FromDatePicker, Path=Text}"/>
                     </Grid>
 
-                    <Grid Grid.Row="1">
+                    <Grid Grid.Row="1" Margin="0 5 0 0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition SharedSizeGroup="Label" Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" Text="To"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
-                        <DatePicker Grid.Column="1" Height="30"
-                                    VerticalContentAlignment="Center"
-                                    HorizontalAlignment="Right"
-                                    SelectedDateFormat="Long"
-                                    MinWidth="180"
-                                    MaxWidth="180"
-                                    Margin="20 0 0 0"
-                                    Language="en-US"
-                                    Name="To"
-                                    SelectedDate="{Binding To}">
-                        </DatePicker>
+
+                        <DatePicker Name="ToDatePicker" Grid.Column="1"
+                                    Width="80"
+                                    Language="en-NZ"
+                                    SelectedDate="{Binding To, NotifyOnSourceUpdated=True,
+                                    UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue=''}"
+                                    SelectedDateFormat="Long"/>
+
+                        <TextBlock Grid.Column="2"
+                                   Margin="20 0 0 0"
+                                   VerticalAlignment="Center"
+                                   Width="150"
+                                   Text="{Binding ElementName=ToDatePicker, Path=Text}"/>
+                    </Grid>
+
+                    <Grid Grid.Row="2" HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Number of the leave days:" FontSize="20" Margin="0 20 0 0"/>
+                        <TextBlock Grid.Column="1"
+                                   FontSize="20" Margin="10 20 0 0"
+                                   Text="{Binding OnLeave, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     </Grid>
                 </Grid>
             </GroupBox>
+
+        </Grid>
+        <Grid Grid.Row="1" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Margin="5"
+                    IsDefault="True"
+                    Width="auto"
+                    Padding="5"
+                    Content="New Preference field"
+                    Command="{Binding NewPreferenceFieldCommand}"/>
             
-            <Button Grid.Row="6" Grid.Column="2"
+            <Button Grid.Column="1" Margin="5"
+                    IsDefault="True"
+                    Content="Clear"
+                    Command="{Binding ClearCommand}"/>
+
+            <Button Grid.Column="2" Margin="5"
                     IsDefault="True"
                     Content="Add"
                     Command="{Binding AddPreferenceCommand}"/>
-
-            <Grid Grid.Row="7">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock Grid.Row="0" Margin="0 10 0 0"
-                       DataContext="{Binding SuccessMessageViewModel}"
-                       Text="{Binding Message}"
-                       HorizontalAlignment="Center"
-                       Foreground="DarkGreen"
-                       Visibility="{Binding HasMessage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-                <TextBlock Grid.Row="1" Margin="0 10 0 0"
-                       DataContext="{Binding ErrorMessageViewModel}"
-                       Text="{Binding Message}"
-                       HorizontalAlignment="Center"
-                       Foreground="DarkRed"
-                       Visibility="{Binding HasMessage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-            </Grid>
         </Grid>
-        
+
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Margin="0 10 0 0"
+                    DataContext="{Binding SuccessMessageViewModel}"
+                    Text="{Binding Message}"
+                    HorizontalAlignment="Center"
+                    Foreground="DarkGreen"
+                    Visibility="{Binding HasMessage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+            <TextBlock Grid.Row="1" Margin="0 10 0 0"
+                    DataContext="{Binding ErrorMessageViewModel}"
+                    Text="{Binding Message}"
+                    HorizontalAlignment="Center"
+                    Foreground="DarkRed"
+                    Visibility="{Binding HasMessage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </Grid>
+
     </Grid>
 </UserControl>

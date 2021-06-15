@@ -8,9 +8,10 @@ namespace ScheduleCreator.EntityFramework.Repositories.PreferenceRepository
 {
     public interface IPreferenceRepository
     {
-        Task AddPreferences(int employeId, Preferences preferences);
-        Task UpdatePreferences(int preferenceId, IList<PreferenceDay> preferenceDays, sbyte holidays);
-        Task<Preferences> GetPreferences(int employeId, string internalPreferenceId);
+        Task AddPreferences(int employeeId, Preferences preferences);
+        Task UpdatePreferences(int preferenceId, Preferences preferences);
+        Task<Preferences> GetPreferences(int employeeId, string internalPreferenceId);
         Task<List<Preferences>> GetPreferences(string internalPreferenceId);
+        Task DeleteFromTo(string internalPreferenceId, int employeeId);
     }
 }

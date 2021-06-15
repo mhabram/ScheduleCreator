@@ -4,6 +4,7 @@ using ScheduleCreator.Domain.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace ScheduleCreator.Domain.DTO.ScheduleView
 {
@@ -35,11 +36,16 @@ namespace ScheduleCreator.Domain.DTO.ScheduleView
             return isCorrect;
         }
 
-        public void SetStartingWorkingDays(PreferencesDTO preferences)
+        public int UpdateEmployeeView(PreferencesDTO preferences, ObservableCollection<CalendarDateDTO> calendarDateDTO)
         {
-            CalendarHelper calendarHelper = new();
-            WorkingDays = calendarHelper.WorkingDaysInMonth(preferences.FreeWorkingDays);
-            WorkingDays -= preferences.FreeWorkingDays;
+            CalendarHelper calendar = new();
+            WorkingDays = calendar.WorkingDaysInMonth() - preferences.FreeWorkingDays;
+            for (int i = 0; i < calendarDateDTO.Count; i++)
+            {
+                if (calendarDateDTO[i].UpdateEmployeeView(FullName))
+                    WorkingDays--;
+            }
+            return WorkingDays;
         }
     }
 }

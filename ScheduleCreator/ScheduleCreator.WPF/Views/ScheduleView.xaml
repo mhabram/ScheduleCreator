@@ -50,10 +50,10 @@
             </Grid.ColumnDefinitions>
             
             <ItemsControl Grid.Column="0"
-                              ItemsSource="{Binding Employees, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                              FontSize="13"
-                              Margin="10 0 0 0"
-                              HorizontalAlignment="Left">
+                          ItemsSource="{Binding Employees, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                          FontSize="13"
+                          Margin="10 0 0 0"
+                          HorizontalAlignment="Left">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center"/>
@@ -135,7 +135,7 @@
                                 <ListBox ItemsSource="{Binding Employees}">
                                     <ListBox.Template>
                                         <ControlTemplate>
-                                            <ItemsPresenter />
+                                            <ItemsPresenter/>
                                         </ControlTemplate>
                                     </ListBox.Template>
                                     <ListBox.ItemTemplate>

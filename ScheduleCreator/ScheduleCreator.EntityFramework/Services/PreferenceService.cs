@@ -1,9 +1,13 @@
-﻿using ScheduleCreator.Domain.DTO.ScheduleView;
+﻿using ScheduleCreator.Domain.DTO.PreferenceView;
+using ScheduleCreator.Domain.DTO.ScheduleView;
 using ScheduleCreator.Domain.Models;
 using ScheduleCreator.Domain.Services;
 using ScheduleCreator.EntityFramework.Repositories.PreferenceRepository;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ScheduleCreator.EntityFramework.Services
@@ -14,34 +18,115 @@ namespace ScheduleCreator.EntityFramework.Services
         private string internalPreferenceId = String.Concat(DateTime.Now.AddMonths(1).Year.ToString(),
             DateTime.Now.AddMonths(1).Month.ToString());
 
+
+        private CultureInfo Culture = new CultureInfo("en-NZ", true);
+
         public PreferenceService(IPreferenceRepository preferenceRepository)
         {
             _preferenceRepository = preferenceRepository;
         }
 
-        public async Task AddPreferences(int employeId, IList<PreferenceDay> preferenceDays, DateTime from, DateTime to, sbyte holidays)
+        public async Task AddPreferences(int employeeId, ObservableCollection<DateTimeWrapper> preferenceDays,
+            DateTime? from, DateTime? to, int leaveDays, sbyte holidays)
         {
-            Preferences preferences = new()
+            IList<PreferenceDay> preferenceDateDays = new List<PreferenceDay>();
+            Preferences preferences = new();
+            DateTime fromDate = new();
+            DateTime toDate = new();
+
+            for (int i = 0; i < preferenceDays.Count; i++)
             {
-                FreeWorkingDays = holidays,
-                From = from,
-                To = to,
-                InternalPreferenceId = internalPreferenceId,
-                PreferenceDays = preferenceDays
-            };
-            
-            await _preferenceRepository.AddPreferences(employeId, preferences);
+                if (preferenceDays[i].Value != null)
+                {
+                    preferenceDateDays.Add(new PreferenceDay() { FreeDayChosen = (DateTime)preferenceDays[i].Value });
+                }
+            }
+
+            if ((from != null) || (to != null))
+            {
+                fromDate = (DateTime)from;
+                toDate = (DateTime)to;
+
+                preferences = new()
+                {
+                    FreeWorkingDays = holidays,
+                    From = fromDate.ToString(Culture),
+                    To = toDate.ToString(Culture),
+                    LeaveDays = leaveDays,
+                    InternalPreferenceId = internalPreferenceId,
+                    PreferenceDays = preferenceDateDays
+                };
+            }
+            else
+            {
+                preferences = new()
+                {
+                    FreeWorkingDays = holidays,
+                    LeaveDays = leaveDays,
+                    InternalPreferenceId = internalPreferenceId,
+                    PreferenceDays = preferenceDateDays
+                };
+            }
+
+            await _preferenceRepository.AddPreferences(employeeId, preferences);
         }
 
-        public async Task UpdatePreferences(int employeeId, IList<PreferenceDay> preferences, DateTime from, DateTime to, sbyte holidays)
+        public async Task UpdatePreferences(int employeeId, ObservableCollection<DateTimeWrapper> preferenceDays,
+            DateTime? from, DateTime? to, int leaveDays, sbyte holidays)
         {
             Preferences pref =  await GetPreferences(employeeId);
-            await _preferenceRepository.UpdatePreferences(pref.PreferencesId, preferences, holidays);
+            IList<PreferenceDay> preferenceDateDays = new List<PreferenceDay>();
+            Preferences preferences = new();
+            DateTime fromDate = new();
+            DateTime toDate = new();
+
+            for (int i = 0; i < preferenceDays.Count; i++)
+            {
+                if (preferenceDays[i].Value != null)
+                {
+                    preferenceDateDays.Add(new PreferenceDay() { FreeDayChosen = (DateTime)preferenceDays[i].Value });
+                }
+            }
+
+            if ((from != null) || (to != null))
+            {
+                fromDate = (DateTime)from;
+                toDate = (DateTime)to;
+
+                preferences = new()
+                {
+                    FreeWorkingDays = holidays,
+                    From = fromDate.ToString(Culture),
+                    To = toDate.ToString(Culture),
+                    LeaveDays = leaveDays,
+                    InternalPreferenceId = internalPreferenceId,
+                    PreferenceDays = preferenceDateDays
+                };
+            }
+            else
+            {
+                await _preferenceRepository.DeleteFromTo(internalPreferenceId, employeeId);
+
+                preferences = new()
+                {
+                    FreeWorkingDays = holidays,
+                    From = "",
+                    To = "",
+                    LeaveDays = leaveDays,
+                    InternalPreferenceId = internalPreferenceId,
+                    PreferenceDays = preferenceDateDays
+                };
+            }
+
+            await _preferenceRepository.UpdatePreferences(pref.PreferencesId, preferences);
         }
 
-        public async Task<Preferences> GetPreferences(int employeId)
+        public async Task<Preferences> GetPreferences(int employeeId)
         {
-            return await _preferenceRepository.GetPreferences(employeId, internalPreferenceId);
+            Preferences preferences = await _preferenceRepository.GetPreferences(employeeId, internalPreferenceId);
+            if (preferences.PreferenceDays.Count > 1)
+                preferences.PreferenceDays = preferences.PreferenceDays.OrderBy(x => x.FreeDayChosen).ToList();
+            return preferences;
         }
 
         public async Task<List<PreferencesDTO>> GetPreferences()

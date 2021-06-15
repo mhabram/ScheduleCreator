@@ -26,11 +26,11 @@ namespace ScheduleCreator.Domain.Helpers.Calendar
             return calendarDate;
         }
 
-        public sbyte WorkingDaysInMonth(sbyte freeDays)
+        public int WorkingDaysInMonth()
         {
             DateTime currentDate = DateTime.Now.AddMonths(1);
             DateTime startMonth = currentDate.AddDays(-currentDate.Day + 1);
-            sbyte workingDays = 0;
+            int workingDays = 0;
 
             for (int i = 0; i < DateTime.DaysInMonth(currentDate.Year, currentDate.Month); i++)
             {

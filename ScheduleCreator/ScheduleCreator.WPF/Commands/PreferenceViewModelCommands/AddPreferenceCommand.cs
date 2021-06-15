@@ -22,21 +22,9 @@ namespace ScheduleCreator.WPF.Commands.PreferenceViewModelCommands
 
         public override async Task ExecuteAsync(object parameter)
         {
-            IList<PreferenceDay> preferenceDays = new List<PreferenceDay>();
-            PreferenceDay preferenceDay;
-
-            preferenceDay = new PreferenceDay() { FreeDayChosen = _viewModel.DayOffOne };
-            preferenceDays.Add(preferenceDay);
-            
-            preferenceDay = new PreferenceDay() { FreeDayChosen = _viewModel.DayOffTwo };
-            preferenceDays.Add(preferenceDay);
-            
-            preferenceDay = new PreferenceDay() { FreeDayChosen = _viewModel.DayOffThree };
-            preferenceDays.Add(preferenceDay);
-
             _viewModel.ErrorMessage = null;
             _viewModel.SuccessMessage = null;
-
+            // to be fixed whole saving/updating preferences.
             try
             {
                 //need to add exception if employee is null 
@@ -44,9 +32,10 @@ namespace ScheduleCreator.WPF.Commands.PreferenceViewModelCommands
                 {
                     await _preferenceService.UpdatePreferences(
                         _viewModel.Employee.Id,
-                        preferenceDays,
+                        _viewModel.PreferenceDays,
                         _viewModel.From,
                         _viewModel.To,
+                        _viewModel.OnLeave,
                         _viewModel.Holidays);
                     _viewModel.SuccessMessage = "Preferences has been updated.";
 
@@ -55,9 +44,10 @@ namespace ScheduleCreator.WPF.Commands.PreferenceViewModelCommands
                 {
                     await _preferenceService.AddPreferences(
                         _viewModel.Employee.Id,
-                        preferenceDays,
+                        _viewModel.PreferenceDays,
                         _viewModel.From,
                         _viewModel.To,
+                        _viewModel.OnLeave,
                         _viewModel.Holidays);
                     _viewModel.SuccessMessage = "Preferences has been added.";
                 }

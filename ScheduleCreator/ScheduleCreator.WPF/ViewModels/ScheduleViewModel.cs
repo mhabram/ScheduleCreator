@@ -111,6 +111,12 @@ namespace ScheduleCreator.WPF.ViewModels
             if (employeeDTO.IsPreferenceDay(_calendarDates, _preferences) && employeeDTO.Day)
                 ErrorMessage = "This day is the employee's preference day.";
 
+            if (employeeDTO.IsHolidayDay(_calendarDates, _preferences) && employeeDTO.Day)
+            {
+                ErrorMessage = "The employee on leave.";
+                employeeDTO.Day = false;
+            }
+
             if (calendarDateDTO.IsWeekend() && numberOfEmployeesWorkingOnShift >= 1 && employeeDTO.Day)
             {
                 ErrorMessage = $"There is already employee working on {calendarDateDTO.Date.DayOfWeek}'s {shift}.";
@@ -130,7 +136,12 @@ namespace ScheduleCreator.WPF.ViewModels
             }
 
             employeeDTO.UpdateEmployee(shift, employeeDTO.Day);
-            employeeDTO.UpdateEmployeeView(_calendarDates, _employees, _preferences);
+
+            for (int i = 0; i < Employees.Count; i++)
+            {
+                if (Employees[i].FullName == employeeDTO.FullName)
+                    Employees[i].WorkingDays = employeeDTO.UpdateEmployeeView(_calendarDates, _employees, _preferences);
+            }
         }
 
         private void UpdateSwingShift(EmployeeDTO employeeDTO)
@@ -184,6 +195,12 @@ namespace ScheduleCreator.WPF.ViewModels
             if (employeeDTO.IsPreferenceDay(_calendarDates, _preferences) && employeeDTO.Swing)
                 ErrorMessage = "This day is the employee's preference day.";
 
+            if (employeeDTO.IsHolidayDay(_calendarDates, _preferences) && employeeDTO.Swing)
+            {
+                ErrorMessage = "The employee on leave.";
+                employeeDTO.Swing = false;
+            }
+
             if (calendarDateDTO.IsWeekend() && numberOfEmployeesWorkingOnShift >= 1 && employeeDTO.Swing)
             {
                 ErrorMessage = $"There is already employee working on {calendarDateDTO.Date.DayOfWeek}'s {shift}.";
@@ -203,7 +220,11 @@ namespace ScheduleCreator.WPF.ViewModels
             }
 
             employeeDTO.UpdateEmployee(shift, employeeDTO.Swing);
-            employeeDTO.UpdateEmployeeView(_calendarDates, _employees, _preferences);
+            for (int i = 0; i < Employees.Count; i++)
+            {
+                if (Employees[i].FullName == employeeDTO.FullName)
+                    Employees[i].WorkingDays = employeeDTO.UpdateEmployeeView(_calendarDates, _employees, _preferences);
+            }
         }
 
         private void UpdateNightShift(EmployeeDTO employeeDTO)
@@ -251,6 +272,12 @@ namespace ScheduleCreator.WPF.ViewModels
             if (employeeDTO.IsPreferenceDay(_calendarDates, _preferences) && employeeDTO.Night)
                 ErrorMessage = "This day is the employee's preference day.";
 
+            if (employeeDTO.IsHolidayDay(_calendarDates, _preferences) && employeeDTO.Night)
+            {
+                ErrorMessage = "The employee on leave.";
+                employeeDTO.Night = false;
+            }
+
             if (calendarDateDTO.IsWeekend() && numberOfEmployeesWorkingOnShift >= 1 && employeeDTO.Night)
             {
                 ErrorMessage = $"There is already employee working on {calendarDateDTO.Date.DayOfWeek}'s {shift}.";
@@ -270,7 +297,11 @@ namespace ScheduleCreator.WPF.ViewModels
             }
 
             employeeDTO.UpdateEmployee(shift, employeeDTO.Night);
-            employeeDTO.UpdateEmployeeView(_calendarDates, _employees, _preferences);
+            for (int i = 0; i < Employees.Count; i++)
+            {
+                if (Employees[i].FullName == employeeDTO.FullName)
+                    Employees[i].WorkingDays = employeeDTO.UpdateEmployeeView(_calendarDates, _employees, _preferences);
+            }
         }
 
         private int CountEmployeesInWeekend(Collection<EmployeeDTO> employees, string shift)

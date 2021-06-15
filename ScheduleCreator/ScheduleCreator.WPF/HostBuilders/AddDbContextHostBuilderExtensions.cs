@@ -16,7 +16,7 @@ namespace ScheduleCreator.WPF.HostBuilders
             
             host.ConfigureServices((context, services) =>
             {
-                string ConnectionString = context.Configuration.GetConnectionString("sqlite");
+                string ConnectionString = context.Configuration.GetConnectionString("sqlite"); // probably will be working need to refactor with one connection string declaration
 
                 //Action<DbContextOptionsBuilder> configureDbContext = options => options.UseSqlite(ConnectionString);
                 Action<DbContextOptionsBuilder> configureDbContext = options => options.UseSqlite(databasePath);
